@@ -89,28 +89,6 @@ public class Main extends Application {
 			}
 		}
 
-//		for (int i = 0; i < 8; i+=2) {
-//			for (int j = 1; j <= 8; j+=2) {
-//				for(Node node  : feld.getChildren()) {
-//					if (feld.getRowIndex(node) == i && feld.getColumnIndex(node) == j) {
-//			            Button b1 = (Button)node;
-//			            b1.setStyle("-fx-background-color: #585858");
-//			       }
-//				}
-//			}
-//		}
-//		
-//		for (int i = 1; i <= 8; i+=2) {
-//			for (int j = 0; j < 8; j+=2) {
-//				for(Node node  : feld.getChildren()) {
-//					if (feld.getRowIndex(node) == i && feld.getColumnIndex(node) == j) {
-//			            Button b1 = (Button)node;
-//			            b1.setStyle("-fx-background-color: #585858");
-//			       }
-//				}
-//			}	
-//		}
-
 		Label ausgabe = new Label("Letzter Zug:");
 		root.setCenter(feld);
 		root.setBottom(ausgabe);
