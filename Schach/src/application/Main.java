@@ -16,8 +16,6 @@ import javafx.scene.layout.GridPane;
 public class Main extends Application {
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
-	private Button b3 = new Button();
-	private String idd = "";
 	private Node n1;
 	
 	@Override
