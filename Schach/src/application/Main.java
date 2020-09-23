@@ -58,18 +58,16 @@ public class Main extends Application {
 					public void handle(ActionEvent event) {
 						if(!clicked1) {
 							Node n = (Node)event.getSource();
-							idd = n.getId();
 							n1 = b.getGraphic();
 							clicked1 = true;
 						}
 						if(clicked2) {
 							Node n = (Node)event.getSource();
-							ImageView im1 = (ImageView)n1;
-							Image im = im1.getImage();
-							b.setGraphic(new ImageView(im));
+							b.setGraphic(n1);
+							clicked1=false;
 						}
+						clicked2 = clicked1;
 					}
-
 				});
 			}
 		}
