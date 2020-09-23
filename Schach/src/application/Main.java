@@ -64,7 +64,9 @@ public class Main extends Application {
 						}
 						if(clicked2) {
 							Node n = (Node)event.getSource();
-							b.setGraphic(n1);
+							ImageView im1 = (ImageView)n1;
+							Image im = im1.getImage();
+							b.setGraphic(new ImageView(im));
 						}
 					}
 
