@@ -18,6 +18,7 @@ public class Main extends Application {
 	private boolean clicked2 = false;
 	private Button b3 = new Button();
 	private String idd = "";
+	private Node n1;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -57,20 +58,14 @@ public class Main extends Application {
 					public void handle(ActionEvent event) {
 						if(!clicked1) {
 							Node n = (Node)event.getSource();
-							b3 = (Button)root.lookup(n.getId());
+							idd = n.getId();
+							n1 = b.getGraphic();
 							clicked1 = true;
 						}
 						if(clicked2) {
 							Node n = (Node)event.getSource();
-							Button b2 = (Button)root.lookup(n.getId());
-							Node n1 = b3.getGraphic();
-							ImageView im1 = (ImageView)n1;
-							Image imageCopy = im1.getImage();
-							b2.setGraphic(new ImageView(imageCopy));
-							b3.setGraphic(new ImageView("images/__.png"));
-							clicked2 = false;
+							b.setGraphic(n1);
 						}
-						clicked2 = true;
 					}
 
 				});
