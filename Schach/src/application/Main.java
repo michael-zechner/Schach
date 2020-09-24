@@ -55,12 +55,10 @@ public class Main extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						if(!clicked1) {
-							Node n = (Node)event.getSource();
 							n1 = b.getGraphic();
 							clicked1 = true;
 						}
 						if(clicked2) {
-							Node n = (Node)event.getSource();
 							b.setGraphic(n1);
 							clicked1=false;
 						}
