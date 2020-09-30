@@ -5,6 +5,16 @@ public class SpielFeld {
 	private Feld[][] mat;
 	private boolean werAmZug;
 
+	public Feld[][] getMat() {
+		return mat;
+	}
+
+	public SpielFeld(Feld[][] mat, boolean werAmZug) {
+		super();
+		this.mat = mat;
+		this.werAmZug = werAmZug;
+	}
+
 	public void ausgabe() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {

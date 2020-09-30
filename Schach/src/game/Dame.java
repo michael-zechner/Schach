@@ -2,6 +2,11 @@ package game;
 
 public class Dame extends Figur {
 
+	public Dame(boolean farbeWeiss, boolean bewegt) {
+		super(farbeWeiss, bewegt);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String toString() {
 		return "D" + super.toString();

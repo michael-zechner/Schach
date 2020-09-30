@@ -5,6 +5,12 @@ public abstract class Figur extends Feld {
 	public boolean farbeWeiss;
 	public boolean bewegt;
 
+	public Figur(boolean farbeWeiss, boolean bewegt) {
+		super();
+		this.farbeWeiss = farbeWeiss;
+		this.bewegt = bewegt;
+	}
+
 	@Override
 	public String toString() {
 		if (farbeWeiss)
