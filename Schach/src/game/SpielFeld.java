@@ -22,6 +22,9 @@ public class SpielFeld {
 	}
 	
 	public Position schach2koordinate(String schach) {
-		return null;
+		Position p = new Position();
+		p.setX((byte) schach.charAt(0)); 
+		p.setY((byte) schach.charAt(1));
+		return p;
 	}
 }
