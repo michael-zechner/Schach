@@ -1,14 +1,21 @@
 package game;
 
-public abstract class Figur {
-	
+public abstract class Figur extends Feld {
+
 	public boolean farbeWeiss;
 	public boolean bewegt;
-	
-	public boolean spielZug(SpielFeld sp, Position von, Position nach){
+
+	@Override
+	public String toString() {
+		if (farbeWeiss)
+			return "W";
+		return "B";
+	}
+
+	public boolean spielZug(SpielFeld sp, Position von, Position nach) {
 		return false;
 	}
-	
+
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
 		return false;
 	}
