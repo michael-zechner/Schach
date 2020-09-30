@@ -5,9 +5,5 @@ public class Feld {
 		return "__";
 	}
 	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
-	}
+	
 }
