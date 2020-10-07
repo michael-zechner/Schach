@@ -48,4 +48,12 @@ public class SpielFeld {
 		p.setY((byte) schach.charAt(1));
 		return p;
 	}
+
+	public Feld getFeld(int i, int j) {
+		if (mat[i][j] instanceof Figur) {
+			Figur f = (Figur) mat[i][j];
+			return f;
+		}
+		return null;
+	}
 }

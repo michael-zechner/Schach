@@ -1,5 +1,10 @@
 package application;
 
+import java.io.FileNotFoundException;
+
+import game.Feld;
+import game.SpielFeld;
+import game.SpielFeldIO;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,15 +22,23 @@ public class Main extends Application {
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private Node n1;
-	
+
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws FileNotFoundException {
 		BorderPane root = new BorderPane();
 		GridPane feld = new GridPane();
 		boolean farbe = false;
+
+		SpielFeldIO spIO = new SpielFeldIO();
+		SpielFeld sp = spIO.einlesen("start.txt");
+
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
+				Image im1 = new Image("images/" + sp.getMat()[j-1][i-1].toString() + ".png");
+				ImageView imageView = new ImageView(im1);
+				
 				Button b = new Button();
+				b.setGraphic(imageView);
 				b.setMaxHeight(80);
 				b.setMaxWidth(80);
 				b.setMinHeight(80);
@@ -50,40 +63,21 @@ public class Main extends Application {
 				String id1 = id + String.valueOf(9 - j);
 				b.setId(id1);
 				feld.add(b, i, j);
-				
+
 				b.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						if(!clicked1) {
+						if (!clicked1) {
 							n1 = b.getGraphic();
 							clicked1 = true;
 						}
-						if(clicked2) {
+						if (clicked2) {
 							b.setGraphic(n1);
-							clicked1=false;
+							clicked1 = false;
 						}
 						clicked2 = clicked1;
 					}
 				});
-			}
-		}
-
-		Image im1 = new Image("images/BW.png");
-		Image im2 = new Image("images/BB.png");
-		for (int j = 2; j < 9; j += 5) {
-			for (int i = 0; i <= 8; i++) {
-				for (Node node : feld.getChildren()) {
-					if (feld.getRowIndex(node) == j && feld.getColumnIndex(node) == i) {
-						if (j == 2) {
-							Button b1 = (Button) node;
-							b1.setGraphic(new ImageView(im1));
-						}
-						if (j == 7) {
-							Button b1 = (Button) node;
-							b1.setGraphic(new ImageView(im2));
-						}
-					}
-				}
 			}
 		}
 
