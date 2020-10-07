@@ -2,7 +2,7 @@ package game;
 
 public class SpielFeld {
 
-	private Feld[][] mat;
+	private Feld[][] mat = new Feld[8][8];
 	private boolean werAmZug;
 
 	public Feld[][] getMat() {

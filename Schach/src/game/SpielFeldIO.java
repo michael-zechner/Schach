@@ -1,12 +1,32 @@
 package game;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class SpielFeldIO {
+	private static Scanner s;
 
-	private static Feld[][] mat;
+	private static int i = 1;
+	private static int j = 1;
+
+	private static Feld[][] mat = new Feld[8][8];
+	private static Feld feld1;
+
 	static public SpielFeld einlesen(String fName) throws FileNotFoundException {
-		leseFeld(f)
+		s = new Scanner(new File(fName));
+
+		for (int i = 0; i < mat.length; i++) {
+			String a = s.nextLine();
+			for (int j = 0; j < mat[0].length; j++) {
+				
+				String[] figuren = a.split("\\|");
+				System.out.print(mat[i][j] = leseFeld(figuren[j]));
+			}
+			System.out.println();
+		}
+
+		return new SpielFeld(mat, false);
 	}
 
 	private static Feld leseFeld(String f) {
@@ -21,28 +41,20 @@ public class SpielFeldIO {
 
 		switch (a) {
 		case 'B':
-			Bauer bauer = new Bauer(farbeWeiss, false);
-			break;
+			return new Bauer(farbeWeiss, false);
 		case 'D':
-			Dame dame = new Dame(farbeWeiss, false);
-			break;
+			return new Dame(farbeWeiss, false);
 		case 'K':
-			Koenig koenig = new Koenig(farbeWeiss, false);
+			return new Koenig(farbeWeiss, false);
 		case 'L':
-			Laeufer laeufer = new Laeufer(farbeWeiss, false);
-			break;
+			return new Laeufer(farbeWeiss, false);
 		case 'S':
-			Springer springer = new Springer(farbeWeiss, false);
-			break;
+			return new Springer(farbeWeiss, false);
 		case 'T':
-			Turm turm = new Turm(farbeWeiss, false);
-			break;
-
+			return new Turm(farbeWeiss, false);
 		default:
-			break;
+			return feld;
 		}
-		
-		mat[0][0] = ;
 
 	}
 }
