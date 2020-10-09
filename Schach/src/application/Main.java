@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
@@ -36,19 +38,17 @@ public class Main extends Application {
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
-				Image im1 = new Image("images/" + sp.getMat()[j - 1][i - 1].toString() + ".png");
+				Image im1 = new Image("images/" + sp.getMat()[8-j][8-i].toString() + ".png");
 				ImageView imageView = new ImageView(im1);
 
 				Button b = new Button();
 				b.setGraphic(imageView);
-				b.setMaxHeight(80);
-				b.setMaxWidth(80);
-				b.setMinHeight(80);
-				b.setMinWidth(80);
-				
+				b.setMaxWidth(Double.MAX_VALUE);
+				b.setMaxHeight(Double.MAX_VALUE);
+				b.setStyle("-fx-background-color: #123456; -fx-background-radius: 0px;");
 				if (farbe) {
 					if (j % 2 == 0) {
-						b.setStyle("-fx-background-color: #585858");
+						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
 					}
 					if (j == 8 && i % 2 == 0) {
 						farbe = false;
@@ -56,7 +56,7 @@ public class Main extends Application {
 				}
 				if (!farbe) {
 					if (j % 2 != 0) {
-						b.setStyle("-fx-background-color: #585858");
+						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
 					}
 					if (j == 8 && i % 2 != 0) {
 						farbe = true;
@@ -93,26 +93,49 @@ public class Main extends Application {
 			}
 		}
 		ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(12.5);
+        col1.setPercentWidth(10);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(12.5);
+        col2.setPercentWidth(10);
         ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
+        col3.setPercentWidth(10);
         ColumnConstraints col4 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
+        col4.setPercentWidth(10);
         ColumnConstraints col5 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
+        col5.setPercentWidth(10);
         ColumnConstraints col6 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
+        col6.setPercentWidth(10);
         ColumnConstraints col7 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
+        col7.setPercentWidth(10);
         ColumnConstraints col8 = new ColumnConstraints();
-        col3.setPercentWidth(12.5);
-        feld.getColumnConstraints().addAll(col1,col2,col3, col4, col5, col6, col7, col8);
+        col8.setPercentWidth(10);
+        ColumnConstraints col9 = new ColumnConstraints();
+        col9.setPercentWidth(10);
+        feld.getColumnConstraints().addAll(col1,col2,col3, col4, col5, col6, col7, col8, col9);
+        
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(10);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(10);
+        RowConstraints row3 = new RowConstraints();
+        row3.setPercentHeight(10);
+        RowConstraints row4 = new RowConstraints();
+        row4.setPercentHeight(10);
+        RowConstraints row5 = new RowConstraints();
+        row5.setPercentHeight(10);
+        RowConstraints row6 = new RowConstraints();
+        row6.setPercentHeight(10);
+        RowConstraints row7 = new RowConstraints();
+        row7.setPercentHeight(10);
+        RowConstraints row8 = new RowConstraints();
+        row8.setPercentHeight(10);
+        
+        feld.getRowConstraints().addAll(row1,row2,row3, row4, row5, row6, row7, row8);
 		Label ausgabe = new Label("Letzter Zug:");
 		root.setCenter(feld);
 		root.setBottom(ausgabe);
-		primaryStage.setScene(new Scene(root));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add("application/application.css");
+		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
