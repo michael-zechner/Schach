@@ -2,6 +2,8 @@ package game;
 
 public class Bauer extends Figur {	
 	
+	private boolean ersterzug = true;
+	
 	public Bauer(boolean farbeWeiss, boolean bewegt) {
 		super(farbeWeiss, bewegt);
 		// TODO Auto-generated constructor stub
@@ -17,10 +19,20 @@ public class Bauer extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-//		if(von.getY() > nach.getY() && von.getX() > nach.getX()) {
-//			return false;
-//		}
-//		return super.spielzugMoeglich(sp, von, nach);
+		
+		if(ersterzug) {
+			if(farbeWeiss) {
+				if(von.getY()+2 == nach.getY() && von.getX() == nach.getX()) {
+					return true;
+				}
+			}
+			if(!farbeWeiss) {
+				if(von.getY()-2 == nach.getY() && von.getX() == nach.getX()) {
+					return true;
+				}
+			}
+		}
+
 		if(farbeWeiss) {
 			if(von.getY()+1 == nach.getY() && von.getX() == nach.getX()) {
 				return true;
@@ -31,7 +43,12 @@ public class Bauer extends Figur {
 				return true;
 			}
 		}
-
+		
+		if(sp.getMat()[(int)von.getY()+1][(int)von.getX()+1] instanceof Figur || sp.getMat()[(int)von.getY()-1][(int)von.getX()-1] instanceof Figur) {
+			return true;
+		}
+		
+		ersterzug = false;
 		return false;
 	}
 }
