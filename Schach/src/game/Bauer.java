@@ -38,7 +38,16 @@ public class Bauer extends Figur {
 			if (von.getY() + 1 == nach.getY() && von.getX() == nach.getX()) {
 				return true;
 			}
-			if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() + 1] instanceof Figur) {
+			
+			if(von.getX() != 0) {
+				if(sp.getMat()[(int) von.getY() + 1][(int) von.getX() - 1] instanceof Figur
+							&& von.getY() + 1 == nach.getY() && von.getX() - 1 == nach.getX()) {
+					return true;
+				}
+			}
+			if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() + 1] instanceof Figur
+					&& von.getY() + 1 == nach.getY() && von.getX() + 1 == nach.getX()
+					) {
 				return true;
 			}
 		}
@@ -46,9 +55,18 @@ public class Bauer extends Figur {
 			if (von.getY() - 1 == nach.getY() && von.getX() == nach.getX()) {
 				return true;
 			}
-			if(sp.getMat()[(int) von.getY() - 1][(int) von.getX() - 1] instanceof Figur) {
+			if (von.getX() != 0) {
+				if (sp.getMat()[(int) von.getY() - 1][(int) von.getX() - 1] instanceof Figur
+						&& von.getY() - 1 == nach.getY() && von.getX() - 1 == nach.getX() && von.getX() != 0) {
+					return true;
+				}
+			}
+
+			if (sp.getMat()[(int) von.getY() - 1][(int) von.getX() + 1] instanceof Figur
+					&& von.getY() - 1 == nach.getY() && von.getX() + 1 == nach.getX()) {
 				return true;
 			}
+
 		}
 
 		bewegt = true;

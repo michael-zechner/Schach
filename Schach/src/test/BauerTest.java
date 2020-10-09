@@ -19,12 +19,46 @@ public class BauerTest {
 		sp = spIO.einlesen("BauerTest.txt");
 	}
 
+	//Test für Schwarz
 	@Test
 	public void bewegungEinFeldSchwarz() {
 		Bauer b1 = (Bauer) sp.getFeld(6, 0);
 		System.out.println(b1.toString());
 		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(5, 0));
 		assertTrue(ok1);
+	}
+	@Test
+	public void bewegungZweiFelderAnfangSchwarz() {
+		Bauer b1 = (Bauer) sp.getFeld(6, 0);
+		b1.setBewegt(false);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(4, 0));
+		assertTrue(ok1);
+	}
+
+	@Test
+	public void bewegungZweiFelderSchwarzFail() {
+		Bauer b1 = (Bauer) sp.getFeld(6, 0);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(4, 0));
+		assertFalse(ok1);
+	}
+	
+	@Test
+	public void FigurSchlagenSchwarzRechts() {
+		Bauer b1 = (Bauer) sp.getFeld(6, 0);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(5, 1));
+		assertTrue(ok1);
+	}
+	@Test
+	public void FigurSchlagenSchwarzLinksFailWeilRand() {
+		Bauer b1 = (Bauer) sp.getFeld(6, 0);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(5, -1));
+		assertFalse(ok1);
 	}
 
 	// Test für Weiss
@@ -53,11 +87,28 @@ public class BauerTest {
 	}
 	
 	@Test
-	public void FigurSchlagenWeiss() {
+	public void FigurSchlagenWeissRechts() {
+		Bauer b1 = (Bauer) sp.getFeld(3, 2);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(3, 2), new Position(4, 3));
+		assertTrue(ok1);
+	}
+	@Test
+	public void FigurSchlagenWeissLinks() {
+		Bauer b1 = (Bauer) sp.getFeld(3, 2);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(3, 2), new Position(4, 1));
+		assertTrue(ok1);
+	}
+	
+	@Test
+	public void FigurSchlagenWeissLinksFailWeilRand() {
 		Bauer b1 = (Bauer) sp.getFeld(1, 0);
 		System.out.println(b1.toString());
 		b1.setBewegt(true);
-		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(0, 0));
-		assertTrue(ok1);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(2, -1));
+		assertFalse(ok1);
 	}
 }

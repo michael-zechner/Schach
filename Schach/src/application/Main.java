@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
 	private boolean clicked1 = false;
@@ -44,6 +45,7 @@ public class Main extends Application {
 				b.setMaxWidth(80);
 				b.setMinHeight(80);
 				b.setMinWidth(80);
+				
 				if (farbe) {
 					if (j % 2 == 0) {
 						b.setStyle("-fx-background-color: #585858");
@@ -90,7 +92,23 @@ public class Main extends Application {
 				
 			}
 		}
-
+		ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(12.5);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(12.5);
+        ColumnConstraints col3 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        ColumnConstraints col4 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        ColumnConstraints col5 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        ColumnConstraints col6 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        ColumnConstraints col7 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        ColumnConstraints col8 = new ColumnConstraints();
+        col3.setPercentWidth(12.5);
+        feld.getColumnConstraints().addAll(col1,col2,col3, col4, col5, col6, col7, col8);
 		Label ausgabe = new Label("Letzter Zug:");
 		root.setCenter(feld);
 		root.setBottom(ausgabe);
