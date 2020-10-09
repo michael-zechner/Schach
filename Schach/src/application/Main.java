@@ -64,20 +64,29 @@ public class Main extends Application {
 				b.setId(id1);
 				feld.add(b, i, j);
 
-				b.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						if (!clicked1) {
-							n1 = b.getGraphic();
-							clicked1 = true;
+				
+					b.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							Node n = (Node)event.getSource();
+							char first = n.getId().charAt(0);
+							int firstN = (int)first - (int)'A' + 1;
+							int second = Integer.parseInt(String.valueOf(n.getId().charAt(1)));
+							
+						    Button bu = (Button)event.getSource();
+						    System.out.println(bu.getGraphic());
+							if (!clicked1) {
+								n1 = b.getGraphic();
+								clicked1 = true;
+							}
+							if (clicked2) {
+								b.setGraphic(n1);
+								clicked1 = false;
+							}
+							clicked2 = clicked1;
 						}
-						if (clicked2) {
-							b.setGraphic(n1);
-							clicked1 = false;
-						}
-						clicked2 = clicked1;
-					}
-				});
+					});
+				
 			}
 		}
 
