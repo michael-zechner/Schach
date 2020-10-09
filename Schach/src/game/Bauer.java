@@ -70,6 +70,6 @@ public class Bauer extends Figur {
 		}
 
 		bewegt = true;
-		return false;
+		return super.spielzugMoeglich(sp, von, nach);
 	}
 }
