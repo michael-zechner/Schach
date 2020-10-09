@@ -17,9 +17,21 @@ public class Bauer extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		if(von.getY() > nach.getY() && von.getX() > nach.getX()) {
-			return false;
+//		if(von.getY() > nach.getY() && von.getX() > nach.getX()) {
+//			return false;
+//		}
+//		return super.spielzugMoeglich(sp, von, nach);
+		if(farbeWeiss) {
+			if(von.getY()+1 == nach.getY() && von.getX() == nach.getX()) {
+				return true;
+			}
 		}
-		return super.spielzugMoeglich(sp, von, nach);
+		if(!farbeWeiss) {
+			if(von.getY()-1 == nach.getY() && von.getX() == nach.getX()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

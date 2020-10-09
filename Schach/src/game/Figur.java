@@ -28,4 +28,22 @@ public abstract class Figur extends Feld {
 		}
 		return true;
 	}
+
+	public boolean isFarbeWeiss() {
+		return farbeWeiss;
+	}
+
+	public void setFarbeWeiss(boolean farbeWeiss) {
+		this.farbeWeiss = farbeWeiss;
+	}
+
+	public boolean isBewegt() {
+		return bewegt;
+	}
+
+	public void setBewegt(boolean bewegt) {
+		this.bewegt = bewegt;
+	}
+	
+	
 }

@@ -73,7 +73,8 @@ public class Main extends Application {
 							char first = n.getId().charAt(0);
 							firstN = (int)first - (int)'A' + 1;
 							second = Integer.parseInt(String.valueOf(n.getId().charAt(1)));
-						
+							
+							System.out.println(firstN + " " + second);
 							
 							if (!clicked1) {
 								n1 = b.getGraphic();
