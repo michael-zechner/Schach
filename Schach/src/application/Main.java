@@ -2,7 +2,6 @@ package application;
 
 import java.io.FileNotFoundException;
 
-import game.Feld;
 import game.SpielFeld;
 import game.SpielFeldIO;
 import javafx.application.Application;
@@ -22,6 +21,8 @@ public class Main extends Application {
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private Node n1;
+	private int firstN;
+	private int second;
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -70,11 +71,10 @@ public class Main extends Application {
 						public void handle(ActionEvent event) {
 							Node n = (Node)event.getSource();
 							char first = n.getId().charAt(0);
-							int firstN = (int)first - (int)'A' + 1;
-							int second = Integer.parseInt(String.valueOf(n.getId().charAt(1)));
+							firstN = (int)first - (int)'A' + 1;
+							second = Integer.parseInt(String.valueOf(n.getId().charAt(1)));
+						
 							
-						    Button bu = (Button)event.getSource();
-						    System.out.println(bu.getGraphic());
 							if (!clicked1) {
 								n1 = b.getGraphic();
 								clicked1 = true;
@@ -99,5 +99,21 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public int getFirstN() {
+		return firstN;
+	}
+
+	public void setFirstN(int firstN) {
+		this.firstN = firstN;
+	}
+
+	public int getSecond() {
+		return second;
+	}
+
+	public void setSecond(int second) {
+		this.second = second;
 	}
 }
