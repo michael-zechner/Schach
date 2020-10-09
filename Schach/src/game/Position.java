@@ -7,7 +7,7 @@ public class Position {
 	
 	public Position() {}
 	
-	public Position(int x, int y) {
+	public Position(int y, int x) {
 		super();
 		this.x = (byte) x;
 		this.y = (byte) y;

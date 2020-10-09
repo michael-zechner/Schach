@@ -12,7 +12,7 @@ public class SpielFeldIO {
 	static public SpielFeld einlesen(String fName) throws FileNotFoundException {
 		s = new Scanner(new File(fName));
 
-		for (int i = 0; i < mat.length; i++) {
+		for (int i = mat.length - 1; i >= 0; i--) {
 			String a = s.nextLine();
 			for (int j = 0; j < mat[0].length; j++) {
 				
