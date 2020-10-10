@@ -92,12 +92,15 @@ public class Main extends Application {
 							RotateTransition rotate = new RotateTransition(Duration.seconds(3), feld);
 							rotate.setByAngle(180);
 							rotate.play();
-//							for (int i = 1; i < 9; i++) {
-//								for (int j = 1; j < 9; j++) {
-//									Button ro = (Button) getNodeByRowColumnIndex(i -1, j-1, feld);
-//									ImageView view = new ImageView(ro.getGraphic());
-//								}
-//							}
+							for (int i = 1; i < 9; i++) {
+								for (int j = 1; j < 9; j++) {
+									Button ro = (Button) getNodeByRowColumnIndex(i , j, feld);
+									RotateTransition rotateImage = new RotateTransition(Duration.seconds(3), ro.getGraphic());
+									rotateImage.setByAngle(180);
+									rotateImage.play();
+									
+								}
+							}
 
 						}
 						clicked2 = clicked1;
@@ -146,6 +149,7 @@ public class Main extends Application {
 
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8);
 
+		
 		Label ausgabe = new Label("Letzter Zug:");
 		root.setCenter(feld);
 		root.setBottom(ausgabe);
