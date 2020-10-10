@@ -92,12 +92,12 @@ public class Main extends Application {
 							RotateTransition rotate = new RotateTransition(Duration.seconds(3), feld);
 							rotate.setByAngle(180);
 							rotate.play();
-							for (int i = 1; i < 9; i++) {
-								for (int j = 1; j < 9; j++) {
-									Button ro = (Button) getNodeByRowColumnIndex(i -1, j-1, feld);
-									ImageView view = new ImageView(ro.getGraphic());
-								}
-							}
+//							for (int i = 1; i < 9; i++) {
+//								for (int j = 1; j < 9; j++) {
+//									Button ro = (Button) getNodeByRowColumnIndex(i -1, j-1, feld);
+//									ImageView view = new ImageView(ro.getGraphic());
+//								}
+//							}
 
 						}
 						clicked2 = clicked1;
