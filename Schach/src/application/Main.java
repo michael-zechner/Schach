@@ -9,6 +9,8 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Node;
@@ -19,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.transform.Rotate;
@@ -27,6 +30,7 @@ import javafx.scene.layout.ColumnConstraints;
 public class Main extends Application {
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
+	private boolean weiss = true;
 	private Node n1;
 	private int firstN;
 	private int second;
@@ -37,6 +41,7 @@ public class Main extends Application {
 		GridPane feld = new GridPane();
 		boolean farbe = false;
 		ImageView imageView = null;
+		Label spieler = new Label("Spieler weiss am Zug");
 
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
@@ -94,14 +99,22 @@ public class Main extends Application {
 							rotate.play();
 							for (int i = 1; i < 9; i++) {
 								for (int j = 1; j < 9; j++) {
-									Button ro = (Button) getNodeByRowColumnIndex(i , j, feld);
-									RotateTransition rotateImage = new RotateTransition(Duration.seconds(3), ro.getGraphic());
+									Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
+									RotateTransition rotateImage = new RotateTransition(Duration.seconds(3),
+											ro.getGraphic());
 									rotateImage.setByAngle(180);
 									rotateImage.play();
-									
+
 								}
 							}
-
+							weiss = !weiss;
+							if(weiss) {
+								spieler.setText("Spieler weiss am Zug");;
+							} else {
+								spieler.setText("Spieler schwarz am Zug");;
+							}
+							
+							
 						}
 						clicked2 = clicked1;
 
@@ -149,10 +162,19 @@ public class Main extends Application {
 
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8);
 
-		
 		Label ausgabe = new Label("Letzter Zug:");
+
+		HBox hbox = new HBox();
+		HBox rightButtons = new HBox(spieler);
+		rightButtons.setAlignment(Pos.CENTER_RIGHT);
+
+		HBox.setHgrow(rightButtons, Priority.ALWAYS);
+
+		hbox.getChildren().addAll(ausgabe, rightButtons);
+		hbox.setPadding(new Insets(2));
+
 		root.setCenter(feld);
-		root.setBottom(ausgabe);
+		root.setBottom(hbox);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("application/application.css");
 		primaryStage.setScene(scene);
@@ -178,18 +200,18 @@ public class Main extends Application {
 	public void setSecond(int second) {
 		this.second = second;
 	}
-	
-	public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
-	    Node result = null;
-	    ObservableList<Node> childrens = gridPane.getChildren();
 
-	    for (Node node : childrens) {
-	        if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-	            result = node;
-	            break;
-	        }
-	    }
+	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+		Node result = null;
+		ObservableList<Node> childrens = gridPane.getChildren();
 
-	    return result;
+		for (Node node : childrens) {
+			if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+
+		return result;
 	}
 }
