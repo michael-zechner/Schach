@@ -39,8 +39,8 @@ public class Main extends Application {
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
 				Image im1 = new Image("images/" + sp.getMat()[8-j][8-i].toString() + ".png");
+				
 				ImageView imageView = new ImageView(im1);
-
 				Button b = new Button();
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
