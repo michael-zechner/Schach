@@ -53,8 +53,8 @@ public class Main extends Application {
 				imageView = new ImageView(im1);
 				Button b = new Button();
 				b.setGraphic(imageView);
-				b.setMaxWidth(80);
-				b.setMaxHeight(8);
+				b.setMaxWidth(Double.MAX_VALUE);
+				b.setMaxHeight(Double.MAX_VALUE);
 				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px;");
 				if (farbe) {
 					if (j % 2 == 0) {
