@@ -45,7 +45,7 @@ public class Main extends Application {
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
-				b.setStyle("-fx-background-color: #123456; -fx-background-radius: 0px;");
+				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px;");
 				if (farbe) {
 					if (j % 2 == 0) {
 						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
