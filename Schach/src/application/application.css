@@ -3,3 +3,6 @@
 	-fx-background-color: red;
 }
 
+Label{
+	-fx-font-size:4.0em;
+}
