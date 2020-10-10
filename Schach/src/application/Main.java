@@ -42,7 +42,7 @@ public class Main extends Application {
 		boolean farbe = false;
 		ImageView imageView = null;
 		Label spieler = new Label("Spieler weiss am Zug");
-
+		
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
 
@@ -53,8 +53,8 @@ public class Main extends Application {
 				imageView = new ImageView(im1);
 				Button b = new Button();
 				b.setGraphic(imageView);
-				b.setMaxWidth(Double.MAX_VALUE);
-				b.setMaxHeight(Double.MAX_VALUE);
+				b.setMaxWidth(80);
+				b.setMaxHeight(8);
 				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px;");
 				if (farbe) {
 					if (j % 2 == 0) {
@@ -94,13 +94,13 @@ public class Main extends Application {
 						if (clicked2) {
 							b.setGraphic(n1);
 							clicked1 = false;
-							RotateTransition rotate = new RotateTransition(Duration.seconds(3), feld);
+							RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
 							rotate.setByAngle(180);
 							rotate.play();
 							for (int i = 1; i < 9; i++) {
 								for (int j = 1; j < 9; j++) {
 									Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
-									RotateTransition rotateImage = new RotateTransition(Duration.seconds(3),
+									RotateTransition rotateImage = new RotateTransition(Duration.seconds(1.5),
 											ro.getGraphic());
 									rotateImage.setByAngle(180);
 									rotateImage.play();
@@ -159,7 +159,7 @@ public class Main extends Application {
 		row7.setPercentHeight(10);
 		RowConstraints row8 = new RowConstraints();
 		row8.setPercentHeight(10);
-
+		
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8);
 
 		Label ausgabe = new Label("Letzter Zug:");
