@@ -22,9 +22,9 @@ public class Koenig extends Figur {
 		int absY = Math.abs(von.getY() - nach.getY());
 		
 		if(!bewegt) {
-			return super.spielZug(sp, von, nach);
+			return super.spielzugMoeglich(sp, von, nach);
 		}else {
-			return super.spielZug(sp, von, nach) && absX <= 1 && absY <=1;
+			return super.spielzugMoeglich(sp, von, nach) && absX <= 1 && absY <=1;
 		}
 	}
 }
