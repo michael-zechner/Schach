@@ -17,7 +17,11 @@ public class Springer extends Figur{
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		// TODO Auto-generated method stub
-		return super.spielzugMoeglich(sp, von, nach);
+		int absX = Math.abs(von.getX() - nach.getX());
+		int absY = Math.abs(von.getY() - nach.getY());
+		
+		
+		
+		return super.spielzugMoeglich(sp, von, nach) && absX == 2 && absY == 1;
 	}
 }
