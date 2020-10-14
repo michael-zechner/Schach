@@ -42,7 +42,7 @@ public class Main extends Application {
 		boolean farbe = false;
 		ImageView imageView = null;
 		Label spieler = new Label("Spieler weiss am Zug");
-		
+
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
 
@@ -108,13 +108,14 @@ public class Main extends Application {
 								}
 							}
 							weiss = !weiss;
-							if(weiss) {
-								spieler.setText("Spieler weiss am Zug");;
+							if (weiss) {
+								spieler.setText("Spieler weiss am Zug");
+								;
 							} else {
-								spieler.setText("Spieler schwarz am Zug");;
+								spieler.setText("Spieler schwarz am Zug");
+								;
 							}
-							
-							
+
 						}
 						clicked2 = clicked1;
 
@@ -159,7 +160,7 @@ public class Main extends Application {
 		row7.setPercentHeight(10);
 		RowConstraints row8 = new RowConstraints();
 		row8.setPercentHeight(10);
-		
+
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8);
 
 		Label ausgabe = new Label("Letzter Zug:");
