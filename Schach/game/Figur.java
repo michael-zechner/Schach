@@ -23,9 +23,17 @@ public abstract class Figur extends Feld {
 	}
 
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		if(von == nach) {
+		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
 			return false;
 		}
+
+		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
+		Figur fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
+
+		if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -44,6 +52,5 @@ public abstract class Figur extends Feld {
 	public void setBewegt(boolean bewegt) {
 		this.bewegt = bewegt;
 	}
-	
-	
+
 }

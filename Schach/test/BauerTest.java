@@ -111,4 +111,13 @@ public class BauerTest {
 		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(2, -1));
 		assertFalse(ok1);
 	}
+	
+	@Test
+	public void FigurvonNachPositionGleich() {
+		Bauer b1 = (Bauer) sp.getFeld(1, 0);
+		System.out.println(b1.toString());
+		b1.setBewegt(true);
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(1, 0));
+		assertFalse(ok1);
+	}
 }
