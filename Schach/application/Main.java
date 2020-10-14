@@ -2,8 +2,8 @@ package application;
 
 import java.io.FileNotFoundException;
 
-import game.SpielFeld;
-import game.SpielFeldIO;
+import src.game.SpielFeld;
+import src.game.SpielFeldIO;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -24,7 +24,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.transform.Rotate;
 import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {

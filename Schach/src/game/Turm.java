@@ -1,4 +1,4 @@
-package game;
+package src.game;
 
 public class Turm extends Figur {
 	public Turm(boolean farbeWeiss, boolean bewegt) {

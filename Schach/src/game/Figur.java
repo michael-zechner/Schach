@@ -1,4 +1,4 @@
-package game;
+package src.game;
 
 public abstract class Figur extends Feld {
 
