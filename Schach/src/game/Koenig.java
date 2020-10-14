@@ -17,7 +17,12 @@ public class Koenig extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		// TODO Auto-generated method stub
+		if(!bewegt) {
+			//rochade einprogrammieren
+		}
+		
+		
+		
 		return super.spielzugMoeglich(sp, von, nach);
 	}
 }
