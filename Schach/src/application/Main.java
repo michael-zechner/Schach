@@ -100,7 +100,7 @@ public class Main extends Application {
 							for (int i = 1; i < 9; i++) {
 								for (int j = 1; j < 9; j++) {
 									Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
-									RotateTransition rotateImage = new RotateTransition(Duration.seconds(1.5),
+									RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
 											ro.getGraphic());
 									rotateImage.setByAngle(180);
 									rotateImage.play();
