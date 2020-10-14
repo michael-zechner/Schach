@@ -2,8 +2,8 @@ package application;
 
 import java.io.FileNotFoundException;
 
-import src.game.SpielFeld;
-import src.game.SpielFeldIO;
+import game.SpielFeld;
+import game.SpielFeldIO;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
