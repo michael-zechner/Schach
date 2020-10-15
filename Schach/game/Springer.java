@@ -22,6 +22,7 @@ public class Springer extends Figur{
 		
 		
 		
-		return super.spielzugMoeglich(sp, von, nach) && absX == 2 && absY == 1;
+		return super.spielzugMoeglich(sp, von, nach) ||  (absX == 2 && absY == 1);
 	}
+	//TODO wir müssen überall noch die randbedingungen machen
 }

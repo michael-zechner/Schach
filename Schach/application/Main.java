@@ -6,6 +6,9 @@ import game.SpielFeld;
 import game.SpielFeldIO;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,8 +20,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,13 +42,14 @@ public class Main extends Application {
 	private Node n1;
 	private int firstN;
 	private int second;
+	private ImageView imageView = null;
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		BorderPane root = new BorderPane();
 		GridPane feld = new GridPane();
 		boolean farbe = false;
-		ImageView imageView = null;
+
 		Label spieler = new Label("Spieler weiss am Zug");
 
 		SpielFeldIO spIO = new SpielFeldIO();
@@ -51,10 +61,11 @@ public class Main extends Application {
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
+
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
-				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px;");
+				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px; ");
 				if (farbe) {
 					if (j % 2 == 0) {
 						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
@@ -159,8 +170,10 @@ public class Main extends Application {
 		row7.setPercentHeight(10);
 		RowConstraints row8 = new RowConstraints();
 		row8.setPercentHeight(10);
+		RowConstraints row9 = new RowConstraints();
+		row9.setPercentHeight(10);
 
-		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8);
+		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
 
 		Label ausgabe = new Label("Letzter Zug:");
 
