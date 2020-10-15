@@ -36,7 +36,7 @@ public abstract class Figur extends Feld {
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	public boolean isFarbeWeiss() {
