@@ -24,7 +24,7 @@ public class Koenig extends Figur {
 		if(!bewegt) {
 			return super.spielzugMoeglich(sp, von, nach);
 		}else {
-			return super.spielzugMoeglich(sp, von, nach) && absX <= 1 && absY <=1;
+			return super.spielzugMoeglich(sp, von, nach) || (absX <= 1 && absY <=1);
 		}
 	}
 }

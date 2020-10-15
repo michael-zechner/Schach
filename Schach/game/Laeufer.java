@@ -17,7 +17,6 @@ public class Laeufer extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		// TODO Auto-generated method stub
 		return super.spielzugMoeglich(sp, von, nach);
 	}
 }

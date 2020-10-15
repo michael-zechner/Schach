@@ -36,6 +36,6 @@ public class Turm extends Figur {
 			}
 		}
 		
-		return super.spielzugMoeglich(sp, von, nach) && absX <= wieweitX && absY <= wieweitY;
+		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY);
 	}
 }
