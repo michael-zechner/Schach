@@ -51,9 +51,9 @@ public class SpielFeld {
 		return p;
 	}
 
-	public Feld getFeld(int i, int j) {
-		if (mat[i][j] instanceof Figur) {
-			Figur f = (Figur) mat[i][j];
+	public Feld getFeld(int y, int x) {
+		if (mat[y][x] instanceof Figur) {
+			Figur f = (Figur) mat[y][x];
 			return f;
 		}
 		return null;
