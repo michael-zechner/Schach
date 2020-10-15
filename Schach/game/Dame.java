@@ -26,12 +26,12 @@ public class Dame extends Figur {
 		int wieweitX = 0;
 		int wieweitY = 0;
 		
-		for (int i = 1; i < 9; i++) {
+		for (int i = 0; i < 8; i++) {
 			if(!(sp.getMat()[i][von.getY()] instanceof Figur)) {
 				wieweitX++;
 			}
 		}
-		for (int i = 1; i < 9; i++) {
+		for (int i = 0; i < 8; i++) {
 			if(!(sp.getMat()[von.getX()][i] instanceof Figur)) {
 				wieweitY++;
 			}
@@ -45,6 +45,10 @@ public class Dame extends Figur {
 				dwieweitX++;
 				dwieweitY++;
 			}
+		}
+		
+		if(absX == 1 && absY == 2) {
+			return false;
 		}
 		
 		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY) || (absX <= dwieweitX && absY <= dwieweitY);
