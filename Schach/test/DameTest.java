@@ -58,6 +58,6 @@ public class DameTest {
 		Dame t1 = (Dame) sp.getFeld(3, 4);
 		System.out.println(t1.toString());
 		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(0, 7));
-		assertTrue(ok1);
+		assertFalse(ok1);
 	}
 }

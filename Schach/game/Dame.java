@@ -23,6 +23,9 @@ public class Dame extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 		
+		System.out.println(absX);
+		System.out.println(absY);
+		
 		int wieweitX = 0;
 		int wieweitY = 0;
 		
@@ -37,21 +40,111 @@ public class Dame extends Figur {
 			}
 		}
 		
-		int dwieweitX = 0;
-		int dwieweitY = 0;
-		
-		for (int i = 0; i < 8; i++) {
-			if(!(sp.getMat()[i][i] instanceof Figur)) {
-				dwieweitX++;
-				dwieweitY++;
-			}
-		}
-		
 		if(absX == 1 && absY == 2) {
 			return false;
 		}
 		
-		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY) || (absX <= dwieweitX && absY <= dwieweitY);
+		int d1wieweitX = 0;
+		int d1wieweitY = 0;
+		int d2wieweitX = 0;
+		int d2wieweitY = 0;
+		boolean ulinks = false;
+		boolean olinks = false;
+
+		if ((von.getX() < nach.getX() && von.getY() < nach.getY()) || (von.getX() > nach.getX() && von.getY() > nach.getY())) {
+			ulinks = true;
+		}
+		if ((von.getY() > nach.getY() && von.getX() < nach.getX()) || (von.getY() < nach.getY() && von.getX() > nach.getX())) {
+			olinks = true;
+		}
+
+		int x1 = 0;
+		int x2 = 0;
+		int y1 = 0;
+		int y2 = 0;
+		
+		boolean onu = false;
+		boolean uno = false;
+		
+		if(ulinks) {
+			if(von.getX() < nach.getX() && von.getY() < nach.getY()) {
+				uno = true;
+			}
+			if(von.getX() > nach.getX() && von.getY() > nach.getY()) {
+				onu = true;
+			}
+		}
+		if(olinks) {
+			if(von.getY() > nach.getY() && von.getX() < nach.getX()) {
+				onu = true;
+			}
+			if(von.getY() < nach.getY() && von.getX() > nach.getX()) {
+				uno = true;
+			}
+		}
+		
+		if(olinks) {
+			if(uno) {
+				x1=nach.getX();
+				x2=von.getX();
+				y1=nach.getY();
+				y2=von.getY();
+			}
+			if(onu) {
+				x1=von.getX();
+				x2=nach.getX();
+				y1=von.getY();
+				y2=nach.getY();
+			}
+			
+			for (int i = y1; i >= y2; i--) {
+				if(onu) {
+					if(!(sp.getMat()[i][x1++] instanceof Figur)) {
+						d2wieweitX++;
+						d2wieweitY++;
+					}
+				}
+				if(uno) {
+					if(!(sp.getMat()[i][x1++] instanceof Figur)) {
+						d2wieweitX++;
+						d2wieweitY++;
+					}
+				}
+			}
+			
+		}
+		
+		if(ulinks) {
+			if(uno) {
+				x1=von.getX();
+				x2=nach.getX();
+				y1=von.getY();
+				y2=nach.getY();
+			}
+			if(onu) {
+				x1=nach.getX();
+				x2=von.getX();
+				y1=nach.getY();
+				y2=von.getY();
+			}
+			
+			for (int i = x1; i <= x2; i++) {
+				if(onu) {
+					if(!(sp.getMat()[y1++][i] instanceof Figur)) {
+						d1wieweitX++;
+						d1wieweitY++;
+					}
+				}
+				if(uno) {
+					if(!(sp.getMat()[y1++][i] instanceof Figur)) {
+						d1wieweitX++;
+						d1wieweitY++;
+					}
+				}
+			}
+		}
+		
+		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY) || (absX <= d1wieweitX && absY <= d1wieweitY) || (absX <= d2wieweitX && absY <= d2wieweitY);
 		
 	}
 }
