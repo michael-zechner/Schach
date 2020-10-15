@@ -17,6 +17,19 @@ public class Laeufer extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		return super.spielzugMoeglich(sp, von, nach);
+		int absX = Math.abs(von.getX() - nach.getX());
+		int absY = Math.abs(von.getY() - nach.getY());
+		
+		int wieweitX = 0;
+		int wieweitY = 0;
+		
+		for (int i = 0; i < 8; i++) {
+			if(!(sp.getMat()[i][i] instanceof Figur)) {
+				wieweitX++;
+				wieweitY++;
+			}
+		}
+		
+		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY);
 	}
 }

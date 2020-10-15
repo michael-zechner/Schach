@@ -37,7 +37,17 @@ public class Dame extends Figur {
 			}
 		}
 		
-		return super.spielzugMoeglich(sp, von, nach) && absX <= wieweitX && absY <= wieweitY;
-		//TODO Mach des ganze mit || und klammer absx und absy ein
+		int dwieweitX = 0;
+		int dwieweitY = 0;
+		
+		for (int i = 0; i < 8; i++) {
+			if(!(sp.getMat()[i][i] instanceof Figur)) {
+				dwieweitX++;
+				dwieweitY++;
+			}
+		}
+		
+		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY) || (absX <= dwieweitX && absY <= dwieweitY);
+		
 	}
 }
