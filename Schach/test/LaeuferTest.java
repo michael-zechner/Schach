@@ -21,18 +21,34 @@ class LaeuferTest {
 	}
 
 	@Test
-	public void testLäufer1() {
-		Laeufer l1 = (Laeufer) sp.getFeld(0, 5);
+	public void testLäufer2() {
+		Laeufer l1 = (Laeufer) sp.getFeld(5, 0);
 		System.out.println(l1.toString());
-		boolean ok1 = l1.spielzugMoeglich(sp, new Position(0, 5), new Position(5, 0));
+		boolean ok1 = l1.spielzugMoeglich(sp, new Position(5, 0), new Position(0, 5));
 		assertTrue(ok1);
 	}
+	
 	@Test
-	public void testLäufer1False() {
+	public void testLäufer2Fail() {
 		Laeufer l1 = (Laeufer) sp.getFeld(0, 5);
 		System.out.println(l1.toString());
 		boolean ok1 = l1.spielzugMoeglich(sp, new Position(0, 5), new Position(5, 0));
 		assertFalse(ok1);
 	}
-
+	
+	@Test
+	public void testLäufer1() {
+		Laeufer l1 = (Laeufer) sp.getFeld(0, 2);
+		System.out.println(l1.toString());
+		boolean ok1 = l1.spielzugMoeglich(sp, new Position(0, 2), new Position(5, 7));
+		assertTrue(ok1);
+	}
+	
+	@Test
+	public void testLäufer1Fail() {
+		Laeufer l1 = (Laeufer) sp.getFeld(5, 7);
+		System.out.println(l1.toString());
+		boolean ok1 = l1.spielzugMoeglich(sp, new Position(5, 7), new Position(0, 2));
+		assertFalse(ok1);
+	}
 }
