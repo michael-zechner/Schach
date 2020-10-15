@@ -28,10 +28,12 @@ public abstract class Figur extends Feld {
 		}
 
 		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
-		Figur fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
-
-		if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
-			return false;
+		Figur fnach;
+		if(sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
+			fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
+			if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
+				return false;
+			}
 		}
 
 		return true;
