@@ -20,11 +20,20 @@ class SpringerTest {
 	}
 
 	@Test
-	public void SpringerDiagonalTest() {
+	public void SpringerDiagonalTest1() {
+		Springer s1 = (Springer) sp.getFeld(0, 6);
+		System.out.println(s1.toString());
+		boolean ok1 = s1.spielzugMoeglich(sp, new Position(0, 6), new Position(2, 7));
+		assertTrue(ok1);
+	}
+	
+	@Test
+	public void SpringerDiagonalTest2() {
 		Springer s1 = (Springer) sp.getFeld(0, 6);
 		System.out.println(s1.toString());
 		boolean ok1 = s1.spielzugMoeglich(sp, new Position(0, 6), new Position(1, 8));
 		assertTrue(ok1);
 	}
+	
 
 }

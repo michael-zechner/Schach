@@ -1,6 +1,7 @@
 package application;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import game.SpielFeld;
 import game.SpielFeldIO;
@@ -61,7 +62,8 @@ public class Main extends Application {
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
-
+				ArrayList<Button> bts = new ArrayList<Button>();
+				
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
