@@ -42,9 +42,9 @@ public class Laeufer extends Figur {
 		}
 
 		if (minus) {
-			for (int i = von.getX(); i > nach.getX(); i--) {
-				for (int j = von.getY(); j > nach.getY(); j--) {
-
+			for (int i = von.getX(); i >= nach.getX(); i--) {
+				for (int j = von.getY(); j >= nach.getY(); j--) {
+					System.out.println(sp.getMat()[i][j].toString());
 					if (!(sp.getMat()[i][j] instanceof Figur)) {
 						wieweitX++;
 						wieweitY++;
@@ -53,9 +53,9 @@ public class Laeufer extends Figur {
 			}
 		}
 		if (minus2) {
-			for (int i = von.getX(); i > nach.getX(); i--) {
-				for (int j = von.getY(); j < nach.getY(); j++) {
-
+			for (int i = von.getX(); i >= nach.getX(); i--) {
+				for (int j = von.getY(); j <= nach.getY(); j++) {
+					System.out.println(sp.getMat()[i][j].toString());
 					if (!(sp.getMat()[i][j] instanceof Figur)) {
 						wieweitX++;
 						wieweitY++;
@@ -64,9 +64,9 @@ public class Laeufer extends Figur {
 			}
 		}
 		if (!minus2) {
-			for (int i = von.getX(); i < nach.getX(); i++) {
-				for (int j = von.getY(); j > nach.getY(); j--) {
-
+			for (int i = von.getX(); i <= nach.getX(); i++) {
+				for (int j = von.getY(); j >= nach.getY(); j--) {
+					System.out.println(sp.getMat()[i][j].toString());
 					if (!(sp.getMat()[i][j] instanceof Figur)) {
 						wieweitX++;
 						wieweitY++;
@@ -75,9 +75,9 @@ public class Laeufer extends Figur {
 			}
 		}
 		if (!minus) {
-			for (int i = von.getX(); i < nach.getX(); i++) {
-				for (int j = von.getY(); j < nach.getY(); j++) {
-
+			for (int i = von.getX(); i <= nach.getX(); i++) {
+				for (int j = von.getY(); j <= nach.getY(); j++) {
+					System.out.println(sp.getMat()[i][j].toString());
 					if (!(sp.getMat()[i][j] instanceof Figur)) {
 						wieweitX++;
 						wieweitY++;
