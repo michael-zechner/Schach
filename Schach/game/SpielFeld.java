@@ -184,7 +184,8 @@ public class SpielFeld {
 			Figur f = (Figur) mat[von.getY()][von.getX()];
 			System.out.println(f.toString().charAt(1));
 			System.out.println(werAmZug);
-			if (f.toString().charAt(1) == boolToChar(werAmZug)) {
+			
+			if (f.farbeWeiss == werAmZug) {
 				moeglich = true;
 				System.out.println(f.toString());
 				System.out.println(f.spielzugMoeglich(this, von, nach));
