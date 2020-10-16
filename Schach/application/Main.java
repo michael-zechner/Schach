@@ -76,7 +76,6 @@ public class Main extends Application {
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
-				b.setText((i - 1) + " " + (8 - j));
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
