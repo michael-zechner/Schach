@@ -144,7 +144,11 @@ public class Dame extends Figur {
 			}
 		}
 		
-		return super.spielzugMoeglich(sp, von, nach) || (absX <= wieweitX && absY <= wieweitY) || (absX <= d1wieweitX && absY <= d1wieweitY) || (absX <= d2wieweitX && absY <= d2wieweitY);
+		if(!super.spielzugMoeglich(sp, von, nach)) {
+			return false;
+		}
+		
+		return (absX <= wieweitX && absY <= wieweitY) || (absX <= d1wieweitX && absY <= d1wieweitY) || (absX <= d2wieweitX && absY <= d2wieweitY);
 		
 	}
 }
