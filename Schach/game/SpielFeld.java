@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 public class SpielFeld {
 
 	private Feld[][] mat = new Feld[8][8];
@@ -26,6 +28,127 @@ public class SpielFeld {
 	}
 
 	public boolean schach() {
+		String v1 = "KW";
+		String v2 = "KB";
+		int x = 0;
+		int y = 0;
+		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
+		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
+		String[] auswahl = w;
+		if (!werAmZug) {
+			v1 = v2;
+			auswahl = b;
+		}
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat[0].length; j++) {
+				if (mat[i][j].toString() == v1) {
+					y = i;
+					x = j;
+				}
+			}
+		}
+
+		ArrayList<Boolean> werte = new ArrayList<Boolean>();
+
+		// xrechts
+		for (int i = x; i < 8; i++) {
+			if (mat[y][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// xlinks
+		for (int i = x; i >= 0; i--) {
+			if (mat[y][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// yoben
+		for (int i = y; i < 8; i++) {
+			if (mat[i][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// yunten
+		for (int i = y; i >= 0; i--) {
+			if (mat[i][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// d1NachOben
+		for (int i = x; i < 8; i++) {
+			if (mat[y++][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// d1NachUnten
+		for (int i = x; i >= 0; i--) {
+			if (mat[y--][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// d2NachOben
+		for (int i = x; i < 8; i++) {
+			if (mat[y--][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+
+		// d2Nachunten
+		for (int i = x; i >= 0; i--) {
+			if (mat[y++][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						werte.add(true);
+					}
+				}
+			}
+		}
+		
+		int anz = 0;
+		
+		for (int i = 0; i < werte.size(); i++) {
+			if(werte.get(i)) {
+				anz++;
+			}
+			if(anz == werte.size()) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
