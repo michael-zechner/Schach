@@ -16,13 +16,13 @@ public class SpielFeld {
 	}
 
 	public void ausgabe() {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 7; i >= 0; i--) {
 			for (int j = 0; j < 8; j++) {
-				mat[i][j].toString();
+				System.out.print(mat[i][j].toString());
 			}
 			System.out.println();
 		}
-		
+
 	}
 
 	public boolean schach() {
@@ -38,16 +38,24 @@ public class SpielFeld {
 		Position von = schach2koordinate(p[0]);
 		Position nach = schach2koordinate(p[1]);
 
-		if (mat[von.getX()][von.getY()] instanceof Figur) {
-			Figur f = (Figur) mat[von.getX()][von.getY()];
-			f.spielZug(this, von, nach);
+		if (mat[von.getY()][von.getX()] instanceof Figur) {
+
+			Figur f = (Figur) mat[von.getY()][von.getX()];
+			System.out.println(f.toString());
+			System.out.println(f.spielzugMoeglich(this, von, nach));
+			if (f.spielzugMoeglich(this, von, nach)) {
+				mat[nach.getY()][nach.getX()] = f;
+				mat[von.getY()][von.getX()] = new Feld();
+				f.setBewegt(true);
+			}
+
 		}
 	}
 
 	public Position schach2koordinate(String schach) {
 		Position p = new Position();
-		p.setX((byte) schach.charAt(0));
-		p.setY((byte) schach.charAt(1));
+		p.setX((byte) Byte.parseByte(String.valueOf(schach.charAt(0))));
+		p.setY((byte) Byte.parseByte(String.valueOf(schach.charAt(1))));
 		return p;
 	}
 

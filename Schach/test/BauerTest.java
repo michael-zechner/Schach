@@ -27,6 +27,14 @@ public class BauerTest {
 		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(5, 0));
 		assertTrue(ok1);
 	}
+	
+	@Test
+	public void bewegungEinFeldWeissTest() {
+		Bauer b1 = (Bauer) sp.getFeld(1, 0);
+		System.out.println(b1.toString());
+		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(3, 0));
+		assertTrue(ok1);
+	}
 	@Test
 	public void bewegungZweiFelderAnfangSchwarz() {
 		Bauer b1 = (Bauer) sp.getFeld(6, 0);

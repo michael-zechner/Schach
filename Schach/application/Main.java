@@ -44,6 +44,10 @@ public class Main extends Application {
 	private int firstN;
 	private int second;
 	private ImageView imageView = null;
+	private char XF;
+	private char YF;
+	private char XS;
+	private char YS;
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -62,8 +66,7 @@ public class Main extends Application {
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
-				ArrayList<Button> bts = new ArrayList<Button>();
-				
+
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
@@ -93,17 +96,41 @@ public class Main extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						Node n = (Node) event.getSource();
-						char first = n.getId().charAt(0);
-						firstN = (int) first - (int) 'A' + 1;
-						second = Integer.parseInt(String.valueOf(n.getId().charAt(1)));
-
-						System.out.println(firstN + " " + second);
+						XF = 0;
+						YF = 0;
+						XS = 0;
+						YS = 0;
+						System.out.println(n);
 
 						if (!clicked1) {
-							n1 = b.getGraphic();
+
+							/* Spielzug */
+							String a = Integer.toString((b.getId().charAt(0) - 65));
+							XF = a.charAt(0);
+							YF = (char) (b.getId().charAt(1) - 1);
+							System.out.println(XF + " " + YF);
 							clicked1 = true;
+
+							/* Rest */
+							n1 = b.getGraphic();
 						}
 						if (clicked2) {
+							/* Spielzug */
+							String a = Integer.toString((b.getId().charAt(0) - 65));
+							XS = a.charAt(0);
+							YS = (char) (b.getId().charAt(1) - 1);
+							System.out.println(XS + " " + YS);
+							char[]zugC =  new char[4];
+							zugC[0] = XF;
+							zugC[1] = YF;
+							zugC[2] = XS;
+							zugC[3] = YS;
+							String zug = String.valueOf(zugC);
+							System.out.println(zug);
+//							sp.spielzug(XF + "" + YF + "-" + XS + "" + YS);
+							sp.ausgabe();
+
+							/* Rest */
 							b.setGraphic(n1);
 							clicked1 = false;
 							RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);

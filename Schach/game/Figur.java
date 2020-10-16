@@ -19,7 +19,7 @@ public abstract class Figur extends Feld {
 	}
 
 	public boolean spielZug(SpielFeld sp, Position von, Position nach) {
-		return false;
+		return spielzugMoeglich(sp, von, nach);
 	}
 
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
