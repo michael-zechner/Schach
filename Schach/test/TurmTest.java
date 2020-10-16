@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Before;
@@ -36,5 +37,14 @@ public class TurmTest {
 		
 		boolean ok1 = t1.spielzugMoeglich(sp, new Position(2, 0), new Position(2, 5));
 		assertTrue(ok1);
+	}
+	
+	@Test
+	public void bewegungtest() {
+		Turm t1 = (Turm) sp.getFeld(0, 0);
+		System.out.println(t1.toString());
+		
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(0, 0), new Position(0, 3));
+		assertFalse(ok1);
 	}
 }
