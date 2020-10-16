@@ -52,6 +52,8 @@ public class BauerTest {
 		boolean ok1 = b1.spielzugMoeglich(sp, new Position(6, 0), new Position(5, 1));
 		assertTrue(ok1);
 	}
+	
+	//Array außerhalb darum Überprüfung nicht möglich
 	@Test
 	public void FigurSchlagenSchwarzLinksFailWeilRand() {
 		Bauer b1 = (Bauer) sp.getFeld(6, 0);
@@ -103,6 +105,7 @@ public class BauerTest {
 		assertTrue(ok1);
 	}
 	
+	//Array außerhalb darum Überprüfung nicht möglich
 	@Test
 	public void FigurSchlagenWeissLinksFailWeilRand() {
 		Bauer b1 = (Bauer) sp.getFeld(1, 0);

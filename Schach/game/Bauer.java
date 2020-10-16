@@ -24,6 +24,7 @@ public class Bauer extends Figur {
 		if (!bewegt) {
 			if (farbeWeiss) {
 				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
+					System.out.println("bin drin");
 					return true;
 				}
 			}
@@ -69,6 +70,10 @@ public class Bauer extends Figur {
 
 		}
 
+		if(!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
+			return false;
+		}
+		
 		bewegt = true;
 		return super.spielzugMoeglich(sp, von, nach);
 	}
