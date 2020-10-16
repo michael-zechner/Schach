@@ -20,7 +20,11 @@ public class Bauer extends Figur {
 
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-
+		
+		if(sp.getMat()[(int) nach.getY()][(int) nach.getX()] instanceof Figur) {
+			return false;
+		}
+		
 		if (!bewegt) {
 			if (farbeWeiss) {
 				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
@@ -67,9 +71,8 @@ public class Bauer extends Figur {
 					&& von.getY() - 1 == nach.getY() && von.getX() + 1 == nach.getX()) {
 				return true;
 			}
-
 		}
-
+		
 		if(!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
