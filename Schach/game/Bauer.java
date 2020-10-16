@@ -21,14 +21,13 @@ public class Bauer extends Figur {
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
 		
-		if(sp.getMat()[(int) nach.getY()][(int) nach.getX()] instanceof Figur) {
+		if(sp.getMat()[(int) nach.getY()][(int) von.getX()] instanceof Figur) {
 			return false;
 		}
 		
 		if (!bewegt) {
 			if (farbeWeiss) {
 				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
-					System.out.println("bin drin");
 					return true;
 				}
 			}
