@@ -3,6 +3,8 @@ package application;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import game.Figur;
+import game.Position;
 import game.SpielFeld;
 import game.SpielFeldIO;
 import javafx.animation.RotateTransition;
@@ -48,6 +50,9 @@ public class Main extends Application {
 	private char YF;
 	private char XS;
 	private char YS;
+	private char[] zugC = new char[5];
+	private Figur von;
+	private boolean zugMoeglich = false;
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -103,56 +108,77 @@ public class Main extends Application {
 						System.out.println(n);
 
 						if (!clicked1) {
-
+							System.out.println("IF 1");
 							/* Spielzug */
 							String a = Integer.toString((b.getId().charAt(0) - 65));
 							XF = a.charAt(0);
 							YF = (char) (b.getId().charAt(1) - 1);
 							System.out.println(XF + " " + YF);
+							zugC[0] = XF;
+							zugC[1] = YF;
+							zugC[2] = '-';
+							von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
 							clicked1 = true;
 
 							/* Rest */
 							n1 = b.getGraphic();
 						}
 						if (clicked2) {
+							System.out.println("Loop 2");
 							/* Spielzug */
-							String a = Integer.toString((b.getId().charAt(0) - 65));
-							XS = a.charAt(0);
+							String c = Integer.toString((b.getId().charAt(0) - 65));
+							XS = c.charAt(0);
 							YS = (char) (b.getId().charAt(1) - 1);
 							System.out.println(XS + " " + YS);
-							char[]zugC =  new char[4];
-							zugC[0] = XF;
-							zugC[1] = YF;
-							zugC[2] = XS;
-							zugC[3] = YS;
+							System.out.println(XF + " " + YF);
+
+							zugC[3] = XS;
+							zugC[4] = YS;
 							String zug = String.valueOf(zugC);
 							System.out.println(zug);
-//							sp.spielzug(XF + "" + YF + "-" + XS + "" + YS);
-							sp.ausgabe();
+
+							System.out.println(zug.charAt(0));
+							System.out.println(zug.charAt(1));
 
 							/* Rest */
-							b.setGraphic(n1);
-							clicked1 = false;
-							RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
-							rotate.setByAngle(180);
-							rotate.play();
-							for (int i = 1; i < 9; i++) {
-								for (int j = 1; j < 9; j++) {
-									Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
-									RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
-											ro.getGraphic());
-									rotateImage.setByAngle(180);
-									rotateImage.play();
+							System.out.println(von.toString());
 
+							zugMoeglich = von.spielzugMoeglich(sp,
+									new Position(Character.getNumericValue(zug.charAt(1)),
+											Character.getNumericValue(zug.charAt(0))),
+									new Position(Character.getNumericValue(zugC[4]),
+											Character.getNumericValue(zugC[3])));
+
+							if (zugMoeglich) {
+								b.setGraphic(n1);
+								clicked1 = false;
+								RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
+								rotate.setByAngle(180);
+								rotate.play();
+								for (int i = 1; i < 9; i++) {
+									for (int j = 1; j < 9; j++) {
+										Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
+										RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
+												ro.getGraphic());
+										rotateImage.setByAngle(180);
+										rotateImage.play();
+
+									}
 								}
-							}
-							weiss = !weiss;
-							if (weiss) {
-								spieler.setText("Spieler weiss am Zug");
-								;
-							} else {
-								spieler.setText("Spieler schwarz am Zug");
-								;
+								weiss = !weiss;
+								if (weiss) {
+									spieler.setText("Spieler weiss am Zug");
+									;
+								} else {
+									spieler.setText("Spieler schwarz am Zug");
+									;
+								}
+								sp.spielzug(zug);
+								sp.ausgabe();
+								
+							}else {
+								clicked2 = clicked1;
+								clicked1 = false;
 							}
 
 						}
