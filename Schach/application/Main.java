@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
@@ -53,6 +55,7 @@ public class Main extends Application {
 	private char[] zugC = new char[5];
 	private Figur von;
 	private boolean zugMoeglich = false;
+	private String letzterZug = null;
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -60,19 +63,20 @@ public class Main extends Application {
 		GridPane feld = new GridPane();
 		boolean farbe = false;
 
-		Label spieler = new Label("Spieler weiss am Zug");
+		Label spieler = new Label("Spieler Weiss am Zug");
 
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
+		Label ausgabe = new Label("Letzter Zug:");
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
-				Image im1 = new Image("images/" + sp.getMat()[8-j][i-1].toString() + ".png");
+				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
-//				b.setText((i-1) + " " + (8-j));
+				b.setText((i - 1) + " " + (8 - j));
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
@@ -93,23 +97,28 @@ public class Main extends Application {
 						farbe = true;
 					}
 				}
+
+				/* Button Id setzen */
 				char id = (char) ('A' + (i - 1));
 				String id1 = id + String.valueOf(9 - j);
 				b.setId(id1);
 				feld.add(b, i, j);
 
+				/* Button Handler */
 				b.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						Node n = (Node) event.getSource();
+
 						XF = 0;
 						YF = 0;
 						XS = 0;
 						YS = 0;
-						System.out.println(n);
 
+						/* Erster Button */
 						if (!clicked1) {
-							System.out.println("IF 1");
+							/* Letzter Zug Label */
+							letzterZug = b.getId();
+							
 							/* Spielzug */
 							String a = Integer.toString((b.getId().charAt(0) - 65));
 							XF = a.charAt(0);
@@ -125,11 +134,13 @@ public class Main extends Application {
 								clicked1 = true;
 							}
 
-							/* Rest */
+							/* Bild von erstem Button getten */
 							n1 = b.getGraphic();
 						}
 						if (clicked2) {
-							System.out.println("Loop 2");
+							/* Letzter Zug Label */
+							letzterZug = letzterZug + "-" + b.getId();
+							ausgabe.setText("Letzter Zug: ");
 							/* Spielzug */
 							String c = Integer.toString((b.getId().charAt(0) - 65));
 							XS = c.charAt(0);
@@ -140,25 +151,17 @@ public class Main extends Application {
 							zugC[3] = XS;
 							zugC[4] = YS;
 							String zug = String.valueOf(zugC);
-							System.out.println(zug);
 
-							System.out.println(zug.charAt(0));
-							System.out.println(zug.charAt(1));
-
-							/* Rest */
-							System.out.println(von.toString());
-
+							
 							zugMoeglich = von.spielzugMoeglich(sp,
 									new Position(Character.getNumericValue(zug.charAt(1)),
 											Character.getNumericValue(zug.charAt(0))),
 									new Position(Character.getNumericValue(zugC[4]),
 											Character.getNumericValue(zugC[3])));
-							System.out.println(weiss);
-							System.out.println(sp.isWerAmZug());
-							if (sp.isWerAmZug() == weiss) {
-								System.out.println(weiss);
-								System.out.println("Möglich: " + zugMoeglich);
+							sp.setWerAmZug(weiss);
+							if (von.isFarbeWeiss() == sp.isWerAmZug()) {
 								if (zugMoeglich) {
+									/* Grafik auf den zweiten Button setzten und anschließend feld und buttons rotieren */
 									b.setGraphic(n1);
 									clicked1 = false;
 									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
@@ -175,6 +178,7 @@ public class Main extends Application {
 										}
 									}
 									weiss = !weiss;
+									/* Spielerindikator */
 									if (weiss) {
 										spieler.setText("Spieler weiss am Zug");
 										;
@@ -183,9 +187,11 @@ public class Main extends Application {
 										;
 									}
 
+									/* Spielzug abschließen */
 									sp.spielzug(zug);
 									sp.ausgabe();
 									sp.setWerAmZug(!sp.isWerAmZug());
+									ausgabe.setText(ausgabe.getText() + letzterZug);
 
 								} else {
 									clicked2 = clicked1;
@@ -194,9 +200,12 @@ public class Main extends Application {
 							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
+								showAlertWithoutHeaderText();
+
 							}
 
 						}
+
 						clicked2 = clicked1;
 
 					}
@@ -244,8 +253,6 @@ public class Main extends Application {
 		row9.setPercentHeight(10);
 
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
-
-		Label ausgabe = new Label("Letzter Zug:");
 
 		HBox hbox = new HBox();
 		HBox rightButtons = new HBox(spieler);
@@ -296,5 +303,16 @@ public class Main extends Application {
 		}
 
 		return result;
+	}
+
+	private void showAlertWithoutHeaderText() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässiger Zug");
+
+		// Header Text: null
+		alert.setHeaderText(null);
+		alert.setContentText("Dieser Zug ist leider nicht möglich !");
+
+		alert.showAndWait();
 	}
 }
