@@ -36,6 +36,17 @@ public class Turm extends Figur {
 			}
 		}
 		
+		for (int i = von.getX(); i >= nach.getX(); i--) {
+			if(!(sp.getMat()[von.getY()][i] instanceof Figur)) {
+				wieweitX++;
+			}
+		}
+		for (int i = von.getY(); i >= nach.getY(); i--) {
+			if(!(sp.getMat()[i][von.getX()] instanceof Figur)) {
+				wieweitY++;
+			}
+		}
+		
 		if(!super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}

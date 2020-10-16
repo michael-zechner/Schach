@@ -32,10 +32,10 @@ public class TurmTest {
 	
 	@Test
 	public void bewegungDreiFelderzurSeite() {
-		Turm t1 = (Turm) sp.getFeld(2, 0);
+		Turm t1 = (Turm) sp.getFeld(5, 0);
 		System.out.println(t1.toString());
 		
-		boolean ok1 = t1.spielzugMoeglich(sp, new Position(2, 0), new Position(2, 5));
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(5, 0), new Position(2, 0));
 		assertTrue(ok1);
 	}
 	

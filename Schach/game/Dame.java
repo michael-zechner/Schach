@@ -37,6 +37,17 @@ public class Dame extends Figur {
 			}
 		}
 		
+		for (int i = von.getX(); i >= nach.getX(); i--) {
+			if(!(sp.getMat()[von.getY()][i] instanceof Figur)) {
+				wieweitX++;
+			}
+		}
+		for (int i = von.getY(); i >= nach.getY(); i--) {
+			if(!(sp.getMat()[i][von.getX()] instanceof Figur)) {
+				wieweitY++;
+			}
+		}
+		
 		if(absX == 1 && absY == 2) {
 			return false;
 		}
