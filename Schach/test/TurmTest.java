@@ -41,10 +41,10 @@ public class TurmTest {
 	
 	@Test
 	public void bewegungtest() {
-		Turm t1 = (Turm) sp.getFeld(0, 0);
+		Turm t1 = (Turm) sp.getFeld(2, 0);
 		System.out.println(t1.toString());
 		
-		boolean ok1 = t1.spielzugMoeglich(sp, new Position(0, 0), new Position(0, 3));
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(2, 0), new Position(2, 5));
 		assertFalse(ok1);
 	}
 }
