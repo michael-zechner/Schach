@@ -26,12 +26,12 @@ public class Turm extends Figur {
 		int wieweitY = 0;
 		
 		for (int i = 0; i < 8; i++) {
-			if(!(sp.getMat()[i][von.getY()] instanceof Figur)) {
+			if(!(sp.getMat()[von.getY()][i] instanceof Figur)) {
 				wieweitX++;
 			}
 		}
 		for (int i = 0; i < 8; i++) {
-			if(!(sp.getMat()[von.getX()][i] instanceof Figur)) {
+			if(!(sp.getMat()[i][von.getX()] instanceof Figur)) {
 				wieweitY++;
 			}
 		}

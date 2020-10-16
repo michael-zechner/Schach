@@ -1,8 +1,8 @@
 TB|SB|LB|KB|DB|LB|SB|TB
 BB|BB|BB|BB|BB|BB|BB|BB
-__|__|__|__|__|__|__|LW
+LW|__|__|__|__|__|__|LW
 __|__|__|__|__|__|__|__
 __|__|__|__|__|__|__|__
 __|__|__|__|__|__|__|__
-BW|BW|BW|BB|BW|BW|BW|BW
+BW|BW|BW|BB|BB|BW|BW|BW
 TW|SW|__|KW|DW|LW|SW|TW
