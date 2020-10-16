@@ -23,7 +23,11 @@ public class Springer extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 
-		return super.spielzugMoeglich(sp, von, nach) || (absX == 2 && absY == 1) || (absX == 1 && absY == 2);
+		if(!super.spielzugMoeglich(sp, von, nach)) {
+			return false;
+		}
+		
+		return (absX == 2 && absY == 1) || (absX == 1 && absY == 2);
 	}
 	// TODO wir müssen überall noch die randbedingungen machen
 }

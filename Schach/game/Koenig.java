@@ -21,10 +21,14 @@ public class Koenig extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 		
+		if(!super.spielzugMoeglich(sp, von, nach)) {
+			return false;
+		}
+		
 		if(!bewegt) {
 			return super.spielzugMoeglich(sp, von, nach);
 		}else {
-			return super.spielzugMoeglich(sp, von, nach) || (absX <= 1 && absY <=1);
+			return (absX <= 1 && absY <=1);
 		}
 	}
 }
