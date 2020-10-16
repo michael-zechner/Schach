@@ -9,9 +9,6 @@ import game.SpielFeld;
 import game.SpielFeldIO;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,14 +22,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -56,6 +47,11 @@ public class Main extends Application {
 	private Figur von;
 	private boolean zugMoeglich = false;
 	private String letzterZug = null;
+	private boolean rotation = true;
+	private Button rotate;
+	private double width;
+	private double height;
+	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -68,14 +64,49 @@ public class Main extends Application {
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
-		Label ausgabe = new Label("Letzter Zug:");
+		Label ausgabe = new Label("Letzter Zug: xx-xx");
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
 				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
 
 				imageView = new ImageView(im1);
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(25);
+				
+				view.add(imageView);
 				Button b = new Button();
+				
+				/* ImageSize Button */
+				/* Hier setzten wir "Breakpoints" also width und height, ab der das Bild skaliert werden soll */
+				b.widthProperty().addListener((obs, oldVal, newVal) -> {
+					width = (Double) newVal;
+
+					for (int k = 0; k < view.size(); k++) {
+
+						if (width > 100) {
+							view.get(k).setFitWidth(50);
+						} else if (width <= 100) {
+							view.get(k).setFitWidth(25);
+						}
+					}
+
+				});
+
+				b.heightProperty().addListener((obs, oldVal, newVal) -> {
+					height = (Double) newVal;
+
+					for (int k = 0; k < view.size(); k++) {
+
+						if (height > 90) {
+							view.get(k).setFitHeight(81);
+						} else if (height <= 90) {
+							view.get(k).setFitHeight(40);
+						}
+					}
+				});
+				
+				
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
@@ -117,7 +148,7 @@ public class Main extends Application {
 						if (!clicked1) {
 							/* Letzter Zug Label */
 							letzterZug = b.getId();
-							
+
 							/* Spielzug */
 							String a = Integer.toString((b.getId().charAt(0) - 65));
 							XF = a.charAt(0);
@@ -131,6 +162,8 @@ public class Main extends Application {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
 								clicked1 = true;
+							} else {
+								showAlertBlankField();
 							}
 
 							/* Bild von erstem Button getten */
@@ -151,7 +184,6 @@ public class Main extends Application {
 							zugC[4] = YS;
 							String zug = String.valueOf(zugC);
 
-							
 							zugMoeglich = von.spielzugMoeglich(sp,
 									new Position(Character.getNumericValue(zug.charAt(1)),
 											Character.getNumericValue(zug.charAt(0))),
@@ -160,29 +192,35 @@ public class Main extends Application {
 							sp.setWerAmZug(weiss);
 							if (von.isFarbeWeiss() == sp.isWerAmZug()) {
 								if (zugMoeglich) {
-									/* Grafik auf den zweiten Button setzten und anschließend feld und buttons rotieren */
+									/*
+									 * Grafik auf den zweiten Button setzten und anschließend feld und buttons
+									 * rotieren
+									 */
 									b.setGraphic(n1);
 									clicked1 = false;
-									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
-									rotate.setByAngle(180);
-									rotate.play();
-									for (int i = 1; i < 9; i++) {
-										for (int j = 1; j < 9; j++) {
-											Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
-											RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
-													ro.getGraphic());
-											rotateImage.setByAngle(180);
-											rotateImage.play();
 
+									if (rotation) {
+										RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
+										rotate.setByAngle(180);
+										rotate.play();
+										for (int i = 1; i < 9; i++) {
+											for (int j = 1; j < 9; j++) {
+												Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
+												RotateTransition rotateImage = new RotateTransition(
+														Duration.seconds(0.001), ro.getGraphic());
+												rotateImage.setByAngle(180);
+												rotateImage.play();
+
+											}
 										}
 									}
 									weiss = !weiss;
 									/* Spielerindikator */
 									if (weiss) {
-										spieler.setText("Spieler weiss am Zug");
+										spieler.setText("Spieler Weiss am Zug");
 										;
 									} else {
-										spieler.setText("Spieler schwarz am Zug");
+										spieler.setText("Spieler Schwarz am Zug");
 										;
 									}
 
@@ -195,11 +233,12 @@ public class Main extends Application {
 								} else {
 									clicked2 = clicked1;
 									clicked1 = false;
+									showAlertWrongMove();
 								}
 							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
-								showAlertWithoutHeaderText();
+								showAlertColor();
 
 							}
 
@@ -253,13 +292,32 @@ public class Main extends Application {
 
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
 
+		rotate = new Button("Rotation On");
+
+		rotate.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				rotation = !rotation;
+				if (rotation) {
+					rotate.setText("Rotation On");
+				} else {
+					rotate.setText("Rotation Off");
+				}
+			}
+
+		});
+
 		HBox hbox = new HBox();
+		HBox centerButtons = new HBox(rotate);
 		HBox rightButtons = new HBox(spieler);
 		rightButtons.setAlignment(Pos.CENTER_RIGHT);
 
 		HBox.setHgrow(rightButtons, Priority.ALWAYS);
+		HBox.setHgrow(centerButtons, Priority.ALWAYS);
+		centerButtons.setAlignment(Pos.CENTER);
 
-		hbox.getChildren().addAll(ausgabe, rightButtons);
+		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
 		hbox.setPadding(new Insets(2));
 
 		root.setCenter(feld);
@@ -304,14 +362,37 @@ public class Main extends Application {
 		return result;
 	}
 
-	private void showAlertWithoutHeaderText() {
+	/* SpielInfos */
+	private void showAlertWrongMove() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Unzulässiger Zug");
 
-		// Header Text: null
 		alert.setHeaderText(null);
 		alert.setContentText("Dieser Zug ist leider nicht möglich !");
 
 		alert.showAndWait();
+
+	}
+
+	private void showAlertBlankField() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässiges Feld");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Bitte wähle ein Feld aus, auf dem eine Figur steht !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertColor() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässige Farbe");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Der andere Spieler ist an der Reihe !");
+
+		alert.showAndWait();
+
 	}
 }
