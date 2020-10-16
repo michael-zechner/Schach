@@ -2,7 +2,7 @@ TB|SB|LB|KB|DB|LB|SB|TB
 BB|BB|BB|BB|BB|BB|BB|BB
 __|__|__|__|__|__|__|__
 __|__|__|__|__|__|__|__
-__|__|__|__|DW|__|__|__
+__|__|BB|__|DW|__|BB|__
 __|__|__|__|__|__|__|__
 BW|BW|BW|BW|BW|BW|BW|BW
-TW|SW|LW|KW|__|LW|SW|TW
+TW|SW|LW|KW|DW|LW|SW|TW

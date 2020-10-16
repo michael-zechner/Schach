@@ -23,19 +23,16 @@ public class Dame extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 		
-		System.out.println(absX);
-		System.out.println(absY);
-		
 		int wieweitX = 0;
 		int wieweitY = 0;
-		
-		for (int i = 0; i < 8; i++) {
-			if(!(sp.getMat()[i][von.getY()] instanceof Figur)) {
+
+		for (int i = von.getX(); i <= nach.getX(); i++) {
+			if(!(sp.getMat()[von.getY()][i] instanceof Figur)) {
 				wieweitX++;
 			}
 		}
-		for (int i = 0; i < 8; i++) {
-			if(!(sp.getMat()[von.getX()][i] instanceof Figur)) {
+		for (int i = von.getY(); i <= nach.getY(); i++) {
+			if(!(sp.getMat()[i][von.getX()] instanceof Figur)) {
 				wieweitY++;
 			}
 		}

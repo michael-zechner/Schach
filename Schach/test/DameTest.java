@@ -69,4 +69,28 @@ public class DameTest {
 		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(0, 0));
 		assertFalse(ok1);
 	}
+	
+	@Test
+	public void bewegungstest() {
+		Dame t1 = (Dame) sp.getFeld(3, 4);
+		System.out.println(t1.toString());
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(7, 4));
+		assertFalse(ok1);
+	}
+	
+	@Test
+	public void bewegungstest1() {
+		Dame t1 = (Dame) sp.getFeld(3, 4);
+		System.out.println(t1.toString());
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(0, 4));
+		assertFalse(ok1);
+	}
+	
+	@Test
+	public void bewegungstest2() {
+		Dame t1 = (Dame) sp.getFeld(0, 4);
+		System.out.println(t1.toString());
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(0, 4), new Position(2, 4));
+		assertFalse(ok1);
+	}
 }

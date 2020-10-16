@@ -25,12 +25,12 @@ public class Turm extends Figur {
 		int wieweitX = 0;
 		int wieweitY = 0;
 		
-		for (int i = 0; i < 8; i++) {
+		for (int i = von.getX(); i <= nach.getX(); i++) {
 			if(!(sp.getMat()[von.getY()][i] instanceof Figur)) {
 				wieweitX++;
 			}
 		}
-		for (int i = 0; i < 8; i++) {
+		for (int i = von.getY(); i <= nach.getY(); i++) {
 			if(!(sp.getMat()[i][von.getX()] instanceof Figur)) {
 				wieweitY++;
 			}
@@ -39,6 +39,7 @@ public class Turm extends Figur {
 		if(!super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
+
 		
 		return (absX <= wieweitX && absY <= wieweitY);
 	}
