@@ -60,4 +60,13 @@ public class DameTest {
 		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(0, 7));
 		assertFalse(ok1);
 	}
+	
+	
+	@Test
+	public void ZuNullNull() {
+		Dame t1 = (Dame) sp.getFeld(3, 4);
+		System.out.println(t1.toString());
+		boolean ok1 = t1.spielzugMoeglich(sp, new Position(3, 4), new Position(0, 0));
+		assertFalse(ok1);
+	}
 }
