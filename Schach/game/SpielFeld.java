@@ -5,7 +5,25 @@ import java.util.ArrayList;
 public class SpielFeld {
 
 	private Feld[][] mat = new Feld[8][8];
-	private boolean werAmZug;
+	private boolean werAmZug = true;
+	private boolean moeglich = false;
+
+	
+	public boolean isMoeglich() {
+		return moeglich;
+	}
+
+	public void setMoeglich(boolean moeglich) {
+		this.moeglich = moeglich;
+	}
+
+	public boolean isWerAmZug() {
+		return werAmZug;
+	}
+
+	public void setWerAmZug(boolean werAmZug) {
+		this.werAmZug = werAmZug;
+	}
 
 	public Feld[][] getMat() {
 		return mat;
@@ -137,18 +155,18 @@ public class SpielFeld {
 				}
 			}
 		}
-		
+
 		int anz = 0;
-		
+
 		for (int i = 0; i < werte.size(); i++) {
-			if(werte.get(i)) {
+			if (werte.get(i)) {
 				anz++;
 			}
-			if(anz == werte.size()) {
+			if (anz == werte.size()) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -164,12 +182,17 @@ public class SpielFeld {
 		if (mat[von.getY()][von.getX()] instanceof Figur) {
 
 			Figur f = (Figur) mat[von.getY()][von.getX()];
-			System.out.println(f.toString());
-			System.out.println(f.spielzugMoeglich(this, von, nach));
-			if (f.spielzugMoeglich(this, von, nach)) {
-				mat[nach.getY()][nach.getX()] = f;
-				mat[von.getY()][von.getX()] = new Feld();
-				f.setBewegt(true);
+			System.out.println(f.toString().charAt(1));
+			System.out.println(werAmZug);
+			if (f.toString().charAt(1) == boolToChar(werAmZug)) {
+				moeglich = true;
+				System.out.println(f.toString());
+				System.out.println(f.spielzugMoeglich(this, von, nach));
+				if (f.spielzugMoeglich(this, von, nach)) {
+					mat[nach.getY()][nach.getX()] = f;
+					mat[von.getY()][von.getX()] = new Feld();
+					f.setBewegt(true);
+				}
 			}
 
 		}
@@ -188,5 +211,15 @@ public class SpielFeld {
 			return f;
 		}
 		return null;
+	}
+
+	public char boolToChar(boolean werAmZug) {
+		char color = 0;
+		if (werAmZug == true) {
+			color = 'W';
+		} else if (werAmZug == false) {
+			color = 'B';
+		}
+		return color;
 	}
 }

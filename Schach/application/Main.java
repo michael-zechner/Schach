@@ -64,14 +64,15 @@ public class Main extends Application {
 
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
+		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
-				Image im1 = new Image("images/" + sp.getMat()[8 - j][8 - i].toString() + ".png");
+				Image im1 = new Image("images/" + sp.getMat()[8-j][i-1].toString() + ".png");
 
 				imageView = new ImageView(im1);
 				Button b = new Button();
-
+//				b.setText((i-1) + " " + (8-j));
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
@@ -117,8 +118,12 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
-							clicked1 = true;
+							if (sp.getFeld(Character.getNumericValue(YF),
+									Character.getNumericValue(XF)) instanceof Figur) {
+
+								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
+								clicked1 = true;
+							}
 
 							/* Rest */
 							n1 = b.getGraphic();
@@ -148,35 +153,45 @@ public class Main extends Application {
 											Character.getNumericValue(zug.charAt(0))),
 									new Position(Character.getNumericValue(zugC[4]),
 											Character.getNumericValue(zugC[3])));
+							System.out.println(weiss);
+							System.out.println(sp.isWerAmZug());
+							if (sp.isWerAmZug() == weiss) {
+								System.out.println(weiss);
+								System.out.println("Möglich: " + zugMoeglich);
+								if (zugMoeglich) {
+									b.setGraphic(n1);
+									clicked1 = false;
+									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
+									rotate.setByAngle(180);
+									rotate.play();
+									for (int i = 1; i < 9; i++) {
+										for (int j = 1; j < 9; j++) {
+											Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
+											RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
+													ro.getGraphic());
+											rotateImage.setByAngle(180);
+											rotateImage.play();
 
-							if (zugMoeglich) {
-								b.setGraphic(n1);
-								clicked1 = false;
-								RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
-								rotate.setByAngle(180);
-								rotate.play();
-								for (int i = 1; i < 9; i++) {
-									for (int j = 1; j < 9; j++) {
-										Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
-										RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
-												ro.getGraphic());
-										rotateImage.setByAngle(180);
-										rotateImage.play();
-
+										}
 									}
-								}
-								weiss = !weiss;
-								if (weiss) {
-									spieler.setText("Spieler weiss am Zug");
-									;
+									weiss = !weiss;
+									if (weiss) {
+										spieler.setText("Spieler weiss am Zug");
+										;
+									} else {
+										spieler.setText("Spieler schwarz am Zug");
+										;
+									}
+
+									sp.spielzug(zug);
+									sp.ausgabe();
+									sp.setWerAmZug(!sp.isWerAmZug());
+
 								} else {
-									spieler.setText("Spieler schwarz am Zug");
-									;
+									clicked2 = clicked1;
+									clicked1 = false;
 								}
-								sp.spielzug(zug);
-								sp.ausgabe();
-								
-							}else {
+							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
 							}
