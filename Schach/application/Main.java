@@ -57,7 +57,13 @@ public class Main extends Application {
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
-
+	private SpielFeld sp;
+	
+	
+	public SpielFeld getSpielfeld() {
+		return sp;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		BorderPane root = new BorderPane();
@@ -70,7 +76,7 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		SpielFeld sp = spIO.einlesen("start.txt");
+		sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
@@ -428,4 +434,6 @@ public class Main extends Application {
 		alert.showAndWait();
 
 	}
+	
+	
 }
