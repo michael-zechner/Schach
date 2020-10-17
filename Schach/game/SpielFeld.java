@@ -2,6 +2,8 @@ package game;
 
 import java.util.ArrayList;
 
+import com.sun.org.apache.xpath.internal.operations.Gte;
+
 public class SpielFeld {
 
 	private Feld[][] mat = new Feld[8][8];
@@ -45,22 +47,36 @@ public class SpielFeld {
 	}
 
 	public boolean schach() {
+		String v1 = "KW";
+		String v2 = "KB";
 		int x = 0;
 		int y = 0;
 		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
 		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
 		String[] auswahl = w;
 		if (!werAmZug) {
+			v1 = v2;
 			auswahl = b;
 		}
-
+		
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat[0].length; j++) {
+				if (mat[i][j].toString() == v1) {
+					y = i;
+					x = j;
+				}
+			}
+		}
+		
 		ArrayList<Boolean> werte = new ArrayList<Boolean>();
 
+		
 		// xrechts
 		for (int i = x; i < 8; i++) {
 			if (mat[y][i] instanceof Figur) {
 				for (int j = 0; j < auswahl.length; j++) {
 					if (mat[y][i].toString() == auswahl[j]) {
+						//erstelleFigur(auswahl[j]).spielZug(, new Position(y, x), new Position(y, i));
 					}
 				}
 			}
@@ -157,6 +173,35 @@ public class SpielFeld {
 		return false;
 	}
 
+	private static Figur erstelleFigur(String f) {
+		char a = f.charAt(0);
+		char b = f.charAt(1);
+		boolean farbeWeiss = false;		
+		Figur c = null;
+		
+		if (b == 'W') {
+			farbeWeiss = true;
+		}
+
+		switch (a) {
+		case 'B':
+			return new Bauer(farbeWeiss, false);
+		case 'D':
+			return new Dame(farbeWeiss, false);
+		case 'K':
+			return new Koenig(farbeWeiss, false);
+		case 'L':
+			return new Laeufer(farbeWeiss, false);
+		case 'S':
+			return new Springer(farbeWeiss, false);
+		case 'T':
+			return new Turm(farbeWeiss, false);
+		default:
+			return c;
+		}
+
+	}
+	
 	public boolean schachMatt() {
 		return false;
 	}
