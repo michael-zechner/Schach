@@ -3,6 +3,7 @@ package application;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import game.Feld;
 import game.Figur;
 import game.Position;
 import game.SpielFeld;
@@ -14,6 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Node;
@@ -52,6 +55,8 @@ public class Main extends Application {
 	private double width;
 	private double height;
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
+	private ArrayList<String> felder = new ArrayList<String>();
+	public ArrayList<Button> allButtons = new ArrayList<Button>();
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
@@ -60,11 +65,13 @@ public class Main extends Application {
 		boolean farbe = false;
 
 		Label spieler = new Label("Spieler Weiss am Zug");
+		spieler.setPadding(new Insets(20));
+		Label ausgabe = new Label("Letzter Zug: xx-xx");
+		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
 		SpielFeld sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
-		Label ausgabe = new Label("Letzter Zug: xx-xx");
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
@@ -73,12 +80,16 @@ public class Main extends Application {
 				imageView = new ImageView(im1);
 				imageView.setFitHeight(40);
 				imageView.setFitWidth(25);
-				
+
 				view.add(imageView);
+
 				Button b = new Button();
-				
+				allButtons.add(b);
 				/* ImageSize Button */
-				/* Hier setzten wir "Breakpoints" also width und height, ab der das Bild skaliert werden soll */
+				/*
+				 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
+				 * skaliert werden soll
+				 */
 				b.widthProperty().addListener((obs, oldVal, newVal) -> {
 					width = (Double) newVal;
 
@@ -86,34 +97,22 @@ public class Main extends Application {
 
 						if (width > 100) {
 							view.get(k).setFitWidth(50);
+							view.get(k).setFitHeight(81);
 						} else if (width <= 100) {
 							view.get(k).setFitWidth(25);
-						}
-					}
-
-				});
-
-				b.heightProperty().addListener((obs, oldVal, newVal) -> {
-					height = (Double) newVal;
-
-					for (int k = 0; k < view.size(); k++) {
-
-						if (height > 90) {
-							view.get(k).setFitHeight(81);
-						} else if (height <= 90) {
 							view.get(k).setFitHeight(40);
 						}
 					}
+
 				});
-				
-				
+
 				b.setGraphic(imageView);
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
-				b.setStyle("-fx-background-color: #E0E6B6; -fx-background-radius: 0px; ");
+				b.getStyleClass().add("button");
 				if (farbe) {
 					if (j % 2 == 0) {
-						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
+						b.getStyleClass().add("buttonBlack");
 					}
 					if (j == 8 && i % 2 == 0) {
 						farbe = false;
@@ -121,7 +120,7 @@ public class Main extends Application {
 				}
 				if (!farbe) {
 					if (j % 2 != 0) {
-						b.setStyle("-fx-background-color: #585858; -fx-background-radius: 0px;");
+						b.getStyleClass().add("buttonBlack");
 					}
 					if (j == 8 && i % 2 != 0) {
 						farbe = true;
@@ -161,6 +160,22 @@ public class Main extends Application {
 									Character.getNumericValue(XF)) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
+
+								/* Suggestion */
+								if (von.isFarbeWeiss() == weiss) {
+
+									felder = von.suggest(sp,
+											new Position(Character.getNumericValue(YF), Character.getNumericValue(XF)),
+											sp.isWerAmZug());
+									for (int k = 0; k < felder.size(); k++) {
+										int y = Character.getNumericValue(felder.get(k).charAt(0));
+										int x = Character.getNumericValue(felder.get(k).charAt(1));
+										System.out.println(y + "" + x);
+										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+										moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+									}
+								}
+
 								clicked1 = true;
 							} else {
 								showAlertBlankField();
@@ -170,6 +185,15 @@ public class Main extends Application {
 							n1 = b.getGraphic();
 						}
 						if (clicked2) {
+							/* Suggestion */
+							for (int k = 0; k < felder.size(); k++) {
+								int y = Character.getNumericValue(felder.get(k).charAt(0));
+								int x = Character.getNumericValue(felder.get(k).charAt(1));
+								System.out.println(y + "" + x);
+								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+								moeglich.setStyle("");
+							}
+
 							/* Letzter Zug Label */
 							letzterZug = letzterZug + "-" + b.getId();
 							ausgabe.setText("Letzter Zug: ");
@@ -218,10 +242,11 @@ public class Main extends Application {
 									/* Spielerindikator */
 									if (weiss) {
 										spieler.setText("Spieler Weiss am Zug");
-										;
+										spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
 									} else {
 										spieler.setText("Spieler Schwarz am Zug");
-										;
+										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+										System.out.println(spieler.getStyleClass());
 									}
 
 									/* Spielzug abschließen */
@@ -313,8 +338,9 @@ public class Main extends Application {
 		HBox rightButtons = new HBox(spieler);
 		rightButtons.setAlignment(Pos.CENTER_RIGHT);
 
-		HBox.setHgrow(rightButtons, Priority.ALWAYS);
 		HBox.setHgrow(centerButtons, Priority.ALWAYS);
+		HBox.setHgrow(rightButtons, Priority.ALWAYS);
+
 		centerButtons.setAlignment(Pos.CENTER);
 
 		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
@@ -325,7 +351,14 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("application/application.css");
 		primaryStage.setScene(scene);
+		primaryStage.setWidth(800);
+		primaryStage.setHeight(800);
 		primaryStage.show();
+
+		/* So wird das Fenster genau mittig in X und oben in Y plaziert */
+		Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+		primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
+		primaryStage.setY(0);
 	}
 
 	public static void main(String[] args) {

@@ -1,9 +1,12 @@
 package game;
 
+import java.util.ArrayList;
+
 public abstract class Figur extends Feld {
 
 	public boolean farbeWeiss;
 	public boolean bewegt;
+	public ArrayList<String> suggestions = new ArrayList<String>();
 
 	public Figur(boolean farbeWeiss, boolean bewegt) {
 		super();
@@ -29,14 +32,29 @@ public abstract class Figur extends Feld {
 
 		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
 		Figur fnach;
-		if(sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
+		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
 			fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
 			if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
 				return false;
 			}
 		}
 
-		return true;
+		return false;
+	}
+
+	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbeWeiss) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Position nach = new Position(j, i);
+				setFarbeWeiss(farbeWeiss);
+				if (sp.getFeld(von.getY(), von.getX()) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
+					suggestions.add(nach.getX() + "" + nach.getY());
+
+				}
+
+			}
+		}
+		return suggestions;
 	}
 
 	public boolean isFarbeWeiss() {
@@ -53,6 +71,14 @@ public abstract class Figur extends Feld {
 
 	public void setBewegt(boolean bewegt) {
 		this.bewegt = bewegt;
+	}
+
+	public ArrayList<String> getSuggestions() {
+		return suggestions;
+	}
+
+	public void setSuggestions(ArrayList<String> suggestions) {
+		this.suggestions = suggestions;
 	}
 
 }

@@ -182,13 +182,9 @@ public class SpielFeld {
 		if (mat[von.getY()][von.getX()] instanceof Figur) {
 
 			Figur f = (Figur) mat[von.getY()][von.getX()];
-			System.out.println(f.toString().charAt(1));
-			System.out.println(werAmZug);
+			
 			
 			if (f.farbeWeiss == werAmZug) {
-				moeglich = true;
-				System.out.println(f.toString());
-				System.out.println(f.spielzugMoeglich(this, von, nach));
 				if (f.spielzugMoeglich(this, von, nach)) {
 					mat[nach.getY()][nach.getX()] = f;
 					mat[von.getY()][von.getX()] = new Feld();

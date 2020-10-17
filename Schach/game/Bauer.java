@@ -22,12 +22,12 @@ public class Bauer extends Figur {
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
-		if(absY==1 && absX==0) {
-			if(sp.getMat()[(int) nach.getY()][(int) von.getX()] instanceof Figur) {
+		if (absY == 1 && absX == 0) {
+			if (sp.getMat()[(int) nach.getY()][(int) von.getX()] instanceof Figur) {
 				return false;
 			}
 		}
-		
+
 		if (!bewegt) {
 			if (farbeWeiss) {
 				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
@@ -45,17 +45,18 @@ public class Bauer extends Figur {
 			if (von.getY() + 1 == nach.getY() && von.getX() == nach.getX()) {
 				return true;
 			}
-			
-			if(von.getX() != 0) {
-				if(sp.getMat()[(int) von.getY() + 1][(int) von.getX() - 1] instanceof Figur
-							&& von.getY() + 1 == nach.getY() && von.getX() - 1 == nach.getX()) {
+
+			if (von.getX() != 0) {
+				if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() - 1] instanceof Figur
+						&& von.getY() + 1 == nach.getY() && von.getX() - 1 == nach.getX()) {
 					return true;
 				}
 			}
-			if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() + 1] instanceof Figur
-					&& von.getY() + 1 == nach.getY() && von.getX() + 1 == nach.getX()
-					) {
-				return true;
+			if (von.getX() < 7) {
+				if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() + 1] instanceof Figur
+						&& von.getY() + 1 == nach.getY() && von.getX() + 1 == nach.getX()) {
+					return true;
+				}
 			}
 		}
 		if (!farbeWeiss) {
@@ -74,11 +75,11 @@ public class Bauer extends Figur {
 				return true;
 			}
 		}
-		
-		if(!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
+
+		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
-		
+
 		bewegt = true;
 		return super.spielzugMoeglich(sp, von, nach);
 	}

@@ -21,6 +21,7 @@ public class SchachKonsole {
 	}
 	
 	public static void Zug(String zug) {
+		
 		sp.spielzug(zug);
 		sp.ausgabe();
 	}
