@@ -58,12 +58,11 @@ public class Main extends Application {
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
-	
-	
+
 	public SpielFeld getSpielfeld() {
 		return sp;
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		BorderPane root = new BorderPane();
@@ -173,16 +172,22 @@ public class Main extends Application {
 									felder = von.suggest(sp,
 											new Position(Character.getNumericValue(YF), Character.getNumericValue(XF)),
 											sp.isWerAmZug());
-									for (int k = 0; k < felder.size(); k++) {
-										int y = Character.getNumericValue(felder.get(k).charAt(0));
-										int x = Character.getNumericValue(felder.get(k).charAt(1));
-										System.out.println(y + "" + x);
-										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-										moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+									if (felder.size() > 0) {
+
+										for (int k = 0; k < felder.size(); k++) {
+											int y = Character.getNumericValue(felder.get(k).charAt(0));
+											int x = Character.getNumericValue(felder.get(k).charAt(1));
+											System.out.println(y + "" + x);
+											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+										}
+										clicked1 = true;
+									} else {
+										System.out.println("no");
+										showAlertNoSuggestion();
 									}
 								}
 
-								clicked1 = true;
 							} else {
 								showAlertBlankField();
 							}
@@ -435,5 +440,15 @@ public class Main extends Application {
 
 	}
 	
-	
+	private void showAlertNoSuggestion() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässige Auswahl");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Die von dir gewählte Figur kann sich momentan leider nicht bewegen !");
+
+		alert.showAndWait();
+
+	}
+
 }
