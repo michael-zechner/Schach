@@ -50,7 +50,7 @@ public class Main extends Application {
 	private Figur von;
 	private boolean zugMoeglich = false;
 	private String letzterZug = null;
-	private boolean rotation = true;
+	private boolean rotation = false;
 	private Button rotate;
 	private double width;
 	private double height;
