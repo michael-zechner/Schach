@@ -47,15 +47,25 @@ public class Bauer extends Figur {
 			}
 
 			if (von.getX() != 0) {
+				System.out.println("WeissDig");
+
 				if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() - 1] instanceof Figur
 						&& von.getY() + 1 == nach.getY() && von.getX() - 1 == nach.getX()) {
-					return true;
+					Figur schlag = (Figur) sp.getFeld((int) von.getY() + 1, (int) von.getX() - 1);
+					if (schlag.isFarbeWeiss() == false) {
+
+						return true;
+					}
 				}
 			}
 			if (von.getX() < 7) {
 				if (sp.getMat()[(int) von.getY() + 1][(int) von.getX() + 1] instanceof Figur
 						&& von.getY() + 1 == nach.getY() && von.getX() + 1 == nach.getX()) {
-					return true;
+					Figur schlag = (Figur) sp.getFeld((int) von.getY() + 1, (int) von.getX() + 1);
+					if (schlag.isFarbeWeiss() == false) {
+
+						return true;
+					}
 				}
 			}
 		}
@@ -65,14 +75,22 @@ public class Bauer extends Figur {
 			}
 			if (von.getX() != 0) {
 				if (sp.getMat()[(int) von.getY() - 1][(int) von.getX() - 1] instanceof Figur
-						&& von.getY() - 1 == nach.getY() && von.getX() - 1 == nach.getX() && von.getX() != 0) {
-					return true;
+						&& von.getY() - 1 == nach.getY() && von.getX() - 1 == nach.getX()) {
+					Figur schlag = (Figur) sp.getFeld((int) von.getY() - 1, (int) von.getX() - 1);;
+					if (schlag.isFarbeWeiss() == true) {
+
+						return true;
+					}
 				}
 			}
 
 			if (sp.getMat()[(int) von.getY() - 1][(int) von.getX() + 1] instanceof Figur
 					&& von.getY() - 1 == nach.getY() && von.getX() + 1 == nach.getX()) {
-				return true;
+				Figur schlag = (Figur) sp.getFeld((int) von.getY() - 1, (int) von.getX() + 1);
+				if (schlag.isFarbeWeiss() == true) {
+
+					return true;
+				}
 			}
 		}
 

@@ -43,6 +43,7 @@ public abstract class Figur extends Feld {
 	}
 
 	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbeWeiss) {
+		suggestions.clear();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Position nach = new Position(j, i);
