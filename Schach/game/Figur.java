@@ -26,31 +26,28 @@ public abstract class Figur extends Feld {
 	}
 
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
-		Feld fnach = sp.getFeld(nach.getY(), nach.getX());
-		Figur Fignach = (Figur) fnach;
-		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Feld) {
-			if (fvon.isFarbeWeiss() == Fignach.isFarbeWeiss()) {
-				return false;
-			}
+		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
+			return false;
 		}
 
-		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
-			System.out.print("Gleiches Feld");
-			return false;
+		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
+		Figur fnach;
+		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
+			fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
+			if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
-	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbe) {
-		suggestions.clear();
+	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbeWeiss) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Position nach = new Position(j, i);
-				setFarbeWeiss(farbe);
-				if (spielzugMoeglich(sp, von, nach)) {
-					System.out.println("X: " + nach.getX() + "Y: " + nach.getY());
+				setFarbeWeiss(farbeWeiss);
+				if (sp.getFeld(von.getY(), von.getX()) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
 					suggestions.add(nach.getX() + "" + nach.getY());
 
 				}
@@ -83,4 +80,5 @@ public abstract class Figur extends Feld {
 	public void setSuggestions(ArrayList<String> suggestions) {
 		this.suggestions = suggestions;
 	}
+
 }
