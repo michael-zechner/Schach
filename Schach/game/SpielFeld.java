@@ -7,7 +7,6 @@ public class SpielFeld {
 	private Feld[][] mat = new Feld[8][8];
 	private boolean werAmZug = true;
 	private boolean moeglich = false;
-
 	
 	public boolean isMoeglich() {
 		return moeglich;
@@ -46,24 +45,13 @@ public class SpielFeld {
 	}
 
 	public boolean schach() {
-		String v1 = "KW";
-		String v2 = "KB";
 		int x = 0;
 		int y = 0;
 		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
 		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
 		String[] auswahl = w;
 		if (!werAmZug) {
-			v1 = v2;
 			auswahl = b;
-		}
-		for (int i = 0; i < mat.length; i++) {
-			for (int j = 0; j < mat[0].length; j++) {
-				if (mat[i][j].toString() == v1) {
-					y = i;
-					x = j;
-				}
-			}
 		}
 
 		ArrayList<Boolean> werte = new ArrayList<Boolean>();
@@ -73,7 +61,6 @@ public class SpielFeld {
 			if (mat[y][i] instanceof Figur) {
 				for (int j = 0; j < auswahl.length; j++) {
 					if (mat[y][i].toString() == auswahl[j]) {
-						werte.add(true);
 					}
 				}
 			}

@@ -39,7 +39,7 @@ public abstract class Figur extends Feld {
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbeWeiss) {
@@ -80,5 +80,4 @@ public abstract class Figur extends Feld {
 	public void setSuggestions(ArrayList<String> suggestions) {
 		this.suggestions = suggestions;
 	}
-
 }
