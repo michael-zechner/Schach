@@ -26,28 +26,31 @@ public abstract class Figur extends Feld {
 	}
 
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
-			return false;
-		}
-
 		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
-		Figur fnach;
-		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
-			fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
-			if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
+		Feld fnach = sp.getFeld(nach.getY(), nach.getX());
+		Figur Fignach = (Figur) fnach;
+		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Feld) {
+			if (fvon.isFarbeWeiss() == Fignach.isFarbeWeiss()) {
 				return false;
 			}
+		}
+
+		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
+			System.out.print("Gleiches Feld");
+			return false;
 		}
 
 		return true;
 	}
 
-	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbeWeiss) {
+	public ArrayList<String> suggest(SpielFeld sp, Position von, boolean farbe) {
+		suggestions.clear();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Position nach = new Position(j, i);
-				setFarbeWeiss(farbeWeiss);
-				if (sp.getFeld(von.getY(), von.getX()) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
+				setFarbeWeiss(farbe);
+				if (spielzugMoeglich(sp, von, nach)) {
+					System.out.println("X: " + nach.getX() + "Y: " + nach.getY());
 					suggestions.add(nach.getX() + "" + nach.getY());
 
 				}
