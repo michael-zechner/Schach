@@ -107,7 +107,6 @@ public class Laeufer extends Figur {
 		}
 
 		if ((absX <= wieweitX && absY <= wieweitY)) {
-			System.out.println("LaueferTest");
 			return true;
 		}
 		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
