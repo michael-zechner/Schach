@@ -150,6 +150,7 @@ public class Main extends Application {
 
 						/* Erster Button */
 						if (!clicked1) {
+
 							/* Letzter Zug Label */
 							letzterZug = b.getId();
 
@@ -161,7 +162,12 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							if (sp.getFeld(Character.getNumericValue(YF),
+							if (!sp.schachMatt()) {
+								showAlertSchachMatt();
+							} else if (!sp.schach()) {
+								showAlertSchach();
+							} else if (sp.getFeld(Character.getNumericValue(YF),
+
 									Character.getNumericValue(XF)) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
@@ -186,6 +192,8 @@ public class Main extends Application {
 										System.out.println("no");
 										showAlertNoSuggestion();
 									}
+								} else {
+									showAlertNoSuggestion();
 								}
 
 							} else {
@@ -439,13 +447,35 @@ public class Main extends Application {
 		alert.showAndWait();
 
 	}
-	
+
 	private void showAlertNoSuggestion() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Unzulässige Auswahl");
 
 		alert.setHeaderText(null);
 		alert.setContentText("Die von dir gewählte Figur kann sich momentan leider nicht bewegen !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertSchach() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Du bist im Schach");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Du bist im Schach, musst also deinen König bewegen !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertSchachMatt() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Schach Matt");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Schach Matt ! \n Spieler " + weiss + "hat gewonnen");
 
 		alert.showAndWait();
 
