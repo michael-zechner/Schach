@@ -75,8 +75,8 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("Test.txt");
-		sp.setWerAmZug(false);
+		sp = spIO.einlesen("Test2.txt");
+		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
@@ -162,9 +162,9 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							if (!sp.schachMatt()) {
+							if (sp.schachMatt()) {
 								showAlertSchachMatt();
-							} else if (!sp.schach()) {
+							} else if (sp.schach()) {
 								showAlertSchach();
 							} else if (sp.getFeld(Character.getNumericValue(YF),
 

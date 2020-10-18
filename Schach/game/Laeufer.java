@@ -28,93 +28,109 @@ public class Laeufer extends Figur {
 		Boolean minus = null;
 		Boolean minus2 = null;
 
-		if(sp.schach() || sp.schachMatt()) {
-			if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
-				return false;
-			}
-
-			if (von.getX() < nach.getX() && von.getY() < nach.getY()) {
-				/* Also von unten links nach oben rechts */
-				minus = new Boolean(true);
-			}
-
-			if (von.getX() < nach.getX() && von.getY() > nach.getY()) {
-				/* Also von oben links nach unten rechts */
-				minus = new Boolean(false);
-			}
-
-			if (von.getX() > nach.getX() && von.getY() < nach.getY()) {
-				/* Also von unten rechts nach oben links */
-				minus2 = new Boolean(true);
-			}
-
-			if (von.getX() > nach.getX() && von.getY() > nach.getY()) {
-				/* Also von oben rechts nach unten links */
-				minus2 = new Boolean(false);
-			}
-
-			/* Also von oben links nach unten rechts */
-			if (minus != null && minus.booleanValue() == false) {
-				System.out.println("/* Also von oben links nach unten rechts */");
-				int i = von.getX();
-				int a = von.getY();
-				while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a - 1, i + 1) instanceof Figur)) {
-					wieweitX++;
-					wieweitY++;
-					a--;
-					i++;
-				}
-			}
-
-			/* Also von unten links nach oben rechts */
-			if (minus != null && minus.booleanValue() == true) {
-				System.out.println("/* Also von unten links nach oben rechts */");
-				int i = von.getX();
-				int a = von.getY();
-				while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a + 1, i + 1) instanceof Figur)) {
-					wieweitX++;
-					wieweitY++;
-					a++;
-					i++;
-				}
-
-			}
-
-			/* Also von unten rechts nach oben links */
-			if (minus2 != null && minus2.booleanValue() == true) {
-				System.out.println("/* Also von unten rechts nach oben links */");
-				int i = von.getX();
-				int a = von.getY();
-				while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a + 1, i - 1) instanceof Figur)) {
-					wieweitX++;
-					wieweitY++;
-					a++;
-					i--;
-				}
-			}
-
-			/* Also von oben rechts nach unten links */
-			if (minus2 != null && minus2.booleanValue() == false) {
-				System.out.println("/* Also von oben rechts nach unten links */");
-				int i = von.getX();
-				int a = von.getY();
-				while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a - 1, i - 1) instanceof Figur)) {
-					wieweitX++;
-					wieweitY++;
-					a--;
-					i--;
-				}
-			}
-
-			if ((absX <= wieweitX && absY <= wieweitY)) {
-				return true;
-			}
-			if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
-				return false;
-			}
-			
-			return super.spielzugMoeglich(sp, von, nach);
+//		if(sp.schach() || sp.schachMatt()) {
+		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
+			return false;
 		}
-		return false;
+
+		if (von.getX() < nach.getX() && von.getY() < nach.getY()) {
+			/* Also von unten links nach oben rechts */
+			minus = new Boolean(true);
+		}
+
+		if (von.getX() < nach.getX() && von.getY() > nach.getY()) {
+			/* Also von oben links nach unten rechts */
+			minus = new Boolean(false);
+		}
+
+		if (von.getX() > nach.getX() && von.getY() < nach.getY()) {
+			/* Also von unten rechts nach oben links */
+			minus2 = new Boolean(true);
+		}
+
+		if (von.getX() > nach.getX() && von.getY() > nach.getY()) {
+			/* Also von oben rechts nach unten links */
+			minus2 = new Boolean(false);
+		}
+
+		/* Also von oben links nach unten rechts */
+		if (minus != null && minus.booleanValue() == false) {
+			int i = von.getX();
+			int a = von.getY();
+			while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a - 1, i + 1) instanceof Figur)) {
+				wieweitX++;
+				wieweitY++;
+				a--;
+				i++;
+			}
+			if (i < 7 && a != 0 && (Figur) sp.getFeld(a - 1, i + 1) instanceof Figur
+					&& ((Figur) sp.getFeld(a - 1, i + 1)).isFarbeWeiss() != farbeWeiss) {
+				wieweitX++;
+				wieweitY++;
+			}
+		}
+
+		/* Also von unten links nach oben rechts */
+		if (minus != null && minus.booleanValue() == true) {
+			int i = von.getX();
+			int a = von.getY();
+			while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a + 1, i + 1) instanceof Figur)) {
+				wieweitX++;
+				wieweitY++;
+				a++;
+				i++;
+			}
+			if (i < 7 && a < 7 && (Figur) sp.getFeld(a + 1, i + 1) instanceof Figur
+					&& ((Figur) sp.getFeld(a + 1, i + 1)).isFarbeWeiss() != farbeWeiss) {
+				wieweitX++;
+				wieweitY++;
+			}
+
+		}
+
+		/* Also von unten rechts nach oben links */
+		if (minus2 != null && minus2.booleanValue() == true) {
+			int i = von.getX();
+			int a = von.getY();
+			while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a + 1, i - 1) instanceof Figur)) {
+				wieweitX++;
+				wieweitY++;
+				a++;
+				i--;
+			}
+			if (i != 0 && a < 7 && (Figur) sp.getFeld(a + 1, i - 1) instanceof Figur
+					&& ((Figur) sp.getFeld(a + 1, i - 1)).isFarbeWeiss() != farbeWeiss) {
+				wieweitX++;
+				wieweitY++;
+			}
+		}
+
+		/* Also von oben rechts nach unten links */
+		if (minus2 != null && minus2.booleanValue() == false) {
+			int i = von.getX();
+			int a = von.getY();
+			while (i != nach.getX() && a != nach.getY() && !((Figur) sp.getFeld(a - 1, i - 1) instanceof Figur)) {
+				wieweitX++;
+				wieweitY++;
+				a--;
+				i--;
+			}
+			if (i != 0 && a != 0 && (Figur) sp.getFeld(a - 1, i - 1) instanceof Figur
+					&& ((Figur) sp.getFeld(a - 1, i - 1)).isFarbeWeiss() != farbeWeiss) {
+				wieweitX++;
+				wieweitY++;
+			}
+		}
+
+		if ((absX <= wieweitX && absY <= wieweitY)) {
+			return true;
+		}
+		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
+			return false;
+		}
+
+		return super.spielzugMoeglich(sp, von, nach);
+//		}
+//		return false;
 	}
 }
