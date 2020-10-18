@@ -23,11 +23,15 @@ public class Springer extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 
-		if (!super.spielzugMoeglich(sp, von, nach)) {
-			return false;
-		}
+		if(sp.schach() || sp.schachMatt()) {
+			if (!super.spielzugMoeglich(sp, von, nach)) {
+				return false;
+			}
 
-		return (absX == 2 && absY == 1) || (absX == 1 && absY == 2);
+			return (absX == 2 && absY == 1) || (absX == 1 && absY == 2);
+		}
+		
+		return false;
 	}
 
 	

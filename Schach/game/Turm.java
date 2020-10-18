@@ -17,80 +17,86 @@ public class Turm extends Figur {
 
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		int absX = Math.abs(von.getX() - nach.getX());
-		int absY = Math.abs(von.getY() - nach.getY());
+		
+		if(sp.schach() || sp.schachMatt()) {
+			
+			int absX = Math.abs(von.getX() - nach.getX());
+			int absY = Math.abs(von.getY() - nach.getY());
 
-		int wieweitX = 0;
-		int wieweitY = 0;
-		Boolean x = null;
-		Boolean y = null;
-		int xI = von.getX();
-		int yI = von.getY();
+			int wieweitX = 0;
+			int wieweitY = 0;
+			Boolean x = null;
+			Boolean y = null;
+			int xI = von.getX();
+			int yI = von.getY();
 
-		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
-			return false;
-		}
+			if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
+				return false;
+			}
 
-		if (von.getX() < nach.getX() && von.getY() == nach.getY()) {
-			x = new Boolean(true);
-		}
+			if (von.getX() < nach.getX() && von.getY() == nach.getY()) {
+				x = new Boolean(true);
+			}
 
-		if (von.getX() > nach.getX() && von.getY() == nach.getY()) {
-			x = new Boolean(false);
-		}
+			if (von.getX() > nach.getX() && von.getY() == nach.getY()) {
+				x = new Boolean(false);
+			}
 
-		if (von.getY() < nach.getY() && von.getX() == nach.getX()) {
-			y = new Boolean(true);
-		}
+			if (von.getY() < nach.getY() && von.getX() == nach.getX()) {
+				y = new Boolean(true);
+			}
 
-		if (von.getY() > nach.getY() && !((Figur) sp.getFeld(nach.getY(), nach.getX()) instanceof Figur)
-				&& von.getX() == nach.getX()) {
-			y = new Boolean(false);
-		}
+			if (von.getY() > nach.getY() && !((Figur) sp.getFeld(nach.getY(), nach.getX()) instanceof Figur)
+					&& von.getX() == nach.getX()) {
+				y = new Boolean(false);
+			}
 
-		if (x != null && x.booleanValue() == true) {
-			int i = von.getX();
-			while (i != nach.getX() && !((Figur) sp.getFeld(yI, i + 1) instanceof Figur)) {
-				wieweitX++;
-				i++;
+			if (x != null && x.booleanValue() == true) {
+				int i = von.getX();
+				while (i != nach.getX() && !((Figur) sp.getFeld(yI, i + 1) instanceof Figur)) {
+					wieweitX++;
+					i++;
+				}
+				
+			}
+
+			if (x != null && x.booleanValue() == false) {
+				int i = von.getX();
+				while (i != nach.getX() && !((Figur) sp.getFeld(yI, i - 1) instanceof Figur)) {
+					wieweitX++;
+					i--;
+				}
+
+			}
+
+			if (y != null && y.booleanValue() == true) {
+				int a = von.getY();
+				while (a != nach.getY() && !((Figur) sp.getFeld(a + 1, xI) instanceof Figur)) {
+					wieweitY++;
+					a++;
+				}
+			}
+
+			if (y != null && y.booleanValue() == false) {
+				int a = von.getY();
+				while (a != nach.getY() && !((Figur) sp.getFeld(a - 1, xI) instanceof Figur)) {
+					wieweitY++;
+					a--;
+				}
 			}
 			
-		}
 
-		if (x != null && x.booleanValue() == false) {
-			int i = von.getX();
-			while (i != nach.getX() && !((Figur) sp.getFeld(yI, i - 1) instanceof Figur)) {
-				wieweitX++;
-				i--;
+			if ((absX <= wieweitX) && (absY <= wieweitY)) {
+				return true;
 			}
 
-		}
-
-		if (y != null && y.booleanValue() == true) {
-			int a = von.getY();
-			while (a != nach.getY() && !((Figur) sp.getFeld(a + 1, xI) instanceof Figur)) {
-				wieweitY++;
-				a++;
+			if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
+				return false;
 			}
-		}
 
-		if (y != null && y.booleanValue() == false) {
-			int a = von.getY();
-			while (a != nach.getY() && !((Figur) sp.getFeld(a - 1, xI) instanceof Figur)) {
-				wieweitY++;
-				a--;
-			}
+			return super.spielzugMoeglich(sp, von, nach);
 		}
 		
-
-		if ((absX <= wieweitX) && (absY <= wieweitY)) {
-			return true;
-		}
-
-		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
-			return false;
-		}
-
-		return super.spielzugMoeglich(sp, von, nach);
+		return false;
 	}
 }

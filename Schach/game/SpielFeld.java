@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-import com.sun.org.apache.xpath.internal.operations.Gte;
 
 import application.Main;
 
@@ -49,6 +48,203 @@ public class SpielFeld {
 	}
 
 	public boolean schach() {
+		Main m = new Main();
+		String v1 = "KW";
+		String v2 = "KB";
+		int x = 0;
+		int y = 0;
+		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW", "__" };
+		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB", "__" };
+		String[] auswahl = w;
+		if (!werAmZug) {
+			v1 = v2;
+			auswahl = b;
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (mat[i][j].toString().equals(v1)) {
+					y = i;
+					x = j;
+				}
+			}
+		}
+		
+		System.out.println(x);
+		System.out.println(y);
+		
+		ArrayList<Boolean> werte = new ArrayList<Boolean>();
+
+		
+		// xrechts
+		for (int i = x; i < 8; i++) {
+			if (mat[y][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// xlinks
+		for (int i = x; i >= 0; i--) {
+			if (mat[y][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// yoben
+		for (int i = y; i < 8; i++) {
+			if (mat[i][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// yunten
+		for (int i = y; i >= 0; i--) {
+			if (mat[i][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// d1NachOben
+		y--;
+		for (int i = x; i <= 7; i++) {
+			if (mat[y++][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// d1NachUnten
+		for (int i = x; i >= 0; i--) {
+			if (mat[y--][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// d2NachOben
+		for (int i = x; i < 8; i++) {
+			if (mat[y--][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+						}	
+					}
+				}
+			}
+		}
+
+		// d2Nachunten
+		for (int i = x; i >= 0; i--) {
+			if (mat[y++][i] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					if (mat[y][i].toString() == auswahl[j]) {
+						if(auswahl[j] == "__") {
+							werte.add(false);
+						}else {
+							if(auswahl[j] == "__") {
+								werte.add(false);
+							}else {
+								werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x), new Position(y, i)));
+							}	
+						}	
+					}
+				}
+			}
+		}
+
+		int anz = 0;
+
+		for (int i = 0; i < werte.size(); i++) {
+			if (werte.get(i)) {
+				anz++;
+			}
+			if (anz == werte.size()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static Figur erstelleFigur(String f) {
+		char a = f.charAt(0);
+		char b = f.charAt(1);
+		boolean farbeWeiss = false;		
+		Figur c = null;
+		
+		if (b == 'W') {
+			farbeWeiss = true;
+		}
+
+		switch (a) {
+		case 'B':
+			return new Bauer(farbeWeiss, false);
+		case 'D':
+			return new Dame(farbeWeiss, false);
+		case 'K':
+			return new Koenig(farbeWeiss, false);
+		case 'L':
+			return new Laeufer(farbeWeiss, false);
+		case 'S':
+			return new Springer(farbeWeiss, false);
+		case 'T':
+			return new Turm(farbeWeiss, false);
+		default:
+			return c;
+		}
+
+	}
+	
+	public boolean schachMatt() {
 		Main m = new Main();
 		String v1 = "KW";
 		String v2 = "KB";
@@ -173,39 +369,6 @@ public class SpielFeld {
 			}
 		}
 
-		return false;
-	}
-
-	private static Figur erstelleFigur(String f) {
-		char a = f.charAt(0);
-		char b = f.charAt(1);
-		boolean farbeWeiss = false;		
-		Figur c = null;
-		
-		if (b == 'W') {
-			farbeWeiss = true;
-		}
-
-		switch (a) {
-		case 'B':
-			return new Bauer(farbeWeiss, false);
-		case 'D':
-			return new Dame(farbeWeiss, false);
-		case 'K':
-			return new Koenig(farbeWeiss, false);
-		case 'L':
-			return new Laeufer(farbeWeiss, false);
-		case 'S':
-			return new Springer(farbeWeiss, false);
-		case 'T':
-			return new Turm(farbeWeiss, false);
-		default:
-			return c;
-		}
-
-	}
-	
-	public boolean schachMatt() {
 		return false;
 	}
 

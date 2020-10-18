@@ -17,18 +17,21 @@ public class Koenig extends Figur {
 	}
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
-		
-		int absX = Math.abs(von.getX() - nach.getX());
-		int absY = Math.abs(von.getY() - nach.getY());
-		
-		if(!super.spielzugMoeglich(sp, von, nach)) {
-			return false;
+	
+		if(sp.schachMatt()) {
+			int absX = Math.abs(von.getX() - nach.getX());
+			int absY = Math.abs(von.getY() - nach.getY());
+			
+			if(!super.spielzugMoeglich(sp, von, nach)) {
+				return false;
+			}
+			System.out.println(bewegt);
+			if(!bewegt) {
+				return (absX <= 1 && absY <=1);
+			}else {
+				return (absX <= 1 && absY <=1);
+			}
 		}
-		System.out.println(bewegt);
-		if(!bewegt) {
-			return (absX <= 1 && absY <=1);
-		}else {
-			return (absX <= 1 && absY <=1);
-		}
+		return false;
 	}
 }
