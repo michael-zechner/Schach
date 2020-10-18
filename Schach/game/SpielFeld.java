@@ -251,209 +251,209 @@ public class SpielFeld {
 	}
 
 	public boolean schachMatt() {
-//		Main m = new Main();
-//		String v1 = "KB";
-//		String v2 = "KW";
-//		int x = 0;
-//		int y = 0;
-//		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
-//		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
-//		String[] auswahl = b;
-//		System.out.println(werAmZug);
-//		if (!werAmZug) {
-//			v1 = v2;
-//			auswahl = w;
-//		}
-//
-//		for (int i = 0; i < mat.length; i++) {
-//			for (int j = 0; j < mat[0].length; j++) {
-//				if (mat[i][j].toString().equals(v1)) {
-//					y = i;
-//					x = j;
-//
-//					System.out.println(x + " " + y);
-//				}
-//			}
-//		}
-//
-//		ArrayList<Boolean> werte = new ArrayList<Boolean>();
-//
-//		/* xRechts */
-//		for (int xWert = x + 1; xWert < 8; xWert++) {
-//			if (mat[y][xWert] instanceof Figur) {
+		Main m = new Main();
+		String v1 = "KB";
+		String v2 = "KW";
+		int x = 0;
+		int y = 0;
+		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
+		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
+		String[] auswahl = b;
+		System.out.println(werAmZug);
+		if (!werAmZug) {
+			v1 = v2;
+			auswahl = w;
+		}
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat[0].length; j++) {
+				if (mat[i][j].toString().equals(v1)) {
+					y = i;
+					x = j;
+
+					System.out.println(x + " " + y);
+				}
+			}
+		}
+
+		ArrayList<Boolean> werte = new ArrayList<Boolean>();
+
+		/* xRechts */
+		for (int xWert = x + 1; xWert < 8; xWert++) {
+			if (mat[y][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(y, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x)));
+					}
+
+				}
+			}
+		}
+
+//		// xrechts
+//		for (int i = x; i < 8; i++) {
+//			if (mat[y][i] instanceof Figur) {
 //				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(y, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x)));
+//					if (mat[y][i].toString() == auswahl[j]) {
+//						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
+//								new Position(y, i)));
 //					}
-//
 //				}
 //			}
 //		}
-//
-////		// xrechts
-////		for (int i = x; i < 8; i++) {
-////			if (mat[y][i] instanceof Figur) {
-////				for (int j = 0; j < auswahl.length; j++) {
-////					if (mat[y][i].toString() == auswahl[j]) {
-////						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
-////								new Position(y, i)));
-////					}
-////				}
-////			}
-////		}
-//
-//		// xlinks
-//		for (int xWert = x - 1; xWert >= 0; xWert--) {
-//			if (mat[y][xWert] instanceof Figur) {
+
+		// xlinks
+		for (int xWert = x - 1; xWert >= 0; xWert--) {
+			if (mat[y][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(y, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x)));
+					}
+
+				}
+			}
+		}
+
+		// yoben
+		for (int yWert = y + 1; yWert < 8; yWert++) {
+			if (mat[yWert][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, x);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x)));
+					}
+
+				}
+			}
+		}
+
+		// vunten
+		for (int yWert = y - 1; yWert >= 0; yWert--) {
+			if (mat[yWert][x] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, x);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x)));
+					}
+
+				}
+			}
+		}
+
+		// d1NachOben
+		for (int xWert = x + 1; xWert < 8; xWert++) {
+			int yWert = y + 1;
+			if (yWert < 7 && xWert < 7 && mat[yWert][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
+					}
+
+				}
+				yWert++;
+			}
+		}
+//		for (int i = x; i < 8; i++) {
+//			if (mat[y++][i] instanceof Figur) {
 //				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(y, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x)));
+//					if (mat[y][i].toString() == auswahl[j]) {
+//						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
+//								new Position(y, i)));
 //					}
-//
 //				}
 //			}
 //		}
-//
-//		// yoben
-//		for (int yWert = y + 1; yWert < 8; yWert++) {
-//			if (mat[yWert][x] instanceof Figur) {
+
+		// d1NachUnten
+		for (int xWert = x - 1; xWert >= 0; xWert--) {
+			int yWert = y - 1;
+			if (yWert >= 0 && xWert >= 0 && mat[yWert][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
+					}
+
+				}
+				yWert--;
+			}
+		}
+//		for (int i = x; i >= 0; i--) {
+//			if (i < 7 && y < 7 && mat[y--][i] instanceof Figur) {
 //				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, x);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x)));
+//					if (mat[y][i].toString() == auswahl[j]) {
+//						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
+//								new Position(y, i)));
 //					}
-//
 //				}
 //			}
 //		}
-//
-//		// vunten
-//		for (int yWert = y - 1; yWert >= 0; yWert--) {
-//			if (mat[yWert][x] instanceof Figur) {
+
+		// d2NachOben
+		for (int xWert = x - 1; xWert >= 0; xWert--) {
+			int yWert = y + 1;
+			if (xWert != 0 && yWert < 7 && mat[yWert][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
+					}
+
+				}
+				yWert++;
+			}
+		}
+//		for (int i = x; i < 8; i++) {
+//			if (i < 7 && y < 7 && mat[y--][i] instanceof Figur) {
 //				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, x);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x)));
+//					if (mat[y][i].toString() == auswahl[j]) {
+//						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
+//								new Position(y, i)));
 //					}
-//
 //				}
 //			}
 //		}
-//
-//		// d1NachOben
-//		for (int xWert = x + 1; xWert < 8; xWert++) {
-//			int yWert = y + 1;
-//			if (yWert < 7 && xWert < 7 && mat[yWert][xWert] instanceof Figur) {
+
+		// d2Nachunten
+		for (int xWert = x + 1; xWert >= 0; xWert--) {
+			int yWert = y - 1;
+			if (y != 0 && mat[yWert][xWert] instanceof Figur) {
+				for (int j = 0; j < auswahl.length; j++) {
+					Figur f = (Figur) getFeld(yWert, xWert);
+					if (f.toString() == auswahl[j]) {
+						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
+					}
+
+				}
+				yWert--;
+			}
+		}
+//		for (int i = x; i >= 0; i--) {
+//			if (i < 7 && y < 7 && mat[y++][i] instanceof Figur) {
 //				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
+//					if (mat[y][i].toString() == auswahl[j]) {
+//						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
+//								new Position(y, i)));
 //					}
-//
 //				}
-//				yWert++;
 //			}
 //		}
-////		for (int i = x; i < 8; i++) {
-////			if (mat[y++][i] instanceof Figur) {
-////				for (int j = 0; j < auswahl.length; j++) {
-////					if (mat[y][i].toString() == auswahl[j]) {
-////						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
-////								new Position(y, i)));
-////					}
-////				}
-////			}
-////		}
-//
-//		// d1NachUnten
-//		for (int xWert = x - 1; xWert >= 0; xWert--) {
-//			int yWert = y - 1;
-//			if (yWert != 0 && xWert != 0 && mat[yWert][xWert] instanceof Figur) {
-//				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
-//					}
-//
-//				}
-//				yWert--;
-//			}
-//		}
-////		for (int i = x; i >= 0; i--) {
-////			if (i < 7 && y < 7 && mat[y--][i] instanceof Figur) {
-////				for (int j = 0; j < auswahl.length; j++) {
-////					if (mat[y][i].toString() == auswahl[j]) {
-////						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
-////								new Position(y, i)));
-////					}
-////				}
-////			}
-////		}
-//
-//		// d2NachOben
-//		for (int xWert = x - 1; xWert >= 0; xWert--) {
-//			int yWert = y + 1;
-//			if (xWert != 0 && yWert < 7 && mat[yWert][xWert] instanceof Figur) {
-//				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
-//					}
-//
-//				}
-//				yWert++;
-//			}
-//		}
-////		for (int i = x; i < 8; i++) {
-////			if (i < 7 && y < 7 && mat[y--][i] instanceof Figur) {
-////				for (int j = 0; j < auswahl.length; j++) {
-////					if (mat[y][i].toString() == auswahl[j]) {
-////						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
-////								new Position(y, i)));
-////					}
-////				}
-////			}
-////		}
-//
-//		// d2Nachunten
-//		for (int xWert = x + 1; xWert >= 0; xWert--) {
-//			int yWert = y - 1;
-//			if (y != 0 && mat[yWert][xWert] instanceof Figur) {
-//				for (int j = 0; j < auswahl.length; j++) {
-//					Figur f = (Figur) getFeld(yWert, xWert);
-//					if (f.toString() == auswahl[j]) {
-//						werte.add(f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x)));
-//					}
-//
-//				}
-//				yWert--;
-//			}
-//		}
-////		for (int i = x; i >= 0; i--) {
-////			if (i < 7 && y < 7 && mat[y++][i] instanceof Figur) {
-////				for (int j = 0; j < auswahl.length; j++) {
-////					if (mat[y][i].toString() == auswahl[j]) {
-////						werte.add(erstelleFigur(auswahl[j]).spielzugMoeglich(m.getSpielfeld(), new Position(y, x),
-////								new Position(y, i)));
-////					}
-////				}
-////			}
-////		}
-//
-//		int anz = 0;
-//
-//		for (int i = 0; i < werte.size(); i++) {
-//			if (werte.get(i)) {
-//				anz++;
-//			}
-//			if (anz == werte.size()) {
-//				return true;
-//			}
-//		}
-//
-//		System.out.println("Schach: " + werte.size() + "-" + (werte.size() > 0));
+
+		int anz = 0;
+
+		for (int i = 0; i < werte.size(); i++) {
+			if (werte.get(i)) {
+				anz++;
+			}
+			if (anz == werte.size()) {
+				return true;
+			}
+		}
+
+		System.out.println("Schach: " + werte.size() + "-" + (werte.size() > 0));
 		return false;
 	}
 
