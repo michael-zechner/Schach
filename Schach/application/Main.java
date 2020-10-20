@@ -32,9 +32,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
+	private Scene endScene;
+
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private boolean weiss = true;
@@ -66,6 +70,153 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
+
+		primaryStage.setScene(mainScene(primaryStage));
+		primaryStage.setWidth(800);
+		primaryStage.setHeight(800);
+		primaryStage.show();
+
+		/* So wird das Fenster genau mittig in X und oben in Y plaziert */
+		Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+		primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
+		primaryStage.setY(0);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	public boolean isWeiss() {
+		return weiss;
+	}
+
+	public int getFirstN() {
+		return firstN;
+	}
+
+	public void setFirstN(int firstN) {
+		this.firstN = firstN;
+	}
+
+	public int getSecond() {
+		return second;
+	}
+
+	public void setSecond(int second) {
+		this.second = second;
+	}
+
+	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+		Node result = null;
+		ObservableList<Node> childrens = gridPane.getChildren();
+
+		for (Node node : childrens) {
+			if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	/* SpielInfos */
+	private void showAlertWrongMove() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässiger Zug");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Dieser Zug ist leider nicht möglich !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertBlankField() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässiges Feld");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Bitte wähle ein Feld aus, auf dem eine Figur steht !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertColor() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässige Farbe");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Der andere Spieler ist an der Reihe !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertNoSuggestion() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Unzulässige Auswahl");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Die von dir gewählte Figur kann sich momentan leider nicht bewegen !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertSchach() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Du bist im Schach");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Du bist im Schach, musst also deinen König bewegen !");
+
+		alert.showAndWait();
+
+	}
+
+	private void showAlertSchachMatt() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Schach Matt");
+
+		alert.setHeaderText(null);
+		alert.setContentText("Schach Matt ! \n Spieler " + weiss + "hat gewonnen");
+
+		alert.showAndWait();
+
+	}
+
+	private Scene endScene(Stage primaryStage) {
+		StackPane root = new StackPane();
+		Button button = new Button();
+		VBox v = new VBox();
+
+		Label label = new Label("Schach Matt");
+		label.setLayoutX(500);
+		root.getChildren().add(v);
+		button.setText("Neustart");
+
+		v.getChildren().addAll(label, button);
+
+		button.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					primaryStage.setScene(mainScene(primaryStage));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		Scene scene = new Scene(root, 450, 250);
+		scene.getStylesheets().add("application/application.css");
+		return scene;
+	}
+
+	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
 		neu.setVisible(false);
 		BorderPane root = new BorderPane();
 		GridPane feld = new GridPane();
@@ -164,10 +315,6 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-//							if (sp.schachMatt()) {
-//							showAlertSchachMatt();
-//							} else if (sp.schach()) {
-//							showAlertSchach();
 							if (sp.getFeld(Character.getNumericValue(YF),
 
 									Character.getNumericValue(XF)) instanceof Figur) {
@@ -175,8 +322,9 @@ public class Main extends Application {
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
 
 								if (sp.schachMatt(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
-									showAlertSchachMatt();
-									neu.setVisible(true);
+									System.out.println("ENDE");
+									primaryStage.setScene(endScene(primaryStage));
+									primaryStage.show();
 								} else {
 									if (!sp.schach(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
 
@@ -381,120 +529,7 @@ public class Main extends Application {
 		root.setBottom(hbox);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("application/application.css");
-		primaryStage.setScene(scene);
-		primaryStage.setWidth(800);
-		primaryStage.setHeight(800);
-		primaryStage.show();
-
-		/* So wird das Fenster genau mittig in X und oben in Y plaziert */
-		Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-		primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
-		primaryStage.setY(0);
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	public boolean isWeiss() {
-		return weiss;
-	}
-
-	public int getFirstN() {
-		return firstN;
-	}
-
-	public void setFirstN(int firstN) {
-		this.firstN = firstN;
-	}
-
-	public int getSecond() {
-		return second;
-	}
-
-	public void setSecond(int second) {
-		this.second = second;
-	}
-
-	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-		Node result = null;
-		ObservableList<Node> childrens = gridPane.getChildren();
-
-		for (Node node : childrens) {
-			if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-				result = node;
-				break;
-			}
-		}
-
-		return result;
-	}
-
-	/* SpielInfos */
-	private void showAlertWrongMove() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässiger Zug");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Dieser Zug ist leider nicht möglich !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertBlankField() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässiges Feld");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Bitte wähle ein Feld aus, auf dem eine Figur steht !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertColor() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässige Farbe");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Der andere Spieler ist an der Reihe !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertNoSuggestion() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässige Auswahl");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Die von dir gewählte Figur kann sich momentan leider nicht bewegen !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertSchach() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Du bist im Schach");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Du bist im Schach, musst also deinen König bewegen !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertSchachMatt() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Schach Matt");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Schach Matt ! \n Spieler " + weiss + "hat gewonnen");
-
-		alert.showAndWait();
-
+		return scene;
 	}
 
 }
