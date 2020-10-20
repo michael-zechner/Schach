@@ -24,6 +24,7 @@ public class Koenig extends Figur {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 
+		
 		if (!super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
