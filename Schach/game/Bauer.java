@@ -22,7 +22,6 @@ public class Bauer extends Figur {
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
 
-//		if(sp.schach() || sp.schachMatt()) {
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 		if (absY == 1 && absX == 0) {
@@ -103,7 +102,5 @@ public class Bauer extends Figur {
 			return false;
 		}
 		return super.spielzugMoeglich(sp, von, nach);
-//		}
-//		return false;
 	}
 }
