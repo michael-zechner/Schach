@@ -44,8 +44,7 @@ public class Turm extends Figur {
 			y = new Boolean(true);
 		}
 
-		if (von.getY() > nach.getY() && !((Figur) sp.getFeld(nach.getY(), nach.getX()) instanceof Figur)
-				&& von.getX() == nach.getX()) {
+		if (von.getY() > nach.getY() && von.getX() == nach.getX()) {
 			y = new Boolean(false);
 		}
 
@@ -56,7 +55,8 @@ public class Turm extends Figur {
 				i++;
 
 			}
-			if (i < 7 && (Figur) sp.getFeld(yI, i + 1) instanceof Figur && ((Figur) sp.getFeld(yI, i + 1)).isFarbeWeiss() != farbeWeiss) {
+			if (i < 7 && (Figur) sp.getFeld(yI, i + 1) instanceof Figur
+					&& ((Figur) sp.getFeld(yI, i + 1)).isFarbeWeiss() != farbeWeiss) {
 				wieweitX++;
 			}
 
@@ -68,7 +68,8 @@ public class Turm extends Figur {
 				wieweitX++;
 				i--;
 			}
-			if (i != 0 && (Figur) sp.getFeld(yI, i - 1) instanceof Figur && ((Figur) sp.getFeld(yI, i - 1)).isFarbeWeiss() != farbeWeiss) {
+			if (i != 0 && (Figur) sp.getFeld(yI, i - 1) instanceof Figur
+					&& ((Figur) sp.getFeld(yI, i - 1)).isFarbeWeiss() != farbeWeiss) {
 				wieweitX++;
 			}
 
@@ -81,7 +82,8 @@ public class Turm extends Figur {
 				a++;
 
 			}
-			if (a < 7 && (Figur) sp.getFeld(a + 1, xI) instanceof Figur && ((Figur) sp.getFeld(a+1, xI)).isFarbeWeiss() != farbeWeiss) {
+			if (a < 7 && (Figur) sp.getFeld(a + 1, xI) instanceof Figur
+					&& ((Figur) sp.getFeld(a + 1, xI)).isFarbeWeiss() != farbeWeiss) {
 				wieweitY++;
 			}
 		}
@@ -91,11 +93,13 @@ public class Turm extends Figur {
 			while (a != nach.getY() && !((Figur) sp.getFeld(a - 1, xI) instanceof Figur)) {
 				wieweitY++;
 				a--;
+			}
+			if (a != 0 && (Figur) sp.getFeld(a - 1, xI) instanceof Figur
+					&& ((Figur) sp.getFeld(a - 1, xI)).isFarbeWeiss() != farbeWeiss) {
+				wieweitY++;
 
 			}
-			if (a != 0 && (Figur) sp.getFeld(a - 1, xI) instanceof Figur) {
-				wieweitY++;
-			}
+
 		}
 
 		if ((absX <= wieweitX) && (absY <= wieweitY)) {

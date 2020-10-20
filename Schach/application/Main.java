@@ -58,6 +58,7 @@ public class Main extends Application {
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
+	private Button neu = new Button("Da kommt dann a scene");
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -65,6 +66,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
+		neu.setVisible(false);
 		BorderPane root = new BorderPane();
 		GridPane feld = new GridPane();
 		boolean farbe = false;
@@ -162,38 +164,48 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							if (sp.schachMatt()) {
-								showAlertSchachMatt();
-							} else if (sp.schach()) {
-								showAlertSchach();
-							} else if (sp.getFeld(Character.getNumericValue(YF),
+//							if (sp.schachMatt()) {
+//							showAlertSchachMatt();
+//							} else if (sp.schach()) {
+//							showAlertSchach();
+							if (sp.getFeld(Character.getNumericValue(YF),
 
 									Character.getNumericValue(XF)) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
 
-								/* Suggestion */
-								if (von.isFarbeWeiss() == weiss) {
-
-									felder = von.suggest(sp,
-											new Position(Character.getNumericValue(YF), Character.getNumericValue(XF)),
-											sp.isWerAmZug());
-									if (felder.size() > 0) {
-
-										for (int k = 0; k < felder.size(); k++) {
-											int y = Character.getNumericValue(felder.get(k).charAt(0));
-											int x = Character.getNumericValue(felder.get(k).charAt(1));
-											System.out.println(y + "" + x);
-											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
-										}
-										clicked1 = true;
-									} else {
-										System.out.println("no");
-										showAlertNoSuggestion();
-									}
+								if (sp.schachMatt(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
+									showAlertSchachMatt();
+									neu.setVisible(true);
 								} else {
-									showAlertNoSuggestion();
+									if (!sp.schach(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
+
+										/* Suggestion */
+										if (von.isFarbeWeiss() == weiss) {
+
+											felder = von.suggest(sp, new Position(Character.getNumericValue(YF),
+													Character.getNumericValue(XF)), sp.isWerAmZug());
+											if (felder.size() > 0) {
+
+												for (int k = 0; k < felder.size(); k++) {
+													int y = Character.getNumericValue(felder.get(k).charAt(0));
+													int x = Character.getNumericValue(felder.get(k).charAt(1));
+													System.out.println(y + "" + x);
+													Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1,
+															feld);
+													moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+												}
+												clicked1 = true;
+											} else {
+												System.out.println("no");
+												showAlertNoSuggestion();
+											}
+										} else {
+											showAlertNoSuggestion();
+										}
+									} else {
+										showAlertSchach();
+									}
 								}
 
 							} else {
@@ -382,6 +394,10 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public boolean isWeiss() {
+		return weiss;
 	}
 
 	public int getFirstN() {
