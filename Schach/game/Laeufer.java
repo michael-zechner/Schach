@@ -28,7 +28,6 @@ public class Laeufer extends Figur {
 		Boolean minus = null;
 		Boolean minus2 = null;
 
-//		if(sp.schach() || sp.schachMatt()) {
 		if (von.getX() == nach.getX() && von.getY() == nach.getY()) {
 			return false;
 		}
@@ -130,7 +129,5 @@ public class Laeufer extends Figur {
 		}
 
 		return super.spielzugMoeglich(sp, von, nach);
-//		}
-//		return false;
 	}
 }
