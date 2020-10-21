@@ -48,7 +48,6 @@ public class SpielFeld {
 
 	public boolean schach(int y, int x) {
 		Main m = new Main();
-		System.out.println("X:" + x + "Y:" + y);
 		if (scan().size() != 0 && scan().size() != 8 && m.isWeiss() != werAmZug
 				&& !(((Figur) this.getFeld(y, x)) instanceof Koenig)) {
 			return true;
@@ -58,8 +57,6 @@ public class SpielFeld {
 
 	public boolean schachMatt(int y, int x) {
 		Main m = new Main();
-		System.out.println("X:" + x + "Y:" + y);
-		System.out.println("Schachhmatt");
 		if (scan().size() == 8 && m.isWeiss() != werAmZug && !(((Figur) this.getFeld(y, x)) instanceof Koenig)) {
 			return true;
 		}
@@ -67,7 +64,6 @@ public class SpielFeld {
 	}
 
 	public ArrayList<Boolean> scan() {
-		Main m = new Main();
 		String v1 = "KW";
 		String v2 = "KB";
 		int x = 0;
@@ -75,12 +71,10 @@ public class SpielFeld {
 		String[] w = { "BW", "TW", "KW", "DW", "LW", "SW" };
 		String[] b = { "BB", "TB", "KB", "DB", "LB", "SB" };
 		String[] auswahl = b;
-		System.out.println(werAmZug);
 		if (!werAmZug) {
 			v1 = v2;
 			auswahl = w;
 		}
-		System.out.println(v1);
 
 		for (int i = 0; i < mat.length; i++) {
 			for (int j = 0; j < mat[0].length; j++) {
@@ -88,11 +82,9 @@ public class SpielFeld {
 					y = i;
 					x = j;
 
-					System.out.println(x + " " + y);
 				}
 			}
 		}
-		System.out.println(auswahl[0]);
 
 		ArrayList<Boolean> werte = new ArrayList<Boolean>();
 
@@ -132,10 +124,6 @@ public class SpielFeld {
 			if (mat[yWert][x] instanceof Figur) {
 				for (int j = 0; j < auswahl.length; j++) {
 					Figur f = (Figur) getFeld(yWert, x);
-					System.out.println(f.toString());
-					System.out.println("Auswahl:" + auswahl[j]);
-					System.out.println(
-							"moeglich: " + f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x)));
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x))) {
 						werte.add(true);
@@ -230,7 +218,6 @@ public class SpielFeld {
 				yWert--;
 			}
 		}
-		System.out.println("Werte: " + werte.size());
 
 		return werte;
 	}

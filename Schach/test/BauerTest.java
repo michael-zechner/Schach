@@ -85,6 +85,7 @@ public class BauerTest {
 		b1.setBewegt(false);
 		boolean ok1 = b1.spielzugMoeglich(sp, new Position(1, 0), new Position(3, 0));
 		assertTrue(ok1);
+		sp.ausgabe();
 	}
 
 	@Test

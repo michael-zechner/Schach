@@ -62,7 +62,6 @@ public class Main extends Application {
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
-	private Button neu = new Button("Da kommt dann a scene");
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -176,17 +175,6 @@ public class Main extends Application {
 
 	}
 
-	private void showAlertSchachMatt() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Schach Matt");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Schach Matt ! \n Spieler " + weiss + "hat gewonnen");
-
-		alert.showAndWait();
-
-	}
-
 	private Scene endScene(Stage primaryStage) {
 		StackPane root = new StackPane();
 		Button button = new Button();
@@ -217,7 +205,6 @@ public class Main extends Application {
 	}
 
 	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
-		neu.setVisible(false);
 		BorderPane root = new BorderPane();
 		GridPane feld = new GridPane();
 		boolean farbe = false;
@@ -228,7 +215,7 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("Test3.txt");
+		sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
@@ -311,7 +298,6 @@ public class Main extends Application {
 							String a = Integer.toString((b.getId().charAt(0) - 65));
 							XF = a.charAt(0);
 							YF = (char) (b.getId().charAt(1) - 1);
-							System.out.println(XF + " " + YF);
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
@@ -320,9 +306,9 @@ public class Main extends Application {
 									Character.getNumericValue(XF)) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
+								von.setBewegt(false);
 
 								if (sp.schachMatt(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
-									System.out.println("ENDE");
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
 								} else {
@@ -338,14 +324,12 @@ public class Main extends Application {
 												for (int k = 0; k < felder.size(); k++) {
 													int y = Character.getNumericValue(felder.get(k).charAt(0));
 													int x = Character.getNumericValue(felder.get(k).charAt(1));
-													System.out.println(y + "" + x);
 													Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1,
 															feld);
 													moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
 												}
 												clicked1 = true;
 											} else {
-												System.out.println("no");
 												showAlertNoSuggestion();
 											}
 										} else {
@@ -368,7 +352,6 @@ public class Main extends Application {
 							for (int k = 0; k < felder.size(); k++) {
 								int y = Character.getNumericValue(felder.get(k).charAt(0));
 								int x = Character.getNumericValue(felder.get(k).charAt(1));
-								System.out.println(y + "" + x);
 								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 								moeglich.setStyle("");
 							}
@@ -380,8 +363,6 @@ public class Main extends Application {
 							String c = Integer.toString((b.getId().charAt(0) - 65));
 							XS = c.charAt(0);
 							YS = (char) (b.getId().charAt(1) - 1);
-							System.out.println(XS + " " + YS);
-							System.out.println(XF + " " + YF);
 
 							zugC[3] = XS;
 							zugC[4] = YS;
@@ -425,7 +406,6 @@ public class Main extends Application {
 									} else {
 										spieler.setText("Spieler Schwarz am Zug");
 										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-										System.out.println(spieler.getStyleClass());
 									}
 
 									/* Spielzug abschließen */

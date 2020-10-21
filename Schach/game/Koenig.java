@@ -28,7 +28,6 @@ public class Koenig extends Figur {
 		if (!super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
-		System.out.println(bewegt);
 		if (!bewegt) {
 			return (absX <= 1 && absY <= 1);
 		} else {
