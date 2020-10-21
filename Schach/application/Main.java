@@ -306,7 +306,6 @@ public class Main extends Application {
 									Character.getNumericValue(XF)) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
-								von.setBewegt(false);
 
 								if (sp.schachMatt(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
 									primaryStage.setScene(endScene(primaryStage));

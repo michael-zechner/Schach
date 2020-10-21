@@ -103,7 +103,6 @@ public class SpielFeld {
 			}
 		}
 
-
 		// xlinks
 		XLeft_LOOP: for (int xWert = x - 1; xWert >= 0; xWert--) {
 			if (mat[y][xWert] instanceof Figur) {
@@ -229,7 +228,7 @@ public class SpielFeld {
 
 		if (mat[von.getY()][von.getX()] instanceof Figur) {
 
-			Figur f = (Figur) mat[von.getY()][von.getX()];
+			Figur f = (Figur) getFeld(von.getY(), von.getX());
 
 			if (f.farbeWeiss == werAmZug && !schachMatt(von.getY(), von.getX()) && !schach(von.getY(), von.getX())) {
 
