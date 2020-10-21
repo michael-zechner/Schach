@@ -31,12 +31,11 @@ public class Bauer extends Figur {
 		}
 
 		if (!bewegt) {
-			System.out.println("I beweg mi jetzt");
-			System.out.println(farbeWeiss);
 			if (farbeWeiss) {
 				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
 					return true;
 				}
+				
 			}
 			if (!farbeWeiss) {
 				if (von.getY() - 2 == nach.getY() && von.getX() == nach.getX()) {
@@ -97,11 +96,13 @@ public class Bauer extends Figur {
 				}
 			}
 		}
-		bewegt = true;
+		
 
 		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
+		
+		bewegt = true;
 		return super.spielzugMoeglich(sp, von, nach);
 	}
 }
