@@ -22,3 +22,7 @@ Button{
 	-fx-background-radius: 0px;
 }
 
+.buttonClicked{
+	-fx-border-color: blue;
+}
+

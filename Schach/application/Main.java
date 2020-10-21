@@ -3,7 +3,6 @@ package application;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import game.Feld;
 import game.Figur;
 import game.Position;
 import game.SpielFeld;
@@ -37,8 +36,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
-	private Scene endScene;
 
+	private String zug;
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private boolean weiss = true;
@@ -57,7 +56,6 @@ public class Main extends Application {
 	private boolean rotation = false;
 	private Button rotate;
 	private double width;
-	private double height;
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
@@ -230,11 +228,16 @@ public class Main extends Application {
 
 				Button b = new Button();
 				allButtons.add(b);
+
+				b.setMaxWidth(Double.MAX_VALUE);
+				b.setMaxHeight(Double.MAX_VALUE);
+
 				/* ImageSize Button */
 				/*
 				 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
 				 * skaliert werden soll
 				 */
+				b.setGraphic(imageView);
 				b.widthProperty().addListener((obs, oldVal, newVal) -> {
 					width = (Double) newVal;
 
@@ -251,9 +254,7 @@ public class Main extends Application {
 
 				});
 
-				b.setGraphic(imageView);
-				b.setMaxWidth(Double.MAX_VALUE);
-				b.setMaxHeight(Double.MAX_VALUE);
+				/* Farbe und CSS */
 				b.getStyleClass().add("button");
 				if (farbe) {
 					if (j % 2 == 0) {
@@ -295,8 +296,8 @@ public class Main extends Application {
 							letzterZug = b.getId();
 
 							/* Spielzug */
-							String a = Integer.toString((b.getId().charAt(0) - 65));
-							XF = a.charAt(0);
+							String zug = Integer.toString((b.getId().charAt(0) - 65));
+							XF = zug.charAt(0);
 							YF = (char) (b.getId().charAt(1) - 1);
 							zugC[0] = XF;
 							zugC[1] = YF;
@@ -333,6 +334,10 @@ public class Main extends Application {
 											}
 										} else {
 											showAlertNoSuggestion();
+											Button previous = (Button) getNodeByRowColumnIndex(
+													8 - Character.getNumericValue(YF),
+													Character.getNumericValue(XF) + 1, feld);
+											previous.setStyle("");
 										}
 									} else {
 										showAlertSchach();
@@ -345,8 +350,10 @@ public class Main extends Application {
 
 							/* Bild von erstem Button getten */
 							n1 = b.getGraphic();
+							b.setStyle("-fx-border-color: blue;");
 						}
 						if (clicked2) {
+
 							/* Suggestion */
 							for (int k = 0; k < felder.size(); k++) {
 								int y = Character.getNumericValue(felder.get(k).charAt(0));
@@ -365,7 +372,7 @@ public class Main extends Application {
 
 							zugC[3] = XS;
 							zugC[4] = YS;
-							String zug = String.valueOf(zugC);
+							zug = String.valueOf(zugC);
 
 							zugMoeglich = von.spielzugMoeglich(sp,
 									new Position(Character.getNumericValue(zug.charAt(1)),
@@ -412,16 +419,28 @@ public class Main extends Application {
 									sp.ausgabe();
 									sp.setWerAmZug(!sp.isWerAmZug());
 									ausgabe.setText(ausgabe.getText() + letzterZug);
+									Button previous = (Button) getNodeByRowColumnIndex(
+											8 - Character.getNumericValue(zug.charAt(1)),
+											Character.getNumericValue(zug.charAt(0)) + 1, feld);
+									previous.setStyle("");
 
 								} else {
 									clicked2 = clicked1;
 									clicked1 = false;
 									showAlertWrongMove();
+									Button previous = (Button) getNodeByRowColumnIndex(
+											8 - Character.getNumericValue(zug.charAt(1)),
+											Character.getNumericValue(zug.charAt(0)) + 1, feld);
+									previous.setStyle("");
 								}
 							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
 								showAlertColor();
+								Button previous = (Button) getNodeByRowColumnIndex(
+										8 - Character.getNumericValue(zug.charAt(1)),
+										Character.getNumericValue(zug.charAt(0)) + 1, feld);
+								previous.setStyle("");
 
 							}
 
@@ -434,6 +453,8 @@ public class Main extends Application {
 
 			}
 		}
+
+		/* Für responsive Buttons */
 		ColumnConstraints col1 = new ColumnConstraints();
 		col1.setPercentWidth(10);
 		ColumnConstraints col2 = new ColumnConstraints();
