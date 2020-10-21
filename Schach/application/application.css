@@ -19,10 +19,8 @@ Button{
 
 .buttonBlack{
 	-fx-background-color: #585858; 
-	-fx-background-radius: 0px;
+	-fx-background-radius: 0.0px;
 }
 
-.buttonClicked{
-	-fx-border-color: blue;
-}
+
 

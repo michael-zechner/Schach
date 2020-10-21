@@ -9,6 +9,15 @@ public class SpielFeld {
 	private Feld[][] mat = new Feld[8][8];
 	private boolean werAmZug = true;
 	private boolean moeglich = false;
+	private boolean newFigure = false;
+
+	public boolean isNewFigure() {
+		return newFigure;
+	}
+
+	public void setNewFigure(boolean newFigure) {
+		this.newFigure = newFigure;
+	}
 
 	public boolean isMoeglich() {
 		return moeglich;
@@ -37,6 +46,7 @@ public class SpielFeld {
 	}
 
 	public void ausgabe() {
+		System.out.println("----------------");
 		for (int i = 7; i >= 0; i--) {
 			for (int j = 0; j < 8; j++) {
 				System.out.print(mat[i][j].toString());
@@ -226,6 +236,13 @@ public class SpielFeld {
 		Position von = schach2koordinate(p[0]);
 		Position nach = schach2koordinate(p[1]);
 
+		if (mat[von.getY()][von.getX()] instanceof Bauer) {
+			Bauer b = (Bauer) getFeld(von.getY(), von.getX());
+			if (b.getFigure(this, von, nach))
+				newFigure = true;
+
+		}
+
 		if (mat[von.getY()][von.getX()] instanceof Figur) {
 
 			Figur f = (Figur) getFeld(von.getY(), von.getX());
@@ -240,6 +257,30 @@ public class SpielFeld {
 			}
 
 		}
+	}
+
+	public void newFigureChoice(char name, boolean farbeWeiss, Position nach) {
+		Figur f = null;
+		switch (name) {
+
+		case 'D':
+			f = new Dame(farbeWeiss, true);
+			break;
+
+		case 'L':
+			f = new Laeufer(farbeWeiss, true);
+			break;
+		case 'S':
+			f = new Springer(farbeWeiss, true);
+			break;
+		case 'T':
+			f = new Turm(farbeWeiss, true);
+			break;
+		default:
+			System.out.println("Default");
+
+		}
+		mat[nach.getY()][nach.getX()] = f;
 	}
 
 	public Position schach2koordinate(String schach) {
@@ -257,13 +298,4 @@ public class SpielFeld {
 		return null;
 	}
 
-	public char boolToChar(boolean werAmZug) {
-		char color = 0;
-		if (werAmZug == true) {
-			color = 'W';
-		} else if (werAmZug == false) {
-			color = 'B';
-		}
-		return color;
-	}
 }

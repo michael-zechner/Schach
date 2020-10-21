@@ -2,6 +2,7 @@ package application;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import game.Figur;
 import game.Position;
@@ -23,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +39,7 @@ import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
 
+	private Label label;
 	private String zug;
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
@@ -213,18 +216,11 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("start.txt");
+		sp = spIO.einlesen("Test3.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
-				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
-
-				imageView = new ImageView(im1);
-				imageView.setFitHeight(40);
-				imageView.setFitWidth(25);
-
-				view.add(imageView);
 
 				Button b = new Button();
 				allButtons.add(b);
@@ -327,13 +323,14 @@ public class Main extends Application {
 													Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1,
 															feld);
 													moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+													b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
 												}
 												clicked1 = true;
 											} else {
 												showAlertNoSuggestion();
 											}
 										} else {
-											showAlertNoSuggestion();
+											showAlertColor();
 											Button previous = (Button) getNodeByRowColumnIndex(
 													8 - Character.getNumericValue(YF),
 													Character.getNumericValue(XF) + 1, feld);
@@ -350,7 +347,7 @@ public class Main extends Application {
 
 							/* Bild von erstem Button getten */
 							n1 = b.getGraphic();
-							b.setStyle("-fx-border-color: blue;");
+
 						}
 						if (clicked2) {
 
@@ -423,6 +420,8 @@ public class Main extends Application {
 											8 - Character.getNumericValue(zug.charAt(1)),
 											Character.getNumericValue(zug.charAt(0)) + 1, feld);
 									previous.setStyle("");
+									handleNewFigure(new Position(Character.getNumericValue(zugC[4]),
+											Character.getNumericValue(zugC[3])));
 
 								} else {
 									clicked2 = clicked1;
@@ -453,6 +452,7 @@ public class Main extends Application {
 
 			}
 		}
+		handleImages();
 
 		/* Für responsive Buttons */
 		ColumnConstraints col1 = new ColumnConstraints();
@@ -530,6 +530,66 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("application/application.css");
 		return scene;
+	}
+
+	public void handleNewFigure(Position nach) {
+		if (sp.isNewFigure()) {
+			char figur = ' ';
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Dein Bauer ist Oben");
+
+			alert.setHeaderText(null);
+			alert.setContentText("Du darfst dir jetzt eine neue Figur aussuchen !");
+
+			ButtonType Dame = new ButtonType("Dame");
+			ButtonType Turm = new ButtonType("Turm");
+			ButtonType Springer = new ButtonType("Springer");
+			ButtonType Laeufer = new ButtonType("Laeufer");
+
+			// Remove default ButtonTypes
+			alert.getButtonTypes().clear();
+
+			alert.getButtonTypes().addAll(Dame, Turm, Springer, Laeufer);
+
+			// option != null.
+			Optional<ButtonType> option = alert.showAndWait();
+
+			if (option.get() == null) {
+				System.err.println();
+			} else if (option.get() == Dame) {
+				figur = 'D';
+			} else if (option.get() == Turm) {
+				figur = 'T';
+			} else if (option.get() == Springer) {
+				figur = 'S';
+			} else if (option.get() == Laeufer) {
+				figur = 'L';
+			}
+
+			sp.newFigureChoice(figur, !weiss, nach);
+			sp.setNewFigure(false);
+			handleImages();
+		}
+	}
+
+	public void handleImages() {
+		view.clear();
+		for (int i = 1; i < 9; i++) {
+			for (int j = 1; j < 9; j++) {
+
+				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
+
+				imageView = new ImageView(im1);
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(25);
+
+				view.add(imageView);
+			}
+		}
+
+		for (int i = 0; i < 64; i++) {
+			allButtons.get(i).setGraphic(view.get(i));
+		}
 	}
 
 }

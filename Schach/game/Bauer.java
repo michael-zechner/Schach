@@ -6,6 +6,21 @@ public class Bauer extends Figur {
 		super(farbeWeiss, bewegt);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public boolean getFigure(SpielFeld sp, Position von, Position nach) {
+		if (farbeWeiss) {
+			if (nach.getY() == 7) {
+				return true;
+			}
+			
+		}
+		if (!farbeWeiss) {
+			if (nach.getY() == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public String toString() {
