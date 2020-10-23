@@ -47,13 +47,13 @@ public class Bauer extends Figur {
 
 		if (!bewegt) {
 			if (farbeWeiss) {
-				if (von.getY() + 2 == nach.getY() && von.getX() == nach.getX()) {
+				if (!(sp.getMat()[von.getY()+2][von.getX()] instanceof Figur) && (von.getY() + 2 == nach.getY()) && (von.getX() == nach.getX())) {
 					return true;
 				}
 				
 			}
 			if (!farbeWeiss) {
-				if (von.getY() - 2 == nach.getY() && von.getX() == nach.getX()) {
+				if (!(sp.getMat()[von.getY()-2][von.getX()] instanceof Figur) && von.getY() - 2 == nach.getY() && von.getX() == nach.getX()) {
 					return true;
 				}
 			}
