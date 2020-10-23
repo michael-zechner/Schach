@@ -56,18 +56,18 @@ public class SpielFeld {
 
 	}
 
-	public boolean schach(int y, int x) {
+	public boolean schach(Position pos) {
 		Main m = new Main();
 		if (scan().size() != 0 && scan().size() != 8 && m.isWeiss() != werAmZug
-				&& !(((Figur) this.getFeld(y, x)) instanceof Koenig)) {
+				&& !(((Figur) this.getFeld(pos)) instanceof Koenig)) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean schachMatt(int y, int x) {
+	public boolean schachMatt(Position pos) {
 		Main m = new Main();
-		if (scan().size() == 8 && m.isWeiss() != werAmZug && !(((Figur) this.getFeld(y, x)) instanceof Koenig)) {
+		if (scan().size() == 8 && m.isWeiss() != werAmZug && !(((Figur) this.getFeld(pos)) instanceof Koenig)) {
 			return true;
 		}
 		return false;
@@ -236,22 +236,25 @@ public class SpielFeld {
 		Position von = schach2koordinate(p[0]);
 		Position nach = schach2koordinate(p[1]);
 
-		if (mat[von.getY()][von.getX()] instanceof Bauer) {
-			Bauer b = (Bauer) getFeld(von.getY(), von.getX());
+		if (getFeld(von) instanceof Bauer) {
+			Bauer b = (Bauer) getFeld(von);
 			if (b.getFigure(this, von, nach))
 				newFigure = true;
 
 		}
 
-		if (mat[von.getY()][von.getX()] instanceof Figur) {
+		if (getFeld(von) instanceof Figur) {
 
-			Figur f = (Figur) getFeld(von.getY(), von.getX());
+			Figur f = (Figur) getFeld(von);
 
-			if (f.farbeWeiss == werAmZug && !schachMatt(von.getY(), von.getX()) && !schach(von.getY(), von.getX())) {
+			if (f.farbeWeiss == werAmZug && !schachMatt(von) && !schach(von)) {
 
 				if (f.spielzugMoeglich(this, von, nach)) {
-					mat[nach.getY()][nach.getX()] = f;
-					mat[von.getY()][von.getX()] = new Feld();
+					System.out.println("binDrin");
+					setFeld(nach, f);
+					setFeld(von, new Feld());
+//					mat[nach.getY()][nach.getX()] = f;
+//					mat[von.getY()][von.getX()] = new Feld();
 					f.setBewegt(true);
 				}
 			}
@@ -296,6 +299,14 @@ public class SpielFeld {
 			return f;
 		}
 		return null;
+	}
+	
+	public Feld getFeld(Position pos) {
+		return getFeld(pos.getY(), pos.getX());
+	}
+	
+	public void setFeld(Position pos, Feld f) {
+		mat[pos.getY()][pos.getX()] = f;
 	}
 
 }

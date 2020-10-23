@@ -216,7 +216,7 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("Test4.txt");
+		sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
@@ -304,11 +304,12 @@ public class Main extends Application {
 
 								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
 
-								if (sp.schachMatt(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
+								Position vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
+								if (sp.schachMatt(vPos)) {
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
 								} else {
-									if (!sp.schach(Character.getNumericValue(YF), Character.getNumericValue(XF))) {
+									if (!sp.schach(vPos)) {
 
 										/* Suggestion */
 										if (von.isFarbeWeiss() == weiss) {
