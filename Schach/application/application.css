@@ -13,13 +13,13 @@ Button{
 }
 
 .button{
-	-fx-background-color: #E0E6B6; 
-	-fx-background-radius: 0.0px; 
+	-fx-background-color: #585858; 
+	-fx-background-radius: 0.0px;
 }
 
 .buttonBlack{
-	-fx-background-color: #585858; 
-	-fx-background-radius: 0.0px;
+	-fx-background-color: #E0E6B6; 
+	-fx-background-radius: 0.0px; 
 }
 
 
