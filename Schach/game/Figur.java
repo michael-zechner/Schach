@@ -30,10 +30,10 @@ public abstract class Figur extends Feld {
 			return false;
 		}
 
-		Figur fvon = (Figur) sp.getFeld(von.getY(), von.getX());
+		Figur fvon = (Figur) sp.getFeld(von);
 		Figur fnach;
-		if (sp.getFeld(nach.getY(), nach.getX()) instanceof Figur) {
-			fnach = (Figur) sp.getFeld(nach.getY(), nach.getX());
+		if (sp.getFeld(nach) instanceof Figur) {
+			fnach = (Figur) sp.getFeld(nach);
 			if (fvon.isFarbeWeiss() == fnach.isFarbeWeiss()) {
 				return false;
 			}
@@ -48,7 +48,7 @@ public abstract class Figur extends Feld {
 			for (int j = 0; j < 8; j++) {
 				Position nach = new Position(j, i);
 				setFarbeWeiss(farbeWeiss);
-				if (sp.getFeld(von.getY(), von.getX()) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
+				if (sp.getFeld(von) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
 					suggestions.add(nach.getX() + "" + nach.getY());
 
 				}

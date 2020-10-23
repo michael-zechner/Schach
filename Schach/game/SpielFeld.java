@@ -250,11 +250,8 @@ public class SpielFeld {
 			if (f.farbeWeiss == werAmZug && !schachMatt(von) && !schach(von)) {
 
 				if (f.spielzugMoeglich(this, von, nach)) {
-					System.out.println("binDrin");
 					setFeld(nach, f);
 					setFeld(von, new Feld());
-//					mat[nach.getY()][nach.getX()] = f;
-//					mat[von.getY()][von.getX()] = new Feld();
 					f.setBewegt(true);
 				}
 			}
@@ -283,7 +280,7 @@ public class SpielFeld {
 			System.out.println("Default");
 
 		}
-		mat[nach.getY()][nach.getX()] = f;
+		setFeld(nach, f);
 	}
 
 	public Position schach2koordinate(String schach) {

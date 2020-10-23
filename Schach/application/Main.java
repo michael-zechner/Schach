@@ -298,49 +298,43 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							if (sp.getFeld(Character.getNumericValue(YF),
+							Position vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
+							if (sp.getFeld(vPos) instanceof Figur) {
 
-									Character.getNumericValue(XF)) instanceof Figur) {
+								von = (Figur) sp.getFeld(vPos);
 
-								von = (Figur) sp.getFeld(Character.getNumericValue(YF), Character.getNumericValue(XF));
-
-								Position vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
 								if (sp.schachMatt(vPos)) {
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
-								} else {
-									if (!sp.schach(vPos)) {
+								} else
+//									if (!sp.schach(vPos)) {
 
-										/* Suggestion */
-										if (von.isFarbeWeiss() == weiss) {
+								/* Suggestion */
+								if (von.isFarbeWeiss() == weiss) {
 
-											felder = von.suggest(sp, new Position(Character.getNumericValue(YF),
-													Character.getNumericValue(XF)), sp.isWerAmZug());
-											if (felder.size() > 0) {
+									felder = von.suggest(sp, vPos, sp.isWerAmZug());
+									if (felder.size() > 0) {
 
-												for (int k = 0; k < felder.size(); k++) {
-													int y = Character.getNumericValue(felder.get(k).charAt(0));
-													int x = Character.getNumericValue(felder.get(k).charAt(1));
-													Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1,
-															feld);
-													moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
-													b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
-												}
-												clicked1 = true;
-											} else {
-												showAlertNoSuggestion();
-											}
-										} else {
-											showAlertColor();
-											Button previous = (Button) getNodeByRowColumnIndex(
-													8 - Character.getNumericValue(YF),
-													Character.getNumericValue(XF) + 1, feld);
-											previous.setStyle("");
+										for (int k = 0; k < felder.size(); k++) {
+											int y = Character.getNumericValue(felder.get(k).charAt(0));
+											int x = Character.getNumericValue(felder.get(k).charAt(1));
+											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+											b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
 										}
+										clicked1 = true;
 									} else {
-										showAlertSchach();
+										showAlertNoSuggestion();
 									}
+								} else {
+									showAlertColor();
+									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+											feld);
+									previous.setStyle("");
 								}
+//								} else {
+//									showAlertSchach();
+//								}
 
 							} else {
 								showAlertBlankField();
