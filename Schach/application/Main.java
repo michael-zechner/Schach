@@ -254,7 +254,7 @@ public class Main extends Application {
 				b.getStyleClass().add("button");
 				if (farbe) {
 					if (j % 2 == 0) {
-						b.getStyleClass().add("buttonBlack");
+						b.getStyleClass().add("buttonWhite");
 					}
 					if (j == 8 && i % 2 == 0) {
 						farbe = false;
@@ -262,7 +262,7 @@ public class Main extends Application {
 				}
 				if (!farbe) {
 					if (j % 2 != 0) {
-						b.getStyleClass().add("buttonBlack");
+						b.getStyleClass().add("buttonWhite");
 					}
 					if (j == 8 && i % 2 != 0) {
 						farbe = true;
