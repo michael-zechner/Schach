@@ -91,13 +91,16 @@ public class SpielFeld {
 				if (mat[i][j].toString().equals(v1)) {
 					y = i;
 					x = j;
-
+					System.out.println("XK: " + x + " YK: " + y);
+					System.out.println(auswahl[1]);
+					System.out.println("------");
 				}
 			}
 		}
 
 		ArrayList<Boolean> werte = new ArrayList<Boolean>();
 
+		werte.clear();
 		/* xRechts */
 		XRight_LOOP: for (int xWert = x + 1; xWert < 8; xWert++) {
 			if (mat[y][xWert] instanceof Figur) {
@@ -107,6 +110,7 @@ public class SpielFeld {
 							&& f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x))) {
 
 						werte.add(true);
+						System.out.println("XRight");
 						break XRight_LOOP;
 					}
 				}
@@ -121,6 +125,7 @@ public class SpielFeld {
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(y, xWert), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("XLeft");
 						break XLeft_LOOP;
 					}
 
@@ -133,9 +138,11 @@ public class SpielFeld {
 			if (mat[yWert][x] instanceof Figur) {
 				for (int j = 0; j < auswahl.length; j++) {
 					Figur f = (Figur) getFeld(yWert, x);
-					if (f.toString().equals(auswahl[j])
+
+					if (f.isFarbeWeiss() == werAmZug && f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("YTop");
 						break YTop_LOOP;
 					}
 
@@ -148,9 +155,10 @@ public class SpielFeld {
 			if (mat[yWert][x] instanceof Figur) {
 				for (int j = 0; j < auswahl.length; j++) {
 					Figur f = (Figur) getFeld(yWert, x);
-					if (f.toString().equals(auswahl[j])
+					if (f.isFarbeWeiss() == werAmZug && f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, x), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("YBottom");
 						break YBottom_LOOP;
 					}
 
@@ -167,6 +175,7 @@ public class SpielFeld {
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("D1Up");
 						break D1Up_LOOP;
 					}
 
@@ -185,6 +194,7 @@ public class SpielFeld {
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("D1Down");
 						break D1Down_LOOP;
 					}
 
@@ -203,6 +213,7 @@ public class SpielFeld {
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("D2Up");
 						break D2Up_LOOP;
 					}
 
@@ -220,6 +231,7 @@ public class SpielFeld {
 					if (f.toString().equals(auswahl[j])
 							&& f.spielzugMoeglich(this, new Position(yWert, xWert), new Position(y, x))) {
 						werte.add(true);
+						System.out.println("D2Down");
 						break D2Bottom_LOOP;
 					}
 
@@ -228,6 +240,7 @@ public class SpielFeld {
 			}
 		}
 
+		System.out.println("Wert: " + werte.size());
 		return werte;
 	}
 
@@ -297,11 +310,11 @@ public class SpielFeld {
 		}
 		return null;
 	}
-	
+
 	public Feld getFeld(Position pos) {
 		return getFeld(pos.getY(), pos.getX());
 	}
-	
+
 	public void setFeld(Position pos, Feld f) {
 		mat[pos.getY()][pos.getX()] = f;
 	}

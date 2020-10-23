@@ -307,7 +307,7 @@ public class Main extends Application {
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
 								} else
-//									if (!sp.schach(vPos)) {
+									if (!sp.schach(vPos)) {
 
 								/* Suggestion */
 								if (von.isFarbeWeiss() == weiss) {
@@ -332,9 +332,9 @@ public class Main extends Application {
 											feld);
 									previous.setStyle("");
 								}
-//								} else {
-//									showAlertSchach();
-//								}
+								} else {
+									showAlertSchach();
+								}
 
 							} else {
 								showAlertBlankField();
