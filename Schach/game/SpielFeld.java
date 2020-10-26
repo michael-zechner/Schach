@@ -51,12 +51,11 @@ public class SpielFeld {
 		if (getFeld(von) instanceof Koenig) {
 
 			Koenig k = (Koenig) getFeld(von);
-			System.out.println(k.toString());
 
 			if (k.rochade(this, von, nach)) {
-				System.out.println("MACH JETZT ROCHADE");
 				setFeld(nach, getFeld(von));
-				setFeld(von, new Turm(werAmZug, true));
+				setFeld(new Position(0, 6), new Turm(werAmZug, true));
+				setFeld(von, new Feld());
 			}
 		}
 
