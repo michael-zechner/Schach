@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import game.Figur;
+import game.Koenig;
 import game.Position;
 import game.SpielFeld;
 import game.SpielFeldIO;
@@ -89,27 +90,27 @@ public class Main extends Application {
 		BorderPane root = new BorderPane();
 		feld = new GridPane();
 		boolean farbe = false;
-	
+
 		Label spieler = new Label("Spieler Weiss am Zug");
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
-	
+
 		SpielFeldIO spIO = new SpielFeldIO();
 		sp = spIO.einlesen("Test4.txt");
 		sp.setWerAmZug(true);
-	
+
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
-	
+
 				Button b = new Button();
 				allButtons.add(b);
-	
+
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
-	
+
 				b.setGraphic(imageView);
-	
+
 				/* Farbe und CSS */
 				b.getStyleClass().add("button");
 				if (farbe) {
@@ -128,29 +129,29 @@ public class Main extends Application {
 						farbe = true;
 					}
 				}
-	
+
 				/* Button Id setzen */
 				char id = (char) ('A' + (i - 1));
 				String id1 = id + String.valueOf(9 - j);
 				b.setId(id1);
 				feld.add(b, i, j);
-	
+
 				/* Button Handler */
 				b.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-	
+
 						XF = 0;
 						YF = 0;
 						XS = 0;
 						YS = 0;
-	
+
 						/* Erster Button */
 						if (!clicked1) {
-	
+
 							/* Letzter Zug Label */
 							letzterZug = b.getId();
-	
+
 							/* Spielzug */
 							String zug = Integer.toString((b.getId().charAt(0) - 65));
 							XF = zug.charAt(0);
@@ -160,20 +161,20 @@ public class Main extends Application {
 							zugC[2] = '-';
 							Position vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
 							if (sp.getFeld(vPos) instanceof Figur) {
-	
+
 								von = (Figur) sp.getFeld(vPos);
-	
+
 								if (sp.schachMatt(vPos)) {
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
 								} else if (!sp.schach(vPos)) {
-	
+
 									/* Suggestion */
 									if (von.isFarbeWeiss() == weiss) {
-	
+
 										felder = von.suggest(sp, vPos, sp.isWerAmZug());
 										if (felder.size() > 0) {
-	
+
 											for (int k = 0; k < felder.size(); k++) {
 												int y = Character.getNumericValue(felder.get(k).charAt(0));
 												int x = Character.getNumericValue(felder.get(k).charAt(1));
@@ -194,17 +195,17 @@ public class Main extends Application {
 								} else {
 									showAlertSchach();
 								}
-	
+
 							} else {
 								showAlertBlankField();
 							}
-	
+
 							/* Bild von erstem Button getten */
 							n1 = b.getGraphic();
-	
+
 						}
 						if (clicked2) {
-	
+
 							/* Suggestion */
 							for (int k = 0; k < felder.size(); k++) {
 								int y = Character.getNumericValue(felder.get(k).charAt(0));
@@ -212,7 +213,7 @@ public class Main extends Application {
 								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 								moeglich.setStyle("");
 							}
-	
+
 							/* Letzter Zug Label */
 							letzterZug = letzterZug + "-" + b.getId();
 							ausgabe.setText("Letzter Zug: ");
@@ -220,16 +221,28 @@ public class Main extends Application {
 							String c = Integer.toString((b.getId().charAt(0) - 65));
 							XS = c.charAt(0);
 							YS = (char) (b.getId().charAt(1) - 1);
-	
+
 							zugC[3] = XS;
 							zugC[4] = YS;
 							zug = String.valueOf(zugC);
-	
-							zugMoeglich = von.spielzugMoeglich(sp,
-									new Position(Character.getNumericValue(zug.charAt(1)),
-											Character.getNumericValue(zug.charAt(0))),
-									new Position(Character.getNumericValue(zugC[4]),
-											Character.getNumericValue(zugC[3])));
+
+							if (von instanceof Koenig && !von.isBewegt()) {
+								System.out.println("König will rochade");
+								Koenig k = (Koenig) von;
+								zugMoeglich = k.rochade(sp,
+										new Position(Character.getNumericValue(zug.charAt(1)),
+												Character.getNumericValue(zug.charAt(0))),
+										new Position(Character.getNumericValue(zugC[4]),
+												Character.getNumericValue(zugC[3])));
+								
+							} else {
+
+								zugMoeglich = von.spielzugMoeglich(sp,
+										new Position(Character.getNumericValue(zug.charAt(1)),
+												Character.getNumericValue(zug.charAt(0))),
+										new Position(Character.getNumericValue(zugC[4]),
+												Character.getNumericValue(zugC[3])));
+							}
 							sp.setWerAmZug(weiss);
 							if (von.isFarbeWeiss() == sp.isWerAmZug()) {
 								if (zugMoeglich) {
@@ -239,7 +252,7 @@ public class Main extends Application {
 									 */
 									b.setGraphic(n1);
 									clicked1 = false;
-	
+
 									if (rotation) {
 										RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
 										rotate.setByAngle(180);
@@ -251,7 +264,7 @@ public class Main extends Application {
 														Duration.seconds(0.001), ro.getGraphic());
 												rotateImage.setByAngle(180);
 												rotateImage.play();
-	
+
 											}
 										}
 									}
@@ -264,7 +277,7 @@ public class Main extends Application {
 										spieler.setText("Spieler Schwarz am Zug");
 										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
 									}
-	
+
 									/* Spielzug abschließen */
 									sp.spielzug(zug);
 									sp.ausgabe();
@@ -276,7 +289,7 @@ public class Main extends Application {
 									previous.setStyle("");
 									handleNewFigure(new Position(Character.getNumericValue(zugC[4]),
 											Character.getNumericValue(zugC[3])));
-	
+
 								} else {
 									clicked2 = clicked1;
 									clicked1 = false;
@@ -294,25 +307,25 @@ public class Main extends Application {
 										8 - Character.getNumericValue(zug.charAt(1)),
 										Character.getNumericValue(zug.charAt(0)) + 1, feld);
 								previous.setStyle("");
-	
+
 							}
-	
+
 						}
-	
+
 						clicked2 = clicked1;
-	
+
 					}
 				});
-	
+
 			}
 		}
 		handleImages();
 		responsive();
-	
+
 		rotate = new Button("Rotation On");
-	
+
 		rotate.setOnAction(new EventHandler<ActionEvent>() {
-	
+
 			@Override
 			public void handle(ActionEvent event) {
 				rotation = !rotation;
@@ -322,22 +335,22 @@ public class Main extends Application {
 					rotate.setText("Rotation Off");
 				}
 			}
-	
+
 		});
-	
+
 		HBox hbox = new HBox();
 		HBox centerButtons = new HBox(rotate);
 		HBox rightButtons = new HBox(spieler);
 		rightButtons.setAlignment(Pos.CENTER_RIGHT);
-	
+
 		HBox.setHgrow(centerButtons, Priority.ALWAYS);
 		HBox.setHgrow(rightButtons, Priority.ALWAYS);
-	
+
 		centerButtons.setAlignment(Pos.CENTER);
-	
+
 		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
 		hbox.setPadding(new Insets(2));
-	
+
 		root.setCenter(feld);
 		root.setBottom(hbox);
 		Scene scene = new Scene(root);
@@ -350,16 +363,16 @@ public class Main extends Application {
 		StackPane root = new StackPane();
 		Button button = new Button();
 		VBox v = new VBox();
-	
+
 		Label label = new Label("Schach Matt");
 		label.setLayoutX(500);
 		root.getChildren().add(v);
 		button.setText("Neustart");
-	
+
 		v.getChildren().addAll(label, button);
-	
+
 		button.setOnAction(new EventHandler<ActionEvent>() {
-	
+
 			@Override
 			public void handle(ActionEvent event) {
 				try {
@@ -563,14 +576,14 @@ public class Main extends Application {
 	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
 		Node result = null;
 		ObservableList<Node> childrens = gridPane.getChildren();
-	
+
 		for (Node node : childrens) {
 			if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
 				result = node;
 				break;
 			}
 		}
-	
+
 		return result;
 	}
 

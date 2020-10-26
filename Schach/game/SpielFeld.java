@@ -47,6 +47,21 @@ public class SpielFeld {
 
 	}
 
+	public void rochade(Position von, Position nach) {
+		if (getFeld(von) instanceof Koenig) {
+
+			Koenig k = (Koenig) getFeld(von);
+			System.out.println(k.toString());
+
+			if (k.rochade(this, von, nach)) {
+				System.out.println("MACH JETZT ROCHADE");
+				setFeld(nach, getFeld(von));
+				setFeld(von, new Turm(werAmZug, true));
+			}
+		}
+
+	}
+
 	public boolean schach(Position pos) {
 		Main m = new Main();
 		if (scan().size() != 0 && scan().size() != 8 && m.isWeiss() != werAmZug
@@ -240,6 +255,7 @@ public class SpielFeld {
 		Position von = schach2koordinate(p[0]);
 		Position nach = schach2koordinate(p[1]);
 
+		rochade(von, nach);
 		if (getFeld(von) instanceof Bauer) {
 			Bauer b = (Bauer) getFeld(von);
 			if (b.getFigure(this, von, nach))

@@ -53,6 +53,11 @@ public abstract class Figur extends Feld {
 
 				}
 
+				if (sp.getFeld(von) instanceof Koenig && ((Koenig) sp.getFeld(von)).rochade(sp, von, nach)) {
+					System.out.println("Bin koenig" + nach.getX() + " " + nach.getY());
+					suggestions.add(nach.getX() + "" + nach.getY());
+				}
+
 			}
 		}
 		return suggestions;
