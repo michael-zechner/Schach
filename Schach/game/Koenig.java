@@ -63,7 +63,7 @@ public class Koenig extends Figur {
 		}
 		if (!bewegt) {
 			System.out.println("i bin not bewegt");
-			return rochade(sp, von, nach);
+			return rochade(sp, von, nach) || (absX <= 1 && absY <= 1);
 		} else {
 			return (absX <= 1 && absY <= 1);
 		}
