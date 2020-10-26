@@ -21,6 +21,7 @@ public class SpielFeldIO {
 			}
 			System.out.println();
 		}
+		s.close();
 
 		return new SpielFeld(mat, false);
 	}

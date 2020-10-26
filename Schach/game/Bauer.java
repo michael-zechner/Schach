@@ -4,7 +4,6 @@ public class Bauer extends Figur {
 
 	public Bauer(boolean farbeWeiss, boolean bewegt) {
 		super(farbeWeiss, bewegt);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean getFigure(SpielFeld sp, Position von, Position nach) {
@@ -29,7 +28,6 @@ public class Bauer extends Figur {
 
 	@Override
 	public boolean spielZug(SpielFeld sp, Position von, Position nach) {
-		// TODO Auto-generated method stub
 			return super.spielZug(sp, von, nach);
 
 	}

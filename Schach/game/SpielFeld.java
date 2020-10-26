@@ -8,7 +8,6 @@ public class SpielFeld {
 
 	private Feld[][] mat = new Feld[8][8];
 	private boolean werAmZug = true;
-	private boolean moeglich = false;
 	private boolean newFigure = false;
 
 	public boolean isNewFigure() {
@@ -17,14 +16,6 @@ public class SpielFeld {
 
 	public void setNewFigure(boolean newFigure) {
 		this.newFigure = newFigure;
-	}
-
-	public boolean isMoeglich() {
-		return moeglich;
-	}
-
-	public void setMoeglich(boolean moeglich) {
-		this.moeglich = moeglich;
 	}
 
 	public boolean isWerAmZug() {

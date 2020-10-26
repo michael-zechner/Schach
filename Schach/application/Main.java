@@ -39,14 +39,11 @@ import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
 
-	private Label label;
 	private String zug;
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private boolean weiss = true;
 	private Node n1;
-	private int firstN;
-	private int second;
 	private ImageView imageView = null;
 	private char XF;
 	private char YF;
@@ -63,6 +60,7 @@ public class Main extends Application {
 	private ArrayList<String> felder = new ArrayList<String>();
 	public ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
+	private GridPane feld;
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -88,22 +86,6 @@ public class Main extends Application {
 
 	public boolean isWeiss() {
 		return weiss;
-	}
-
-	public int getFirstN() {
-		return firstN;
-	}
-
-	public void setFirstN(int firstN) {
-		this.firstN = firstN;
-	}
-
-	public int getSecond() {
-		return second;
-	}
-
-	public void setSecond(int second) {
-		this.second = second;
 	}
 
 	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
@@ -176,6 +158,7 @@ public class Main extends Application {
 
 	}
 
+	/* SchachMatt Scene */
 	private Scene endScene(Stage primaryStage) {
 		StackPane root = new StackPane();
 		Button button = new Button();
@@ -195,7 +178,6 @@ public class Main extends Application {
 				try {
 					primaryStage.setScene(mainScene(primaryStage));
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -205,9 +187,10 @@ public class Main extends Application {
 		return scene;
 	}
 
+	/* Spielscene */
 	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
 		BorderPane root = new BorderPane();
-		GridPane feld = new GridPane();
+		feld = new GridPane();
 		boolean farbe = false;
 
 		Label spieler = new Label("Spieler Weiss am Zug");
@@ -228,27 +211,7 @@ public class Main extends Application {
 				b.setMaxWidth(Double.MAX_VALUE);
 				b.setMaxHeight(Double.MAX_VALUE);
 
-				/* ImageSize Button */
-				/*
-				 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
-				 * skaliert werden soll
-				 */
 				b.setGraphic(imageView);
-				b.widthProperty().addListener((obs, oldVal, newVal) -> {
-					width = (Double) newVal;
-
-					for (int k = 0; k < view.size(); k++) {
-
-						if (width > 100) {
-							view.get(k).setFitWidth(50);
-							view.get(k).setFitHeight(81);
-						} else if (width <= 100) {
-							view.get(k).setFitWidth(25);
-							view.get(k).setFitHeight(40);
-						}
-					}
-
-				});
 
 				/* Farbe und CSS */
 				b.getStyleClass().add("button");
@@ -306,32 +269,31 @@ public class Main extends Application {
 								if (sp.schachMatt(vPos)) {
 									primaryStage.setScene(endScene(primaryStage));
 									primaryStage.show();
-								} else
-									if (!sp.schach(vPos)) {
+								} else if (!sp.schach(vPos)) {
 
-								/* Suggestion */
-								if (von.isFarbeWeiss() == weiss) {
+									/* Suggestion */
+									if (von.isFarbeWeiss() == weiss) {
 
-									felder = von.suggest(sp, vPos, sp.isWerAmZug());
-									if (felder.size() > 0) {
+										felder = von.suggest(sp, vPos, sp.isWerAmZug());
+										if (felder.size() > 0) {
 
-										for (int k = 0; k < felder.size(); k++) {
-											int y = Character.getNumericValue(felder.get(k).charAt(0));
-											int x = Character.getNumericValue(felder.get(k).charAt(1));
-											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
-											b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
+											for (int k = 0; k < felder.size(); k++) {
+												int y = Character.getNumericValue(felder.get(k).charAt(0));
+												int x = Character.getNumericValue(felder.get(k).charAt(1));
+												Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+												moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+												b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
+											}
+											clicked1 = true;
+										} else {
+											showAlertNoSuggestion();
 										}
-										clicked1 = true;
 									} else {
-										showAlertNoSuggestion();
+										showAlertColor();
+										Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(),
+												vPos.getX() + 1, feld);
+										previous.setStyle("");
 									}
-								} else {
-									showAlertColor();
-									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
-											feld);
-									previous.setStyle("");
-								}
 								} else {
 									showAlertSchach();
 								}
@@ -448,48 +410,7 @@ public class Main extends Application {
 			}
 		}
 		handleImages();
-
-		/* Für responsive Buttons */
-		ColumnConstraints col1 = new ColumnConstraints();
-		col1.setPercentWidth(10);
-		ColumnConstraints col2 = new ColumnConstraints();
-		col2.setPercentWidth(10);
-		ColumnConstraints col3 = new ColumnConstraints();
-		col3.setPercentWidth(10);
-		ColumnConstraints col4 = new ColumnConstraints();
-		col4.setPercentWidth(10);
-		ColumnConstraints col5 = new ColumnConstraints();
-		col5.setPercentWidth(10);
-		ColumnConstraints col6 = new ColumnConstraints();
-		col6.setPercentWidth(10);
-		ColumnConstraints col7 = new ColumnConstraints();
-		col7.setPercentWidth(10);
-		ColumnConstraints col8 = new ColumnConstraints();
-		col8.setPercentWidth(10);
-		ColumnConstraints col9 = new ColumnConstraints();
-		col9.setPercentWidth(10);
-		feld.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7, col8, col9);
-
-		RowConstraints row1 = new RowConstraints();
-		row1.setPercentHeight(10);
-		RowConstraints row2 = new RowConstraints();
-		row2.setPercentHeight(10);
-		RowConstraints row3 = new RowConstraints();
-		row3.setPercentHeight(10);
-		RowConstraints row4 = new RowConstraints();
-		row4.setPercentHeight(10);
-		RowConstraints row5 = new RowConstraints();
-		row5.setPercentHeight(10);
-		RowConstraints row6 = new RowConstraints();
-		row6.setPercentHeight(10);
-		RowConstraints row7 = new RowConstraints();
-		row7.setPercentHeight(10);
-		RowConstraints row8 = new RowConstraints();
-		row8.setPercentHeight(10);
-		RowConstraints row9 = new RowConstraints();
-		row9.setPercentHeight(10);
-
-		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
+		responsive();
 
 		rotate = new Button("Rotation On");
 
@@ -585,6 +506,72 @@ public class Main extends Application {
 		for (int i = 0; i < 64; i++) {
 			allButtons.get(i).setGraphic(view.get(i));
 		}
+	}
+
+	public void responsive() {
+		/*
+		 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
+		 * skaliert werden soll
+		 */
+		for (int j = 0; j < 64; j++) {
+			allButtons.get(j).widthProperty().addListener((obs, oldVal, newVal) -> {
+				width = (Double) newVal;
+
+				for (int k = 0; k < view.size(); k++) {
+
+					if (width > 100) {
+						view.get(k).setFitWidth(50);
+						view.get(k).setFitHeight(81);
+					} else if (width <= 100) {
+						view.get(k).setFitWidth(25);
+						view.get(k).setFitHeight(40);
+					}
+				}
+
+			});
+		}
+
+		/* Für responsive Buttons */
+		ColumnConstraints col1 = new ColumnConstraints();
+		col1.setPercentWidth(10);
+		ColumnConstraints col2 = new ColumnConstraints();
+		col2.setPercentWidth(10);
+		ColumnConstraints col3 = new ColumnConstraints();
+		col3.setPercentWidth(10);
+		ColumnConstraints col4 = new ColumnConstraints();
+		col4.setPercentWidth(10);
+		ColumnConstraints col5 = new ColumnConstraints();
+		col5.setPercentWidth(10);
+		ColumnConstraints col6 = new ColumnConstraints();
+		col6.setPercentWidth(10);
+		ColumnConstraints col7 = new ColumnConstraints();
+		col7.setPercentWidth(10);
+		ColumnConstraints col8 = new ColumnConstraints();
+		col8.setPercentWidth(10);
+		ColumnConstraints col9 = new ColumnConstraints();
+		col9.setPercentWidth(10);
+		feld.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7, col8, col9);
+
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(10);
+		RowConstraints row2 = new RowConstraints();
+		row2.setPercentHeight(10);
+		RowConstraints row3 = new RowConstraints();
+		row3.setPercentHeight(10);
+		RowConstraints row4 = new RowConstraints();
+		row4.setPercentHeight(10);
+		RowConstraints row5 = new RowConstraints();
+		row5.setPercentHeight(10);
+		RowConstraints row6 = new RowConstraints();
+		row6.setPercentHeight(10);
+		RowConstraints row7 = new RowConstraints();
+		row7.setPercentHeight(10);
+		RowConstraints row8 = new RowConstraints();
+		row8.setPercentHeight(10);
+		RowConstraints row9 = new RowConstraints();
+		row9.setPercentHeight(10);
+
+		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
 	}
 
 }

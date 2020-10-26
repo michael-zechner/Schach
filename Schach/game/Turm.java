@@ -18,6 +18,11 @@ public class Turm extends Figur {
 	@Override
 	public boolean spielzugMoeglich(SpielFeld sp, Position von, Position nach) {
 
+		/*
+		 * Es muss mit der Wrapper-Boolean gearbeitet werden, da man einen "normalen"
+		 * boolean ja nur true/false setzten kann. So würden immer die moeglich in der
+		 * boolean = false wäre vorgeschlagen werden, was man natürlichnicht will
+		 */
 		int absX = Math.abs(von.getX() - nach.getX());
 		int absY = Math.abs(von.getY() - nach.getY());
 

@@ -4,7 +4,6 @@ public class Koenig extends Figur {
 
 	public Koenig(boolean farbeWeiss, boolean bewegt) {
 		super(farbeWeiss, bewegt);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -29,6 +28,9 @@ public class Koenig extends Figur {
 			return false;
 		}
 		if (!bewegt) {
+			// TODO Rochade funktioniert so nichtmehr, man muss noch prüfen ob zwischen von
+			// und nach eine figur ist und dann die figur so umschreiben dass man
+			// grundsätzlich auf ein eigenes feld darf
 			if (farbeWeiss) {
 				if ((von.getX() == 4 && von.getY() == 0) && (sp.getMat()[von.getY()][von.getX() + 3] instanceof Turm)
 						&& nach.getX() == 7 && nach.getY() == 0) {
