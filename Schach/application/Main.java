@@ -55,13 +55,15 @@ public class Main extends Application {
 	private boolean zugMoeglich = false;
 	private String letzterZug = null;
 	private boolean rotation = false;
-	private Button rotate;
+	private Button rotate = new Button();
 	private double width;
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
 	private GridPane feld;
+	private Position vPos;
+	private Position nPos;
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -87,6 +89,14 @@ public class Main extends Application {
 
 	/* Spielscene */
 	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
+		/* Rotation label handle */
+		rotate.getStyleClass().add("rotation");
+		if (rotation) {
+			rotate.setText("Rotation On");
+		} else {
+			rotate.setText("Rotation Off");
+		}
+
 		BorderPane root = new BorderPane();
 		feld = new GridPane();
 		boolean farbe = false;
@@ -159,7 +169,7 @@ public class Main extends Application {
 							zugC[0] = XF;
 							zugC[1] = YF;
 							zugC[2] = '-';
-							Position vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
+							vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
 							if (sp.getFeld(vPos) instanceof Figur) {
 
 								von = (Figur) sp.getFeld(vPos);
@@ -225,24 +235,17 @@ public class Main extends Application {
 							zugC[3] = XS;
 							zugC[4] = YS;
 							zug = String.valueOf(zugC);
+							nPos = new Position(Character.getNumericValue(zugC[4]), Character.getNumericValue(zugC[3]));
 
-							if (von instanceof Koenig && !von.isBewegt()) {
+							/* Rochade handle */
+							if (von instanceof Koenig && !von.isBewegt() && (nPos.getX() == 7 || nPos.getX() == 0)) {
 								System.out.println("König will rochade");
 								Koenig k = (Koenig) von;
-								zugMoeglich = k.rochade(sp,
-										new Position(Character.getNumericValue(zug.charAt(1)),
-												Character.getNumericValue(zug.charAt(0))),
-										new Position(Character.getNumericValue(zugC[4]),
-												Character.getNumericValue(zugC[3])));
-								
-								
+								zugMoeglich = k.rochade(sp, vPos, nPos);
+
 							} else {
 
-								zugMoeglich = von.spielzugMoeglich(sp,
-										new Position(Character.getNumericValue(zug.charAt(1)),
-												Character.getNumericValue(zug.charAt(0))),
-										new Position(Character.getNumericValue(zugC[4]),
-												Character.getNumericValue(zugC[3])));
+								zugMoeglich = von.spielzugMoeglich(sp, vPos, nPos);
 							}
 							sp.setWerAmZug(weiss);
 							if (von.isFarbeWeiss() == sp.isWerAmZug()) {
@@ -258,15 +261,13 @@ public class Main extends Application {
 										RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
 										rotate.setByAngle(180);
 										rotate.play();
-										for (int i = 1; i < 9; i++) {
-											for (int j = 1; j < 9; j++) {
-												Button ro = (Button) getNodeByRowColumnIndex(i, j, feld);
+										for (int i = 0; i < 64; i++) {
+												System.out.println("Dreh mi");
 												RotateTransition rotateImage = new RotateTransition(
-														Duration.seconds(0.001), ro.getGraphic());
+														Duration.seconds(0.001), allButtons.get(i));
 												rotateImage.setByAngle(180);
 												rotateImage.play();
 
-											}
 										}
 									}
 									weiss = !weiss;
@@ -285,29 +286,25 @@ public class Main extends Application {
 									sp.ausgabe();
 									sp.setWerAmZug(!sp.isWerAmZug());
 									ausgabe.setText(ausgabe.getText() + letzterZug);
-									Button previous = (Button) getNodeByRowColumnIndex(
-											8 - Character.getNumericValue(zug.charAt(1)),
-											Character.getNumericValue(zug.charAt(0)) + 1, feld);
+									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+											feld);
 									previous.setStyle("");
-									handleNewFigure(new Position(Character.getNumericValue(zugC[4]),
-											Character.getNumericValue(zugC[3])));
+									handleNewFigure(nPos);
 
 								} else {
 									clicked2 = clicked1;
 									clicked1 = false;
 									showAlertWrongMove();
-									Button previous = (Button) getNodeByRowColumnIndex(
-											8 - Character.getNumericValue(zug.charAt(1)),
-											Character.getNumericValue(zug.charAt(0)) + 1, feld);
+									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+											feld);
 									previous.setStyle("");
 								}
 							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
 								showAlertColor();
-								Button previous = (Button) getNodeByRowColumnIndex(
-										8 - Character.getNumericValue(zug.charAt(1)),
-										Character.getNumericValue(zug.charAt(0)) + 1, feld);
+								Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+										feld);
 								previous.setStyle("");
 
 							}
@@ -323,8 +320,6 @@ public class Main extends Application {
 		}
 		handleImages();
 		responsive();
-
-		rotate = new Button("Rotation On");
 
 		rotate.setOnAction(new EventHandler<ActionEvent>() {
 
