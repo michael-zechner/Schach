@@ -10,12 +10,13 @@ public class SpielFeldIO {
 	private static Feld[][] mat = new Feld[8][8];
 
 	static public SpielFeld einlesen(String fName) throws FileNotFoundException {
-		s = new Scanner(new File(fName));
+		File file = new File(SpielFeldIO.class.getClassLoader().getResource("spielfelder/" + fName).getFile());
+		s = new Scanner(file);
 
 		for (int i = mat.length - 1; i >= 0; i--) {
 			String a = s.nextLine();
 			for (int j = 0; j < mat[0].length; j++) {
-				
+
 				String[] figuren = a.split("\\|");
 				System.out.print(mat[i][j] = leseFeld(figuren[j]));
 			}
