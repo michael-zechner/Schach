@@ -235,6 +235,7 @@ public class Main extends Application {
 										new Position(Character.getNumericValue(zugC[4]),
 												Character.getNumericValue(zugC[3])));
 								
+								
 							} else {
 
 								zugMoeglich = von.spielzugMoeglich(sp,
@@ -280,6 +281,7 @@ public class Main extends Application {
 
 									/* Spielzug abschlieﬂen */
 									sp.spielzug(zug);
+									handleImages();
 									sp.ausgabe();
 									sp.setWerAmZug(!sp.isWerAmZug());
 									ausgabe.setText(ausgabe.getText() + letzterZug);
