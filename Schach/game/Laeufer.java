@@ -82,7 +82,6 @@ public class Laeufer extends Figur {
 				wieweitX++;
 				wieweitY++;
 			}
-
 		}
 
 		/* Also von unten rechts nach oben links */
@@ -118,10 +117,11 @@ public class Laeufer extends Figur {
 				wieweitY++;
 			}
 		}
-
-		if ((absX <= wieweitX && absY <= wieweitY)) {
+		
+		if((absX == wieweitX && absY == wieweitY)) {
 			return true;
 		}
+		
 		if (!super.spielzugMoeglich(sp, von, nach) || super.spielzugMoeglich(sp, von, nach)) {
 			return false;
 		}
