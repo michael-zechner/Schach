@@ -116,9 +116,6 @@ public class Main extends Application {
 				Button b = new Button();
 				allButtons.add(b);
 
-				b.setMaxWidth(Double.MAX_VALUE);
-				b.setMaxHeight(Double.MAX_VALUE);
-
 				b.setGraphic(imageView);
 
 				/* Farbe und CSS */
@@ -194,20 +191,22 @@ public class Main extends Application {
 											}
 											clicked1 = true;
 										} else {
-											showAlertNoSuggestion();
+											showAnyAlert("Unzulässige Auswahl !",
+													"Die von dir gewählte Figur kann sich leider momentan nicht bewegen");
 										}
 									} else {
-										showAlertColor();
+										showAnyAlert("Falsche Farbe", "Der gegnerische Spieler ist am Zug !");
 										Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(),
 												vPos.getX() + 1, feld);
 										previous.setStyle("");
 									}
 								} else {
-									showAlertSchach();
+									showAnyAlert("Schach !", "Du bist im Schach, musst also deinen König bewegen");
 								}
 
 							} else {
-								showAlertBlankField();
+								showAnyAlert("Leeres Feld !",
+										"Du hast ein leeres Feld angeklickt ! Wähle bitte eines aus auf dem eine Figur steht");
 							}
 
 							/* Bild von erstem Button getten */
@@ -262,11 +261,11 @@ public class Main extends Application {
 										rotate.setByAngle(180);
 										rotate.play();
 										for (int i = 0; i < 64; i++) {
-												System.out.println("Dreh mi");
-												RotateTransition rotateImage = new RotateTransition(
-														Duration.seconds(0.001), allButtons.get(i));
-												rotateImage.setByAngle(180);
-												rotateImage.play();
+											System.out.println("Dreh mi");
+											RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
+													allButtons.get(i));
+											rotateImage.setByAngle(180);
+											rotateImage.play();
 
 										}
 									}
@@ -294,7 +293,7 @@ public class Main extends Application {
 								} else {
 									clicked2 = clicked1;
 									clicked1 = false;
-									showAlertWrongMove();
+									showAnyAlert("Unzulässiger Zug !", "Dieser Zug ist leider nicht möglich!");
 									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
 											feld);
 									previous.setStyle("");
@@ -302,7 +301,8 @@ public class Main extends Application {
 							} else {
 								clicked2 = clicked1;
 								clicked1 = false;
-								showAlertColor();
+								showAnyAlert("Falsche Farbe", "Der gegnerische SPielr ist an der Reihe ! ");
+
 								Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
 										feld);
 								previous.setStyle("");
@@ -385,59 +385,14 @@ public class Main extends Application {
 	}
 
 	/* SpielInfos */
-	private void showAlertWrongMove() {
+	private void showAnyAlert(String fenstername, String info) {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässiger Zug");
+		alert.setTitle(fenstername);
 
 		alert.setHeaderText(null);
-		alert.setContentText("Dieser Zug ist leider nicht möglich !");
+		alert.setContentText(info);
 
 		alert.showAndWait();
-
-	}
-
-	private void showAlertBlankField() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässiges Feld");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Bitte wähle ein Feld aus, auf dem eine Figur steht !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertColor() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässige Farbe");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Der andere Spieler ist an der Reihe !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertNoSuggestion() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Unzulässige Auswahl");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Die von dir gewählte Figur kann sich momentan leider nicht bewegen !");
-
-		alert.showAndWait();
-
-	}
-
-	private void showAlertSchach() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Du bist im Schach");
-
-		alert.setHeaderText(null);
-		alert.setContentText("Du bist im Schach, musst also deinen König bewegen !");
-
-		alert.showAndWait();
-
 	}
 
 	public void handleNewFigure(Position nach) {
@@ -506,6 +461,9 @@ public class Main extends Application {
 		 * skaliert werden soll
 		 */
 		for (int j = 0; j < 64; j++) {
+
+			allButtons.get(j).setMaxWidth(Double.MAX_VALUE);
+			allButtons.get(j).setMaxHeight(Double.MAX_VALUE);
 			allButtons.get(j).widthProperty().addListener((obs, oldVal, newVal) -> {
 				width = (Double) newVal;
 
