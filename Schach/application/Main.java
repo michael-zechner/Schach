@@ -107,7 +107,7 @@ public class Main extends Application {
 		ausgabe.setPadding(new Insets(20));
 
 		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("Test4.txt");
+		sp = spIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {

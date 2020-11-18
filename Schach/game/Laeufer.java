@@ -94,13 +94,13 @@ public class Laeufer extends Figur {
 				a++;
 				i--;
 			}
+			
 			if (i != 0 && a < 7 && (Figur) sp.getFeld(a + 1, i - 1) instanceof Figur
 					&& ((Figur) sp.getFeld(a + 1, i - 1)).isFarbeWeiss() != farbeWeiss) {
 				wieweitX++;
 				wieweitY++;
 			}
 		}
-
 		/* Also von oben rechts nach unten links */
 		if (minus2 != null && minus2.booleanValue() == false) {
 			int i = von.getX();
@@ -118,7 +118,7 @@ public class Laeufer extends Figur {
 			}
 		}
 		
-		if((absX == wieweitX && absY == wieweitY)) {
+		if((absX == wieweitX && absY == wieweitY) || (absX == wieweitX-1 && absY == wieweitY-1)) {
 			return true;
 		}
 		
