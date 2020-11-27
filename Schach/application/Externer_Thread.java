@@ -7,9 +7,8 @@ public class Externer_Thread implements Runnable {
 	private Button b;
 	
 	public void clearButton(Button b) throws InterruptedException {
-//		Thread.sleep(1000);
 		Thread.currentThread().sleep(1000);
-		b.setGraphic(null);
+		b.setStyle("-fx-background-color: rgba(255,0,0, 1);");
 	}
 
 	@Override

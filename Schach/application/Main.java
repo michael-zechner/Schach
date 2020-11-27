@@ -64,6 +64,7 @@ public class Main extends Application {
 	private GridPane feld;
 	private Position vPos;
 	private Position nPos;
+	private Externer_Thread et;
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -222,7 +223,7 @@ public class Main extends Application {
 								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 								moeglich.setStyle("");
 							}
-
+							
 							/* Letzter Zug Label */
 							letzterZug = letzterZug + "-" + b.getId();
 							ausgabe.setText("Letzter Zug: ");
@@ -236,7 +237,9 @@ public class Main extends Application {
 							zug = String.valueOf(zugC);
 							nPos = new Position(Character.getNumericValue(zugC[4]), Character.getNumericValue(zugC[3]));
 
-							/* Rochade handle */
+							
+							
+							/* Rochade handle */	
 							if (von instanceof Koenig && !von.isBewegt() && (nPos.getX() == 7 || nPos.getX() == 0)) {
 								System.out.println("König will rochade");
 								Koenig k = (Koenig) von;
@@ -279,6 +282,23 @@ public class Main extends Application {
 										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
 									}
 
+									/* Pfeile */
+									for (int k = 0; k < felder.size(); k++) {
+										int y = Character.getNumericValue(felder.get(k).charAt(0));
+										int x = Character.getNumericValue(felder.get(k).charAt(1));
+										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+										//moeglich.setStyle("-fx-background-color: rgba(0,0,255, 1);");
+										Image i = new Image("images/Pfeil.png");
+										ImageView iv = new ImageView(i);
+										moeglich.setGraphic(iv);
+//										try {
+//											et.clearButton(moeglich);
+//										} catch (InterruptedException e) {
+//											// TODO Auto-generated catch block
+//											e.printStackTrace();
+//										}
+									}
+									
 									/* Spielzug abschließen */
 									sp.spielzug(zug);
 									handleImages();
