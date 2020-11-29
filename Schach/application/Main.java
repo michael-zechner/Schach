@@ -287,10 +287,10 @@ public class Main extends Application {
 										int y = Character.getNumericValue(felder.get(k).charAt(0));
 										int x = Character.getNumericValue(felder.get(k).charAt(1));
 										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-										//moeglich.setStyle("-fx-background-color: rgba(0,0,255, 1);");
-										Image i = new Image("images/Pfeil.png");
-										ImageView iv = new ImageView(i);
-										moeglich.setGraphic(iv);
+										moeglich.setStyle("-fx-background-color: rgba(0,0,255, 1);");
+//										Image i = new Image("images/Pfeil.png");
+//										ImageView iv = new ImageView(i);
+//										moeglich.setGraphic(iv);
 //										try {
 //											et.clearButton(moeglich);
 //										} catch (InterruptedException e) {
