@@ -1,5 +1,8 @@
 package application;
 
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,6 +30,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -40,7 +44,11 @@ import javafx.scene.layout.ColumnConstraints;
 
 public class Main extends Application {
 
+	private boolean first = true;
+	
 	private String zug;
+	private String playerWhite;
+	private String playerBlack;
 	private boolean clicked1 = false;
 	private boolean clicked2 = false;
 	private boolean weiss = true;
@@ -59,13 +67,15 @@ public class Main extends Application {
 	private double width;
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
-	private ArrayList<String> pfeile = new ArrayList<String>();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
 	private GridPane feld;
 	private Position vPos;
 	private Position nPos;
-	private Externer_Thread et;
+
+	private MenuItem simple1;
+	private MenuItem simple2;
+	private MenuItem simple3;
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -74,7 +84,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
 
-		primaryStage.setScene(mainScene(primaryStage));
+		primaryStage.setScene(startScene(primaryStage));
 		primaryStage.setWidth(800);
 		primaryStage.setHeight(800);
 		primaryStage.show();
@@ -91,6 +101,46 @@ public class Main extends Application {
 
 	/* Spielscene */
 	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
+
+		/* Menubar Handle */
+		Menu simple = new Menu("_Spiel");
+		simple1 = new MenuItem("_Spielernamen ‰ndern");
+		simple2 = new MenuItem("_Spiel Neustarten");
+		simple3 = new MenuItem("_Spiel beenden");
+		simple.getItems().addAll(simple1, simple2, simple3);
+
+		simple1.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.setScene(startScene(primaryStage));
+			}
+		});
+
+		simple2.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					primaryStage.setScene(mainScene(primaryStage));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		simple3.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+
+		MenuBar mb = new MenuBar();
+		mb.getMenus().addAll(simple);
+
 		/* Rotation label handle */
 		rotate.getStyleClass().add("rotation");
 		if (rotation) {
@@ -103,22 +153,22 @@ public class Main extends Application {
 		feld = new GridPane();
 		boolean farbe = false;
 
-		Label spieler = new Label("Spieler Weiss am Zug");
+		Label spieler = new Label("" + playerWhite + " am Zug");
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
 
-		SpielFeldIO spIO = new SpielFeldIO();
-		sp = spIO.einlesen("start.txt");
+		sp = SpielFeldIO.einlesen("Test4.txt");
 		sp.setWerAmZug(true);
 
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
 
 				Button b = new Button();
-				allButtons.add(b);
-
-				b.setGraphic(imageView);
+				if (first) {
+					allButtons.add(b);
+				}
+//				b.setGraphic(imageView);
 
 				/* Farbe und CSS */
 				b.getStyleClass().add("button");
@@ -274,35 +324,11 @@ public class Main extends Application {
 									weiss = !weiss;
 									/* Spielerindikator */
 									if (weiss) {
-										spieler.setText("Spieler Weiss am Zug");
+										spieler.setText("" + playerWhite + " am Zug");
 										spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
 									} else {
-										spieler.setText("Spieler Schwarz am Zug");
+										spieler.setText("" + playerBlack + " am Zug");
 										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-									}
-
-									/* Pfeile */
-									pfeile = von.pfeilsuggest(sp, vPos, sp.isWerAmZug());
-//									System.out.println(pfeile.size() + "Moin Meister");
-//									for (String string : pfeile) {
-//										System.out.println(string);
-//									}
-									for (int k = pfeile.size() - 2; k >= 0; k--) {
-										int y = Character.getNumericValue(pfeile.get(k).charAt(0));
-										int x = Character.getNumericValue(pfeile.get(k).charAt(1));
-										System.out.println(y + "lol");
-										System.out.println(x + "lol");
-										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-										moeglich.setStyle("-fx-background-color: rgba(0,0,255, 1);");
-//										Image i = new Image("images/Pfeil.png");
-//										ImageView iv = new ImageView(i);
-//										moeglich.setGraphic(iv);
-//										try {
-//											et.clearButton(moeglich);
-//										} catch (InterruptedException e) {
-//											// TODO Auto-generated catch block
-//											e.printStackTrace();
-//										}
 									}
 
 									/* Spielzug abschlieﬂen */
@@ -344,6 +370,7 @@ public class Main extends Application {
 
 			}
 		}
+		first = false;
 		handleImages();
 		responsive();
 
@@ -374,6 +401,7 @@ public class Main extends Application {
 		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
 		hbox.setPadding(new Insets(2));
 
+		root.setTop(mb);
 		root.setCenter(feld);
 		root.setBottom(hbox);
 		Scene scene = new Scene(root);
@@ -398,6 +426,57 @@ public class Main extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
+				try {
+					primaryStage.setScene(mainScene(primaryStage));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		Scene scene = new Scene(root, 450, 250);
+		scene.getStylesheets().add("application/application.css");
+		return scene;
+	}
+
+	/* Start Scene */
+	private Scene startScene(Stage primaryStage) {
+		StackPane root = new StackPane();
+		Button button = new Button();
+		VBox v = new VBox();
+
+		Label label = new Label("Schach");
+		label.setLayoutX(500);
+		v.setAlignment(Pos.CENTER);
+		root.getChildren().add(v);
+
+		// Spieler 1 weiss
+		Label weiss = new Label("Spieler Weiss:");
+		TextField textField1 = new TextField();
+		textField1.setText(playerWhite);
+		HBox hb1 = new HBox();
+		hb1.setAlignment(Pos.CENTER);
+		hb1.getChildren().addAll(weiss, textField1);
+		hb1.setSpacing(10);
+
+		// Spieler 2 schwarz
+		Label label1 = new Label("Spieler Schwarz:");
+		TextField textField2 = new TextField();
+		textField2.setText(playerBlack);
+		HBox hb2 = new HBox();
+		hb2.setAlignment(Pos.CENTER);
+		hb2.getChildren().addAll(label1, textField2);
+		hb2.setSpacing(10);
+		button.setText("Spielen");
+
+		v.getChildren().addAll(label, hb1, hb2, button);
+
+		button.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				playerWhite = textField1.getText();
+				playerBlack = textField2.getText();
+
 				try {
 					primaryStage.setScene(mainScene(primaryStage));
 				} catch (FileNotFoundException e) {
@@ -462,6 +541,7 @@ public class Main extends Application {
 	}
 
 	public void handleImages() {
+		System.out.println(allButtons.size());
 		view.clear();
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
@@ -475,8 +555,9 @@ public class Main extends Application {
 				view.add(imageView);
 			}
 		}
-
+		System.out.println("VIEWSIZE"+view.size());
 		for (int i = 0; i < 64; i++) {
+			System.out.println("BUTTONIMAGEPATH"+view.get(i));
 			allButtons.get(i).setGraphic(view.get(i));
 		}
 	}
@@ -567,5 +648,24 @@ public class Main extends Application {
 
 		return result;
 	}
+
+//	@Override
+//	public void handle(ActionEvent event) {
+//		MenuItem source = (MenuItem) event.getSource();
+//		String text = source.getText();
+//		
+//		//Das nur als Beispiel wie man schaun kann welcher Menupunkt gew√§hlt wurde
+//		if (source == simple1)
+//		{
+//			try {
+//				
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//			System.out.println("asdf");
+//		}
+//		
+//		
+//	}
 
 }
