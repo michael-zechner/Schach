@@ -59,6 +59,7 @@ public class Main extends Application {
 	private double width;
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
+	private ArrayList<String> pfeile = new ArrayList<String>();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
 	private GridPane feld;
@@ -223,7 +224,7 @@ public class Main extends Application {
 								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 								moeglich.setStyle("");
 							}
-							
+
 							/* Letzter Zug Label */
 							letzterZug = letzterZug + "-" + b.getId();
 							ausgabe.setText("Letzter Zug: ");
@@ -237,9 +238,7 @@ public class Main extends Application {
 							zug = String.valueOf(zugC);
 							nPos = new Position(Character.getNumericValue(zugC[4]), Character.getNumericValue(zugC[3]));
 
-							
-							
-							/* Rochade handle */	
+							/* Rochade handle */
 							if (von instanceof Koenig && !von.isBewegt() && (nPos.getX() == 7 || nPos.getX() == 0)) {
 								System.out.println("König will rochade");
 								Koenig k = (Koenig) von;
@@ -283,9 +282,16 @@ public class Main extends Application {
 									}
 
 									/* Pfeile */
-									for (int k = 0; k < felder.size(); k++) {
-										int y = Character.getNumericValue(felder.get(k).charAt(0));
-										int x = Character.getNumericValue(felder.get(k).charAt(1));
+									pfeile = von.pfeilsuggest(sp, vPos, sp.isWerAmZug());
+//									System.out.println(pfeile.size() + "Moin Meister");
+//									for (String string : pfeile) {
+//										System.out.println(string);
+//									}
+									for (int k = pfeile.size() - 2; k >= 0; k--) {
+										int y = Character.getNumericValue(pfeile.get(k).charAt(0));
+										int x = Character.getNumericValue(pfeile.get(k).charAt(1));
+										System.out.println(y + "lol");
+										System.out.println(x + "lol");
 										Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 										moeglich.setStyle("-fx-background-color: rgba(0,0,255, 1);");
 //										Image i = new Image("images/Pfeil.png");
@@ -298,7 +304,7 @@ public class Main extends Application {
 //											e.printStackTrace();
 //										}
 									}
-									
+
 									/* Spielzug abschließen */
 									sp.spielzug(zug);
 									handleImages();

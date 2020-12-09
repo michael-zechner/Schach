@@ -7,6 +7,7 @@ public abstract class Figur extends Feld {
 	public boolean farbeWeiss;
 	public boolean bewegt;
 	public ArrayList<String> suggestions = new ArrayList<String>();
+	public ArrayList<String> pfeilsuggest = new ArrayList<String>();
 
 	public Figur(boolean farbeWeiss, boolean bewegt) {
 		super();
@@ -63,6 +64,26 @@ public abstract class Figur extends Feld {
 		return suggestions;
 	}
 
+	public  ArrayList<String> pfeilsuggest(SpielFeld sp,  Position von, boolean farbeWeiss){
+		pfeilsuggest.clear();
+		pfeilsuggest.add(von.getX() + "" + von.getY());
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 7; j++) {
+				Position nach = new Position(j, i);
+				setFarbeWeiss(farbeWeiss);
+				if (sp.getFeld(von) instanceof Figur && spielzugMoeglich(sp, von, nach)) {
+					pfeilsuggest.add(nach.getX() + "" + nach.getY());
+
+				}
+
+				if (sp.getFeld(von) instanceof Koenig && ((Koenig) sp.getFeld(von)).rochade(sp, von, nach)) {
+					pfeilsuggest.add(nach.getX() + "" + nach.getY());
+				}
+			}
+		}
+		return pfeilsuggest;
+	}
+	
 	public boolean isFarbeWeiss() {
 		return farbeWeiss;
 	}
