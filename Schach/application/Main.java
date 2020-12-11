@@ -33,6 +33,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -40,12 +42,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 
 public class Main extends Application {
 
 	private boolean first = true;
-	
+
 	private String zug;
 	private String playerWhite;
 	private String playerBlack;
@@ -77,6 +82,11 @@ public class Main extends Application {
 	private MenuItem simple2;
 	private MenuItem simple3;
 
+	private boolean farbe = true;
+	private boolean reload = true;
+
+	private BorderPane root;
+
 	public SpielFeld getSpielfeld() {
 		return sp;
 	}
@@ -100,9 +110,54 @@ public class Main extends Application {
 	}
 
 	/* Spielscene */
-	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
+	private void reloadScene(Stage primaryStage) throws FileNotFoundException {
 
-		/* Menubar Handle */
+		feld = new GridPane();
+		feld.setId("bodyMain");
+
+		sp = SpielFeldIO.einlesen("Test4.txt");
+		sp.setWerAmZug(true);
+
+		allButtons.clear();
+
+		for (int i = 1; i < 9; i++) {
+			for (int j = 1; j < 9; j++) {
+
+				Button butt = new Button();
+				allButtons.add(butt);
+//				b.setGraphic(imageView);
+
+				/* Farbe und CSS */
+				butt.getStyleClass().add("button");
+				if (farbe) {
+					if (j % 2 == 0) {
+						butt.getStyleClass().add("buttonWhite");
+					}
+					if (j == 8 && i % 2 == 0) {
+						farbe = false;
+					}
+				}
+				if (!farbe) {
+					if (j % 2 != 0) {
+						butt.getStyleClass().add("buttonWhite");
+					}
+					if (j == 8 && i % 2 != 0) {
+						farbe = true;
+					}
+				}
+				/* Button Id setzen */
+				char id = (char) ('A' + (i - 1));
+				String id1 = id + String.valueOf(9 - j);
+				butt.setId(id1);
+				feld.add(butt, i, j);
+			}
+		}
+		handleImages();
+		responsive();
+		primaryStage.setScene(mainScene(primaryStage));
+	}
+
+	private void menue(Stage primaryStage) {
 		Menu simple = new Menu("_Spiel");
 		simple1 = new MenuItem("_Spielernamen ändern");
 		simple2 = new MenuItem("_Spiel Neustarten");
@@ -113,7 +168,10 @@ public class Main extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
+
 				primaryStage.setScene(startScene(primaryStage));
+				reload = false;
+
 			}
 		});
 
@@ -122,7 +180,8 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					primaryStage.setScene(mainScene(primaryStage));
+					reloadScene(primaryStage);
+					reload = true;
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -141,6 +200,16 @@ public class Main extends Application {
 		MenuBar mb = new MenuBar();
 		mb.getMenus().addAll(simple);
 
+		root.setTop(mb);
+	}
+
+	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
+		root = new BorderPane();
+		root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+		/* Menubar Handle */
+		menue(primaryStage);
+
 		/* Rotation label handle */
 		rotate.getStyleClass().add("rotation");
 		if (rotation) {
@@ -149,230 +218,191 @@ public class Main extends Application {
 			rotate.setText("Rotation Off");
 		}
 
-		BorderPane root = new BorderPane();
-		feld = new GridPane();
-		boolean farbe = false;
+		farbe = false;
 
-		Label spieler = new Label("" + playerWhite + " am Zug");
+		Label spieler = new Label("" + " am Zug");
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
 
-		sp = SpielFeldIO.einlesen("Test4.txt");
-		sp.setWerAmZug(true);
+		for (Button b : allButtons) {
 
-		for (int i = 1; i < 9; i++) {
-			for (int j = 1; j < 9; j++) {
+			/* Button Handler */
+			b.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
 
-				Button b = new Button();
-				if (first) {
-					allButtons.add(b);
-				}
-//				b.setGraphic(imageView);
+					XF = 0;
+					YF = 0;
+					XS = 0;
+					YS = 0;
 
-				/* Farbe und CSS */
-				b.getStyleClass().add("button");
-				if (farbe) {
-					if (j % 2 == 0) {
-						b.getStyleClass().add("buttonWhite");
-					}
-					if (j == 8 && i % 2 == 0) {
-						farbe = false;
-					}
-				}
-				if (!farbe) {
-					if (j % 2 != 0) {
-						b.getStyleClass().add("buttonWhite");
-					}
-					if (j == 8 && i % 2 != 0) {
-						farbe = true;
-					}
-				}
+					/* Erster Button */
+					if (!clicked1) {
 
-				/* Button Id setzen */
-				char id = (char) ('A' + (i - 1));
-				String id1 = id + String.valueOf(9 - j);
-				b.setId(id1);
-				feld.add(b, i, j);
+						/* Letzter Zug Label */
+						letzterZug = b.getId();
 
-				/* Button Handler */
-				b.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
+						/* Spielzug */
+						String zug = Integer.toString((b.getId().charAt(0) - 65));
+						XF = zug.charAt(0);
+						YF = (char) (b.getId().charAt(1) - 1);
+						zugC[0] = XF;
+						zugC[1] = YF;
+						zugC[2] = '-';
+						vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
+						if (sp.getFeld(vPos) instanceof Figur) {
 
-						XF = 0;
-						YF = 0;
-						XS = 0;
-						YS = 0;
+							von = (Figur) sp.getFeld(vPos);
 
-						/* Erster Button */
-						if (!clicked1) {
+							if (sp.schachMatt(vPos)) {
+								primaryStage.setScene(endScene(primaryStage));
+								primaryStage.show();
+							} else if (!sp.schach(vPos)) {
 
-							/* Letzter Zug Label */
-							letzterZug = b.getId();
+								/* Suggestion */
+								if (von.isFarbeWeiss() == weiss) {
 
-							/* Spielzug */
-							String zug = Integer.toString((b.getId().charAt(0) - 65));
-							XF = zug.charAt(0);
-							YF = (char) (b.getId().charAt(1) - 1);
-							zugC[0] = XF;
-							zugC[1] = YF;
-							zugC[2] = '-';
-							vPos = new Position(Character.getNumericValue(YF), Character.getNumericValue(XF));
-							if (sp.getFeld(vPos) instanceof Figur) {
+									felder = von.suggest(sp, vPos, sp.isWerAmZug());
+									if (felder.size() > 0) {
 
-								von = (Figur) sp.getFeld(vPos);
-
-								if (sp.schachMatt(vPos)) {
-									primaryStage.setScene(endScene(primaryStage));
-									primaryStage.show();
-								} else if (!sp.schach(vPos)) {
-
-									/* Suggestion */
-									if (von.isFarbeWeiss() == weiss) {
-
-										felder = von.suggest(sp, vPos, sp.isWerAmZug());
-										if (felder.size() > 0) {
-
-											for (int k = 0; k < felder.size(); k++) {
-												int y = Character.getNumericValue(felder.get(k).charAt(0));
-												int x = Character.getNumericValue(felder.get(k).charAt(1));
-												Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-												moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
-												b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
-											}
-											clicked1 = true;
-										} else {
-											showAnyAlert("Unzulässige Auswahl !",
-													"Die von dir gewählte Figur kann sich leider momentan nicht bewegen");
+										for (int k = 0; k < felder.size(); k++) {
+											int y = Character.getNumericValue(felder.get(k).charAt(0));
+											int x = Character.getNumericValue(felder.get(k).charAt(1));
+											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
+											b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
 										}
+										clicked1 = true;
 									} else {
-										showAnyAlert("Falsche Farbe", "Der gegnerische Spieler ist am Zug !");
-										Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(),
-												vPos.getX() + 1, feld);
-										previous.setStyle("");
+										showAnyAlert("Unzulässige Auswahl !",
+												"Die von dir gewählte Figur kann sich leider momentan nicht bewegen");
 									}
 								} else {
-									showAnyAlert("Schach !", "Du bist im Schach, musst also deinen König bewegen");
+									showAnyAlert("Falsche Farbe", "Der gegnerische Spieler ist am Zug !");
+									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+											feld);
+									previous.setStyle("");
 								}
-
 							} else {
-								showAnyAlert("Leeres Feld !",
-										"Du hast ein leeres Feld angeklickt ! Wähle bitte eines aus auf dem eine Figur steht");
+								showAnyAlert("Schach !", "Du bist im Schach, musst also deinen König bewegen");
 							}
 
-							/* Bild von erstem Button getten */
-							n1 = b.getGraphic();
-
+						} else {
+							showAnyAlert("Leeres Feld !",
+									"Du hast ein leeres Feld angeklickt ! Wähle bitte eines aus auf dem eine Figur steht");
 						}
-						if (clicked2) {
 
-							/* Suggestion */
-							for (int k = 0; k < felder.size(); k++) {
-								int y = Character.getNumericValue(felder.get(k).charAt(0));
-								int x = Character.getNumericValue(felder.get(k).charAt(1));
-								Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
-								moeglich.setStyle("");
-							}
+						/* Bild von erstem Button getten */
+						n1 = b.getGraphic();
 
-							/* Letzter Zug Label */
-							letzterZug = letzterZug + "-" + b.getId();
-							ausgabe.setText("Letzter Zug: ");
-							/* Spielzug */
-							String c = Integer.toString((b.getId().charAt(0) - 65));
-							XS = c.charAt(0);
-							YS = (char) (b.getId().charAt(1) - 1);
+					}
+					if (clicked2) {
 
-							zugC[3] = XS;
-							zugC[4] = YS;
-							zug = String.valueOf(zugC);
-							nPos = new Position(Character.getNumericValue(zugC[4]), Character.getNumericValue(zugC[3]));
+						/* Suggestion */
+						for (int k = 0; k < felder.size(); k++) {
+							int y = Character.getNumericValue(felder.get(k).charAt(0));
+							int x = Character.getNumericValue(felder.get(k).charAt(1));
+							Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
+							moeglich.setStyle("");
+						}
 
-							/* Rochade handle */
-							if (von instanceof Koenig && !von.isBewegt() && (nPos.getX() == 7 || nPos.getX() == 0)) {
-								System.out.println("König will rochade");
-								Koenig k = (Koenig) von;
-								zugMoeglich = k.rochade(sp, vPos, nPos);
+						/* Letzter Zug Label */
+						letzterZug = letzterZug + "-" + b.getId();
+						ausgabe.setText("Letzter Zug: ");
+						/* Spielzug */
+						String c = Integer.toString((b.getId().charAt(0) - 65));
+						XS = c.charAt(0);
+						YS = (char) (b.getId().charAt(1) - 1);
 
-							} else {
+						zugC[3] = XS;
+						zugC[4] = YS;
+						zug = String.valueOf(zugC);
+						nPos = new Position(Character.getNumericValue(zugC[4]), Character.getNumericValue(zugC[3]));
 
-								zugMoeglich = von.spielzugMoeglich(sp, vPos, nPos);
-							}
-							sp.setWerAmZug(weiss);
-							if (von.isFarbeWeiss() == sp.isWerAmZug()) {
-								if (zugMoeglich) {
-									/*
-									 * Grafik auf den zweiten Button setzten und anschließend feld und buttons
-									 * rotieren
-									 */
-									b.setGraphic(n1);
-									clicked1 = false;
+						/* Rochade handle */
+						if (von instanceof Koenig && !von.isBewegt() && (nPos.getX() == 7 || nPos.getX() == 0)) {
+							System.out.println("König will rochade");
+							Koenig k = (Koenig) von;
+							zugMoeglich = k.rochade(sp, vPos, nPos);
 
-									if (rotation) {
-										RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
-										rotate.setByAngle(180);
-										rotate.play();
-										for (int i = 0; i < 64; i++) {
-											System.out.println("Dreh mi");
-											RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
-													allButtons.get(i));
-											rotateImage.setByAngle(180);
-											rotateImage.play();
+						} else {
 
-										}
-									}
-									weiss = !weiss;
-									/* Spielerindikator */
-									if (weiss) {
-										spieler.setText("" + playerWhite + " am Zug");
-										spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-									} else {
-										spieler.setText("" + playerBlack + " am Zug");
-										spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-									}
-
-									/* Spielzug abschließen */
-									sp.spielzug(zug);
-									handleImages();
-									sp.ausgabe();
-									sp.setWerAmZug(!sp.isWerAmZug());
-									ausgabe.setText(ausgabe.getText() + letzterZug);
-									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
-											feld);
-									previous.setStyle("");
-									handleNewFigure(nPos);
-
-								} else {
-									clicked2 = clicked1;
-									clicked1 = false;
-									showAnyAlert("Unzulässiger Zug !", "Dieser Zug ist leider nicht möglich!");
-									Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
-											feld);
-									previous.setStyle("");
-								}
-							} else {
-								clicked2 = clicked1;
+							zugMoeglich = von.spielzugMoeglich(sp, vPos, nPos);
+						}
+						sp.setWerAmZug(weiss);
+						if (von.isFarbeWeiss() == sp.isWerAmZug()) {
+							if (zugMoeglich) {
+								/*
+								 * Grafik auf den zweiten Button setzten und anschließend feld und buttons
+								 * rotieren
+								 */
+								b.setGraphic(n1);
 								clicked1 = false;
-								showAnyAlert("Falsche Farbe", "Der gegnerische SPielr ist an der Reihe ! ");
 
+								if (rotation) {
+									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
+									rotate.setByAngle(180);
+									rotate.play();
+									for (int i = 0; i < 64; i++) {
+										System.out.println("Dreh mi");
+										RotateTransition rotateImage = new RotateTransition(Duration.seconds(0.001),
+												allButtons.get(i));
+										rotateImage.setByAngle(180);
+										rotateImage.play();
+
+									}
+								}
+								weiss = !weiss;
+								/* Spielerindikator */
+								if (weiss) {
+									spieler.setText("" + playerWhite + " am Zug");
+									spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+								} else {
+									spieler.setText("" + playerBlack + " am Zug");
+									spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+								}
+
+								/* Spielzug abschließen */
+								sp.spielzug(zug);
+								handleImages();
+								sp.ausgabe();
+								sp.setWerAmZug(!sp.isWerAmZug());
+								ausgabe.setText(ausgabe.getText() + letzterZug);
 								Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
 										feld);
 								previous.setStyle("");
+								handleNewFigure(nPos);
 
+							} else {
+								clicked2 = clicked1;
+								clicked1 = false;
+								showAnyAlert("Unzulässiger Zug !", "Dieser Zug ist leider nicht möglich!");
+								Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1,
+										feld);
+								previous.setStyle("");
 							}
+						} else {
+							clicked2 = clicked1;
+							clicked1 = false;
+							showAnyAlert("Falsche Farbe", "Der gegnerische SPielr ist an der Reihe ! ");
+
+							Button previous = (Button) getNodeByRowColumnIndex(8 - vPos.getY(), vPos.getX() + 1, feld);
+							previous.setStyle("");
 
 						}
 
-						clicked2 = clicked1;
-
 					}
-				});
 
-			}
+					clicked2 = clicked1;
+
+				}
+			});
+
+		}
+		{
 		}
 		first = false;
-		handleImages();
-		responsive();
 
 		rotate.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -401,7 +431,6 @@ public class Main extends Application {
 		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
 		hbox.setPadding(new Insets(2));
 
-		root.setTop(mb);
 		root.setCenter(feld);
 		root.setBottom(hbox);
 		Scene scene = new Scene(root);
@@ -441,6 +470,8 @@ public class Main extends Application {
 	/* Start Scene */
 	private Scene startScene(Stage primaryStage) {
 		StackPane root = new StackPane();
+		root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
 		Button button = new Button();
 		VBox v = new VBox();
 
@@ -478,7 +509,10 @@ public class Main extends Application {
 				playerBlack = textField2.getText();
 
 				try {
-					primaryStage.setScene(mainScene(primaryStage));
+					if (reload)
+						reloadScene(primaryStage);
+					if (!reload)
+						primaryStage.setScene(mainScene(primaryStage));
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -541,7 +575,6 @@ public class Main extends Application {
 	}
 
 	public void handleImages() {
-		System.out.println(allButtons.size());
 		view.clear();
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
@@ -555,9 +588,8 @@ public class Main extends Application {
 				view.add(imageView);
 			}
 		}
-		System.out.println("VIEWSIZE"+view.size());
+		System.out.println("VIEWSIZE" + view.size());
 		for (int i = 0; i < 64; i++) {
-			System.out.println("BUTTONIMAGEPATH"+view.get(i));
 			allButtons.get(i).setGraphic(view.get(i));
 		}
 	}

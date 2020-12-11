@@ -301,6 +301,8 @@ public class SpielFeld {
 		}
 		setFeld(nach, f);
 	}
+	
+
 
 	public Position schach2koordinate(String schach) {
 		Position p = new Position();
