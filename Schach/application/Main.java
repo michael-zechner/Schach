@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.omg.IOP.TAG_RMI_CUSTOM_MAX_STREAM_FORMAT;
+
 import game.Figur;
 import game.Koenig;
 import game.Position;
@@ -90,8 +92,13 @@ public class Main extends Application {
 	private BorderPane root;
 
 	private Label spieler;
+	private Label ausgabe;
 	private String dran;
-	
+	private HBox hBox;
+	private HBox hBoxFig;
+	private HBox hBoxFigBot;
+	private VBox vBoxBot;
+
 	public SpielFeld getSpielfeld() {
 		return sp;
 	}
@@ -158,7 +165,7 @@ public class Main extends Application {
 			}
 		}
 		handleImages();
-		responsive();
+
 		primaryStage.setScene(mainScene(primaryStage));
 	}
 
@@ -181,22 +188,18 @@ public class Main extends Application {
 		});
 
 		simple2.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				try {
 					reloadScene(primaryStage);
 					reload = true;
-					
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		});
 
 		simple3.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);
@@ -208,10 +211,10 @@ public class Main extends Application {
 
 		root.setTop(mb);
 	}
-	
+
 	private void setPlayer() {
-		
-		System.out.println("F: "+weiss);
+
+		System.out.println("F: " + weiss);
 		if (weiss) {
 			dran = playerWhite;
 			spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
@@ -242,21 +245,18 @@ public class Main extends Application {
 
 		/* Spielerindikator */
 		setPlayer();
-		
 
-		
 		spieler.setPadding(new Insets(20));
-		Label ausgabe = new Label("Letzter Zug: xx-xx");
+		ausgabe = new Label("Letzter Zug: xx-xx");
+		ausgabe.setStyle("-fx-background-color: #3873d1;");
 		ausgabe.setPadding(new Insets(20));
 
 		for (Button b : allButtons) {
-			
 
 			/* Button Handler */
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					
 
 					XF = 0;
 					YF = 0;
@@ -381,7 +381,6 @@ public class Main extends Application {
 								}
 								weiss = !weiss;
 								setPlayer();
-								
 
 								/* Spielzug abschlieﬂen */
 								sp.spielzug(zug);
@@ -438,22 +437,34 @@ public class Main extends Application {
 
 		});
 
-		HBox hbox = new HBox();
-		HBox centerButtons = new HBox(rotate);
-		HBox rightButtons = new HBox(spieler);
-		rightButtons.setAlignment(Pos.CENTER_RIGHT);
+		vBoxBot = new VBox();
+		hBox = new HBox();
+		hBox.getChildren().addAll(ausgabe, rotate, spieler);
+		hBoxFigBot = new HBox();
+		hBoxFigBot.setAlignment(Pos.CENTER);
+		for (int i = 0; i < 6; i++) {
+			ImageView im = new ImageView(new Image("images/BB.png"));
+			Button b = new Button("Test");
+			hBoxFigBot.getChildren().add(im);
+		}
+		
+		vBoxBot.getChildren().addAll(hBoxFigBot, hBox);
 
-		HBox.setHgrow(centerButtons, Priority.ALWAYS);
-		HBox.setHgrow(rightButtons, Priority.ALWAYS);
+		hBoxFig = new HBox();
+		hBoxFig.setAlignment(Pos.CENTER);
+		for (int i = 0; i < 6; i++) {
+			ImageView im = new ImageView(new Image("images/BB.png"));
+			Button b = new Button("Test");
+			hBoxFig.getChildren().add(im);
+		}
+		root.setTop(hBoxFig);
 
-		centerButtons.setAlignment(Pos.CENTER);
-
-		hbox.getChildren().addAll(ausgabe, centerButtons, rightButtons);
-		hbox.setPadding(new Insets(2));
+		responsive();
 
 		root.setCenter(feld);
-		root.setBottom(hbox);
+		root.setBottom(vBoxBot);
 		Scene scene = new Scene(root);
+
 		scene.getStylesheets().add("application/application.css");
 		return scene;
 	}
@@ -531,7 +542,7 @@ public class Main extends Application {
 				try {
 					if (reload)
 						reloadScene(primaryStage);
-						reloadScene(primaryStage);
+					reloadScene(primaryStage);
 					if (!reload)
 						primaryStage.setScene(mainScene(primaryStage));
 				} catch (FileNotFoundException e) {
@@ -682,6 +693,35 @@ public class Main extends Application {
 		row9.setPercentHeight(10);
 
 		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
+
+		// Responsive Hbox
+
+		// TODO irgendow is de rotation button gesetzt. des hab i jetzt nit genau
+		// gfunden, weil sonst is die hˆhe nit ganz die hˆhe des sein soll
+		root.widthProperty().addListener((obs, oldVal, newVal) -> {
+			width = (Double) newVal;
+			hBox.setPrefWidth(width);
+			hBoxFig.setPrefWidth(width/3);
+			hBoxFigBot.setPrefWidth(width/3);
+			
+			for (Node n : hBoxFig.getChildren()) {
+				ImageView b = (ImageView) n;
+				b.setFitWidth(hBoxFig.getPrefWidth() / hBoxFig.getChildren().size());
+				b.setFitHeight(b.getFitWidth() * 1.61);
+			}
+			
+			for (Node n : hBoxFigBot.getChildren()) {
+				ImageView b = (ImageView) n;
+				b.setFitWidth(hBoxFigBot.getPrefWidth() / hBoxFigBot.getChildren().size());
+				b.setFitHeight(b.getFitWidth() * 1.61);
+			}
+
+			ausgabe.setMinWidth(hBox.getPrefWidth() / 3);
+			rotate.setMinWidth(hBox.getPrefWidth() / 3);
+			rotate.setMinHeight(hBox.getPrefHeight());
+			spieler.setMinWidth(hBox.getPrefWidth() / 3);
+
+		});
 	}
 
 	public boolean isWeiss() {
