@@ -51,6 +51,8 @@ public class Main extends Application {
 
 	private boolean first = true;
 
+	private boolean ersteraufruf = false;
+
 	private String zug;
 	private String playerWhite;
 	private String playerBlack;
@@ -115,7 +117,7 @@ public class Main extends Application {
 		feld = new GridPane();
 		feld.setId("bodyMain");
 
-		sp = SpielFeldIO.einlesen("Test4.txt");
+		sp = SpielFeldIO.einlesen("Start.txt");
 		sp.setWerAmZug(true);
 
 		allButtons.clear();
@@ -510,6 +512,7 @@ public class Main extends Application {
 
 				try {
 					if (reload)
+						reloadScene(primaryStage);
 						reloadScene(primaryStage);
 					if (!reload)
 						primaryStage.setScene(mainScene(primaryStage));
