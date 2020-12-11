@@ -89,6 +89,8 @@ public class Main extends Application {
 
 	private BorderPane root;
 
+	private Label spieler;
+	
 	public SpielFeld getSpielfeld() {
 		return sp;
 	}
@@ -222,7 +224,12 @@ public class Main extends Application {
 
 		farbe = false;
 
-		Label spieler = new Label(""+ playerWhite + " am Zug");
+		if(isWeiss()) {
+			spieler = new Label(""+ playerWhite + " am Zug");
+		}else {
+			spieler = new Label(""+ playerBlack + " am Zug");
+		}
+		
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
