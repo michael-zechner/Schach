@@ -90,6 +90,7 @@ public class Main extends Application {
 	private BorderPane root;
 
 	private Label spieler;
+	private String dran;
 	
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -117,7 +118,7 @@ public class Main extends Application {
 	private void reloadScene(Stage primaryStage) throws FileNotFoundException {
 
 		feld = new GridPane();
-		feld.setId("bodyMain");
+		weiss = true;
 
 		sp = SpielFeldIO.einlesen("Start.txt");
 		sp.setWerAmZug(true);
@@ -186,6 +187,7 @@ public class Main extends Application {
 				try {
 					reloadScene(primaryStage);
 					reload = true;
+					
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -206,8 +208,22 @@ public class Main extends Application {
 
 		root.setTop(mb);
 	}
+	
+	private void setPlayer() {
+		
+		System.out.println("F: "+weiss);
+		if (weiss) {
+			dran = playerWhite;
+			spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+		} else {
+			dran = playerBlack;
+			spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+		}
+		spieler.setText("" + dran + " am Zug");
+	}
 
 	private Scene mainScene(Stage primaryStage) throws FileNotFoundException {
+		spieler = new Label();
 		root = new BorderPane();
 		root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -224,22 +240,23 @@ public class Main extends Application {
 
 		farbe = false;
 
-		if(isWeiss()) {
-			spieler = new Label(""+ playerWhite + " am Zug");
-		}else {
-			spieler = new Label(""+ playerBlack + " am Zug");
-		}
+		/* Spielerindikator */
+		setPlayer();
+		
+
 		
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
 
 		for (Button b : allButtons) {
+			
 
 			/* Button Handler */
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
+					
 
 					XF = 0;
 					YF = 0;
@@ -363,14 +380,8 @@ public class Main extends Application {
 									}
 								}
 								weiss = !weiss;
-								/* Spielerindikator */
-								if (weiss) {
-									spieler.setText("" + playerWhite + " am Zug");
-									spieler.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-								} else {
-									spieler.setText("" + playerBlack + " am Zug");
-									spieler.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-								}
+								setPlayer();
+								
 
 								/* Spielzug abschlieﬂen */
 								sp.spielzug(zug);
