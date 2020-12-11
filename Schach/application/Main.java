@@ -297,7 +297,7 @@ public class Main extends Application {
 											int x = Character.getNumericValue(felder.get(k).charAt(1));
 											Button moeglich = (Button) getNodeByRowColumnIndex(8 - x, y + 1, feld);
 											moeglich.setStyle("-fx-background-color: rgba(154,192,205, 1);");
-											b.setStyle("-fx-border-color: blue; -fx-border-width: 3.0;\r\n");
+											b.setStyle("-fx-border-color: blue; -fx-border-width: 1.0;\r\n");
 										}
 										clicked1 = true;
 									} else {
@@ -414,8 +414,9 @@ public class Main extends Application {
 					}
 
 					clicked2 = clicked1;
-
+					responsive();
 				}
+				
 			});
 
 		}
@@ -447,7 +448,7 @@ public class Main extends Application {
 			Button b = new Button("Test");
 			hBoxFigBot.getChildren().add(im);
 		}
-		
+
 		vBoxBot.getChildren().addAll(hBoxFigBot, hBox);
 
 		hBoxFig = new HBox();
@@ -614,85 +615,99 @@ public class Main extends Application {
 				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
 
 				imageView = new ImageView(im1);
-				imageView.setFitHeight(40);
-				imageView.setFitWidth(25);
+				
 
 				view.add(imageView);
 			}
 		}
-		System.out.println("VIEWSIZE" + view.size());
 		for (int i = 0; i < 64; i++) {
 			allButtons.get(i).setGraphic(view.get(i));
 		}
 	}
 
 	public void responsive() {
+		System.out.println("make response");
 		/*
 		 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
 		 * skaliert werden soll
 		 */
-		for (int j = 0; j < 64; j++) {
+//		for (int j = 0; j < 64; j++) {
+//
+//			allButtons.get(j).setMaxWidth(Double.MAX_VALUE);
+//			allButtons.get(j).setMaxHeight(Double.MAX_VALUE);
+//			allButtons.get(j).widthProperty().addListener((obs, oldVal, newVal) -> {
+//				width = (Double) newVal;
+//
+//				for (int k = 0; k < view.size(); k++) {
+//
+//					if (width > 100) {
+//						view.get(k).setFitWidth(50);
+//						view.get(k).setFitHeight(81);
+//					} else if (width <= 100) {
+//						view.get(k).setFitWidth(25);
+//						view.get(k).setFitHeight(40);
+//					}
+//				}
+//
+//			});
+//		}
+		feld.setAlignment(Pos.CENTER);
+		root.widthProperty().addListener((obs, oldVal, newVal) -> {
+			width = (Double) newVal;
 
-			allButtons.get(j).setMaxWidth(Double.MAX_VALUE);
-			allButtons.get(j).setMaxHeight(Double.MAX_VALUE);
-			allButtons.get(j).widthProperty().addListener((obs, oldVal, newVal) -> {
-				width = (Double) newVal;
+			for (Button button : allButtons) {
+				button.setPrefWidth((width / 8) / 1.10);
+				button.setPrefHeight(button.getPrefWidth() * 0.8);
+			}
 
-				for (int k = 0; k < view.size(); k++) {
+			for (ImageView image : view) {
+				image.setFitWidth(image.getFitHeight() / 1.16);
+				image.setFitHeight((width / 8) / 3);
+			}
 
-					if (width > 100) {
-						view.get(k).setFitWidth(50);
-						view.get(k).setFitHeight(81);
-					} else if (width <= 100) {
-						view.get(k).setFitWidth(25);
-						view.get(k).setFitHeight(40);
-					}
-				}
+		});
 
-			});
-		}
-
-		/* Für responsive Buttons */
-		ColumnConstraints col1 = new ColumnConstraints();
-		col1.setPercentWidth(10);
-		ColumnConstraints col2 = new ColumnConstraints();
-		col2.setPercentWidth(10);
-		ColumnConstraints col3 = new ColumnConstraints();
-		col3.setPercentWidth(10);
-		ColumnConstraints col4 = new ColumnConstraints();
-		col4.setPercentWidth(10);
-		ColumnConstraints col5 = new ColumnConstraints();
-		col5.setPercentWidth(10);
-		ColumnConstraints col6 = new ColumnConstraints();
-		col6.setPercentWidth(10);
-		ColumnConstraints col7 = new ColumnConstraints();
-		col7.setPercentWidth(10);
-		ColumnConstraints col8 = new ColumnConstraints();
-		col8.setPercentWidth(10);
-		ColumnConstraints col9 = new ColumnConstraints();
-		col9.setPercentWidth(10);
-		feld.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7, col8, col9);
-
-		RowConstraints row1 = new RowConstraints();
-		row1.setPercentHeight(10);
-		RowConstraints row2 = new RowConstraints();
-		row2.setPercentHeight(10);
-		RowConstraints row3 = new RowConstraints();
-		row3.setPercentHeight(10);
-		RowConstraints row4 = new RowConstraints();
-		row4.setPercentHeight(10);
-		RowConstraints row5 = new RowConstraints();
-		row5.setPercentHeight(10);
-		RowConstraints row6 = new RowConstraints();
-		row6.setPercentHeight(10);
-		RowConstraints row7 = new RowConstraints();
-		row7.setPercentHeight(10);
-		RowConstraints row8 = new RowConstraints();
-		row8.setPercentHeight(10);
-		RowConstraints row9 = new RowConstraints();
-		row9.setPercentHeight(10);
-
-		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
+//		/* Für responsive Buttons */
+//		ColumnConstraints col1 = new ColumnConstraints();
+//		col1.setPercentWidth(10);
+//		ColumnConstraints col2 = new ColumnConstraints();
+//		col2.setPercentWidth(10);
+//		ColumnConstraints col3 = new ColumnConstraints();
+//		col3.setPercentWidth(10);
+//		ColumnConstraints col4 = new ColumnConstraints();
+//		col4.setPercentWidth(10);
+//		ColumnConstraints col5 = new ColumnConstraints();
+//		col5.setPercentWidth(10);
+//		ColumnConstraints col6 = new ColumnConstraints();
+//		col6.setPercentWidth(10);
+//		ColumnConstraints col7 = new ColumnConstraints();
+//		col7.setPercentWidth(10);
+//		ColumnConstraints col8 = new ColumnConstraints();
+//		col8.setPercentWidth(10);
+//		ColumnConstraints col9 = new ColumnConstraints();
+//		col9.setPercentWidth(10);
+//		feld.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7, col8, col9);
+//
+//		RowConstraints row1 = new RowConstraints();
+//		row1.setPercentHeight(10);
+//		RowConstraints row2 = new RowConstraints();
+//		row2.setPercentHeight(10);
+//		RowConstraints row3 = new RowConstraints();
+//		row3.setPercentHeight(10);
+//		RowConstraints row4 = new RowConstraints();
+//		row4.setPercentHeight(10);
+//		RowConstraints row5 = new RowConstraints();
+//		row5.setPercentHeight(10);
+//		RowConstraints row6 = new RowConstraints();
+//		row6.setPercentHeight(10);
+//		RowConstraints row7 = new RowConstraints();
+//		row7.setPercentHeight(10);
+//		RowConstraints row8 = new RowConstraints();
+//		row8.setPercentHeight(10);
+//		RowConstraints row9 = new RowConstraints();
+//		row9.setPercentHeight(10);
+//
+//		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
 
 		// Responsive Hbox
 
@@ -701,15 +716,15 @@ public class Main extends Application {
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			width = (Double) newVal;
 			hBox.setPrefWidth(width);
-			hBoxFig.setPrefWidth(width/3);
-			hBoxFigBot.setPrefWidth(width/3);
-			
+			hBoxFig.setPrefWidth(width / 3);
+			hBoxFigBot.setPrefWidth(width / 3);
+
 			for (Node n : hBoxFig.getChildren()) {
 				ImageView b = (ImageView) n;
 				b.setFitWidth(hBoxFig.getPrefWidth() / hBoxFig.getChildren().size());
 				b.setFitHeight(b.getFitWidth() * 1.61);
 			}
-			
+
 			for (Node n : hBoxFigBot.getChildren()) {
 				ImageView b = (ImageView) n;
 				b.setFitWidth(hBoxFigBot.getPrefWidth() / hBoxFigBot.getChildren().size());
