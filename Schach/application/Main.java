@@ -222,7 +222,7 @@ public class Main extends Application {
 
 		farbe = false;
 
-		Label spieler = new Label("" + " am Zug");
+		Label spieler = new Label(""+ playerWhite + " am Zug");
 		spieler.setPadding(new Insets(20));
 		Label ausgabe = new Label("Letzter Zug: xx-xx");
 		ausgabe.setPadding(new Insets(20));
