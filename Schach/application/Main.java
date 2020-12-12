@@ -651,6 +651,8 @@ public class Main extends Application {
 
 		// TODO irgendow is de rotation button gesetzt. des hab i jetzt nit genau
 		// gfunden, weil sonst is die höhe nit ganz die höhe des sein soll
+		
+		//TODO Wenn bildschirm kleiner bzw. generell dass de geschlagenen figuren a kleiner werden
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			width = (Double) newVal;
 			hBox.setPrefWidth(width);
@@ -659,8 +661,8 @@ public class Main extends Application {
 			rotate.setMinHeight(hBox.getPrefHeight());
 			spieler.setMinWidth(hBox.getPrefWidth() / 3);
 
-			hBoxFig.setPrefWidth(width / 3);
-			hBoxFigBot.setPrefWidth(width / 3);
+			hBoxFig.setPrefWidth(width / 6);
+			hBoxFigBot.setPrefWidth(width / 6);
 
 			for (Node n : hBoxFig.getChildren()) {
 				Label l = (Label) n;

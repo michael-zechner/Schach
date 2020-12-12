@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-
 import application.Main;
 
 public class SpielFeld {
@@ -291,14 +290,14 @@ public class SpielFeld {
 		return figuren;
 	}
 
-	public ArrayList<Figur> minus(SpielFeld sf, boolean weiss)
-	{
+	public ArrayList<Figur> minus(SpielFeld sf, boolean weiss) {
 		ArrayList<Figur> fs1 = holeFigurenObj(weiss);
 		ArrayList<Figur> fs2 = sf.holeFigurenObj(weiss);
-		for (Figur f2 : fs2)
-		{
-			if (fs1.contains(f2))
-			{
+
+		for (Figur f2 : fs2) {
+			System.out.println(f2.toString());
+			if (!fs1.contains(f2)) {
+				System.out.println("asdf");
 				fs1.remove(f2);
 			}
 		}
