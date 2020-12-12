@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 
+
 public abstract class Figur extends Feld {
 
 	public boolean farbeWeiss;
@@ -108,4 +109,13 @@ public abstract class Figur extends Feld {
 		this.suggestions = suggestions;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Figur))
+		{
+			return false;
+		}
+		Figur f = (Figur)obj;
+		return f.toString().equals(toString());
+	}
 }

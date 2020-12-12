@@ -239,14 +239,6 @@ public class Main extends Application {
 		/* Menubar Handle */
 		menue(primaryStage);
 
-		/* Rotation label handle */
-		rotate.getStyleClass().add("rotation");
-		if (rotation) {
-			rotate.setText("Rotation On");
-		} else {
-			rotate.setText("Rotation Off");
-		}
-
 		farbe = false;
 
 		/* Spielerindikator */
@@ -373,7 +365,7 @@ public class Main extends Application {
 								clicked1 = false;
 
 								if (rotation) {
-									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), feld);
+									RotateTransition rotate = new RotateTransition(Duration.seconds(1.5), vBoxBot);
 									rotate.setByAngle(180);
 									rotate.play();
 									for (int i = 0; i < 64; i++) {
@@ -440,6 +432,14 @@ public class Main extends Application {
 	}
 
 	private void setLayout() {
+		/* Rotation label handle */
+		rotate.getStyleClass().add("rotation");
+		if (rotation) {
+			rotate.setText("Rotation On");
+		} else {
+			rotate.setText("Rotation Off");
+		}
+
 		rotate.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -456,10 +456,11 @@ public class Main extends Application {
 		hBox = new HBox();
 		hBox.getChildren().addAll(ausgabe, rotate, spieler);
 		hBoxFigBot = new HBox();
-
+		hBoxFigBot.setPrefHeight(100);
 		hBoxFigBot.setAlignment(Pos.CENTER);
 
 		hBoxFig = new HBox();
+		hBoxFig.setPrefHeight(100);
 		hBoxFig.setAlignment(Pos.CENTER);
 
 		vBoxBot.getChildren().addAll(hBoxFig, feld, hBoxFigBot);
@@ -651,8 +652,9 @@ public class Main extends Application {
 
 		// TODO irgendow is de rotation button gesetzt. des hab i jetzt nit genau
 		// gfunden, weil sonst is die höhe nit ganz die höhe des sein soll
-		
-		//TODO Wenn bildschirm kleiner bzw. generell dass de geschlagenen figuren a kleiner werden
+
+		// TODO Wenn bildschirm kleiner bzw. generell dass de geschlagenen figuren a
+		// kleiner werden
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			width = (Double) newVal;
 			hBox.setPrefWidth(width);
@@ -661,16 +663,22 @@ public class Main extends Application {
 			rotate.setMinHeight(hBox.getPrefHeight());
 			spieler.setMinWidth(hBox.getPrefWidth() / 3);
 
-			hBoxFig.setPrefWidth(width / 6);
-			hBoxFigBot.setPrefWidth(width / 6);
+			hBoxFig.setPrefWidth(width / 2);
+			hBoxFigBot.setPrefWidth(width / 2);
 
 			for (Node n : hBoxFig.getChildren()) {
 				Label l = (Label) n;
+				ImageView imageView = (ImageView) l.getGraphic();
+				imageView.minWidth(20);
+				imageView.setFitHeight(imageView.getFitWidth() * 1.16);
+
 				l.setPrefWidth(hBoxFig.getPrefWidth() / hBoxFig.getChildren().size());
 			}
 
 			for (Node n : hBoxFigBot.getChildren()) {
 				Label l = (Label) n;
+				imageView.minWidth(20);
+				imageView.setFitHeight(imageView.getFitWidth() * 1.16);
 				l.setPrefWidth(hBoxFigBot.getPrefWidth() / hBoxFigBot.getChildren().size());
 			}
 

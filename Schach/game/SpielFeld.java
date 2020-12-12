@@ -295,9 +295,7 @@ public class SpielFeld {
 		ArrayList<Figur> fs2 = sf.holeFigurenObj(weiss);
 
 		for (Figur f2 : fs2) {
-			System.out.println(f2.toString());
-			if (!fs1.contains(f2)) {
-				System.out.println("asdf");
+			if (fs1.contains(f2)) {
 				fs1.remove(f2);
 			}
 		}
