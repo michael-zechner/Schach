@@ -7,12 +7,10 @@ import java.util.Scanner;
 public class SpielFeldIO {
 	private static Scanner s;
 
-	private static Feld[][] mat = new Feld[8][8];
-
 	static public SpielFeld einlesen(String fName) throws FileNotFoundException {
 		File file = new File(SpielFeldIO.class.getClassLoader().getResource("spielfelder/" + fName).getFile());
 		s = new Scanner(file);
-
+		Feld[][] mat = new Feld[8][8];
 		for (int i = mat.length - 1; i >= 0; i--) {
 			String a = s.nextLine();
 			for (int j = 0; j < mat[0].length; j++) {

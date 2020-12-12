@@ -78,8 +78,8 @@ public class Main extends Application {
 	private ArrayList<ImageView> view = new ArrayList<ImageView>();
 	private ArrayList<String> felder = new ArrayList<String>();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
-	private SpielFeld sp;
-	private SpielFeld start;
+	private SpielFeld sp = null;
+	private SpielFeld starter = null;
 	private GridPane feld;
 	private Position vPos;
 	private Position nPos;
@@ -100,6 +100,9 @@ public class Main extends Application {
 	private HBox hBoxFig;
 	private HBox hBoxFigBot;
 	private VBox vBoxBot;
+
+	private ArrayList<Figur> geschlageneWeiss = new ArrayList<Figur>();
+	private ArrayList<Figur> geschlageneSchwarz = new ArrayList<Figur>();
 
 	public SpielFeld getSpielfeld() {
 		return sp;
@@ -130,7 +133,7 @@ public class Main extends Application {
 		weiss = true;
 
 		sp = SpielFeldIO.einlesen("start.txt");
-		start = SpielFeldIO.einlesen("start.txt");
+		starter = SpielFeldIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		allButtons.clear();
@@ -425,8 +428,7 @@ public class Main extends Application {
 			});
 
 		}
-		{
-		}
+
 		first = false;
 
 		setLayout();
@@ -454,24 +456,12 @@ public class Main extends Application {
 		hBox = new HBox();
 		hBox.getChildren().addAll(ausgabe, rotate, spieler);
 		hBoxFigBot = new HBox();
-		for (int i = 0; i < 5; i++) {
-			ImageView im = new ImageView(new Image("images/BB.png"));
-			Label l = new Label();
-			l.setGraphic(im);
-			l.setAlignment(Pos.CENTER);
-			hBoxFigBot.getChildren().add(l);
-		}
+
 		hBoxFigBot.setAlignment(Pos.CENTER);
 
 		hBoxFig = new HBox();
 		hBoxFig.setAlignment(Pos.CENTER);
-		for (int i = 0; i < 16; i++) {
-			ImageView im = new ImageView(new Image("images/BW.png"));
-			Label l = new Label();
-			l.setGraphic(im);
-			l.setAlignment(Pos.CENTER);
-			hBoxFig.getChildren().add(l);
-		}
+
 		vBoxBot.getChildren().addAll(hBoxFig, feld, hBoxFigBot);
 		vBoxBot.setAlignment(Pos.CENTER);
 
@@ -633,6 +623,7 @@ public class Main extends Application {
 		for (int i = 0; i < 64; i++) {
 			allButtons.get(i).setGraphic(view.get(i));
 		}
+
 	}
 
 	public void responsive() {
@@ -703,31 +694,31 @@ public class Main extends Application {
 	}
 
 	private void zeichneGeschlageneFiguren() {
-		ArrayList<Figur> geschlageneWeiss = start.minus(sp, true);
-		ArrayList<Figur> geschlageneSchwarz = start.minus(sp, false);
+		geschlageneWeiss = starter.minus(sp, true);
+		geschlageneSchwarz = starter.minus(sp, false);
 		System.out.println("Geschlagen Weiss:");
 		System.out.println(Arrays.toString(geschlageneWeiss.toArray()));
 		System.out.println("Geschlagen Schwarz:");
-		System.out.println(Arrays.toString(geschlageneSchwarz.toArray()));// TODO: Zeichnen
-	}
+		System.out.println(Arrays.toString(geschlageneSchwarz.toArray()));
+		// TODO: Zeichnen
 
-//	@Override
-//	public void handle(ActionEvent event) {
-//		MenuItem source = (MenuItem) event.getSource();
-//		String text = source.getText();
-//		
-//		//Das nur als Beispiel wie man schaun kann welcher Menupunkt gewählt wurde
-//		if (source == simple1)
-//		{
-//			try {
-//				
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//			System.out.println("asdf");
-//		}
-//		
-//		
-//	}
+		hBoxFigBot.getChildren().clear();
+		for (Figur Figur : geschlageneSchwarz) {
+			ImageView im = new ImageView(new Image("images/" + Figur.toString() + ".png"));
+			Label l = new Label();
+			l.setGraphic(im);
+			l.setAlignment(Pos.CENTER);
+			hBoxFigBot.getChildren().add(l);
+		}
+
+		hBoxFig.getChildren().clear();
+		for (Figur Figur : geschlageneWeiss) {
+			ImageView im = new ImageView(new Image("images/" + Figur.toString() + ".png"));
+			Label l = new Label();
+			l.setGraphic(im);
+			l.setAlignment(Pos.CENTER);
+			hBoxFig.getChildren().add(l);
+		}
+	}
 
 }

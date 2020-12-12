@@ -1,8 +1,7 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 import application.Main;
 
@@ -280,34 +279,29 @@ public class SpielFeld {
 		}
 	}
 
-	public ArrayList<Figur> holeFigurenObj(boolean weiss) {
-		ArrayList<Figur> alleFig = new ArrayList<Figur>();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-
-				if (mat[i][j] instanceof Figur && ((Figur) mat[i][j]).isFarbeWeiss() == weiss) {
-					alleFig.add((Figur) mat[i][j]);
-//					System.out.print(((Figur) mat[i][j]).toString());
+	private ArrayList<Figur> holeFigurenObj(boolean weiss) {
+		ArrayList<Figur> figuren = new ArrayList<>();
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat[i].length; j++) {
+				if (getFeld(i, j) instanceof Figur && ((Figur) getFeld(i, j)).isFarbeWeiss() == weiss) {
+					figuren.add((Figur) getFeld(i, j));
 				}
-
 			}
 		}
-
-		return alleFig;
+		return figuren;
 	}
 
-	public ArrayList<Figur> minus(SpielFeld sf, boolean weiss) {
-		ArrayList<Figur> fs1 = holeFigurenObj(weiss); // startspielfeld alle figuren
-		System.out.println("fs1: " + Arrays.toString(fs1.toArray()));
-		ArrayList<Figur> fs2 = sf.holeFigurenObj(weiss); // jetztiges spielfeld
-		System.out.println(Arrays.toString(fs2.toArray()));
-
-		for (Figur figur : fs2) {
-			if (fs1.contains(figur)) {
-				fs1.remove(figur);
+	public ArrayList<Figur> minus(SpielFeld sf, boolean weiss)
+	{
+		ArrayList<Figur> fs1 = holeFigurenObj(weiss);
+		ArrayList<Figur> fs2 = sf.holeFigurenObj(weiss);
+		for (Figur f2 : fs2)
+		{
+			if (fs1.contains(f2))
+			{
+				fs1.remove(f2);
 			}
 		}
-		System.out.println("fs1:" + fs1.size());
 		return fs1;
 	}
 
