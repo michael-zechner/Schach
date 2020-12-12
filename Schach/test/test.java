@@ -8,19 +8,11 @@ import game.SpielFeldIO;
 public class test {
 
 	public static void main(String[] args) throws FileNotFoundException {
-//		SpielFeldIO spIO = new SpielFeldIO();
-//		SpielFeld sp = spIO.einlesen("start.txt");
-//		
-//		sp.ausgabe();
-////		char c = 'B';
-////		int n = (int)c - (int)'A' + 1;
-////		System.out.println(n);
-
-		int i = 0;
-		while (i != 10) {
-			System.out.println(i++);
-
-		}
+		SpielFeld sp = SpielFeldIO.einlesen("start.txt");
+		SpielFeld start = SpielFeldIO.einlesen("start.txt");
+		
+		sp.setWerAmZug(true);
+		sp.spielzug("51-53");
 		
 
 	}

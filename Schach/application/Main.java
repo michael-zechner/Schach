@@ -5,6 +5,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.omg.IOP.TAG_RMI_CUSTOM_MAX_STREAM_FORMAT;
@@ -78,6 +79,7 @@ public class Main extends Application {
 	private ArrayList<String> felder = new ArrayList<String>();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
 	private SpielFeld sp;
+	private SpielFeld start;
 	private GridPane feld;
 	private Position vPos;
 	private Position nPos;
@@ -127,7 +129,8 @@ public class Main extends Application {
 		feld = new GridPane();
 		weiss = true;
 
-		sp = SpielFeldIO.einlesen("Start.txt");
+		sp = SpielFeldIO.einlesen("start.txt");
+		start = SpielFeldIO.einlesen("start.txt");
 		sp.setWerAmZug(true);
 
 		allButtons.clear();
@@ -383,6 +386,7 @@ public class Main extends Application {
 								setPlayer();
 
 								/* Spielzug abschlieﬂen */
+								System.out.println("Zug" + zug);
 								sp.spielzug(zug);
 								handleImages();
 								sp.ausgabe();
@@ -392,6 +396,7 @@ public class Main extends Application {
 										feld);
 								previous.setStyle("");
 								handleNewFigure(nPos);
+								zeichneGeschlageneFiguren();
 
 							} else {
 								clicked2 = clicked1;
@@ -416,7 +421,7 @@ public class Main extends Application {
 					clicked2 = clicked1;
 					responsive();
 				}
-				
+
 			});
 
 		}
@@ -424,8 +429,16 @@ public class Main extends Application {
 		}
 		first = false;
 
-		rotate.setOnAction(new EventHandler<ActionEvent>() {
+		setLayout();
 
+		Scene scene = new Scene(root);
+
+		scene.getStylesheets().add("application/application.css");
+		return scene;
+	}
+
+	private void setLayout() {
+		rotate.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				rotation = !rotation;
@@ -435,39 +448,37 @@ public class Main extends Application {
 					rotate.setText("Rotation Off");
 				}
 			}
-
 		});
 
 		vBoxBot = new VBox();
 		hBox = new HBox();
 		hBox.getChildren().addAll(ausgabe, rotate, spieler);
 		hBoxFigBot = new HBox();
-		hBoxFigBot.setAlignment(Pos.CENTER);
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			ImageView im = new ImageView(new Image("images/BB.png"));
-			Button b = new Button("Test");
-			hBoxFigBot.getChildren().add(im);
+			Label l = new Label();
+			l.setGraphic(im);
+			l.setAlignment(Pos.CENTER);
+			hBoxFigBot.getChildren().add(l);
 		}
-
-		vBoxBot.getChildren().addAll(hBoxFigBot, hBox);
+		hBoxFigBot.setAlignment(Pos.CENTER);
 
 		hBoxFig = new HBox();
 		hBoxFig.setAlignment(Pos.CENTER);
-		for (int i = 0; i < 6; i++) {
-			ImageView im = new ImageView(new Image("images/BB.png"));
-			Button b = new Button("Test");
-			hBoxFig.getChildren().add(im);
+		for (int i = 0; i < 16; i++) {
+			ImageView im = new ImageView(new Image("images/BW.png"));
+			Label l = new Label();
+			l.setGraphic(im);
+			l.setAlignment(Pos.CENTER);
+			hBoxFig.getChildren().add(l);
 		}
-		root.setTop(hBoxFig);
+		vBoxBot.getChildren().addAll(hBoxFig, feld, hBoxFigBot);
+		vBoxBot.setAlignment(Pos.CENTER);
 
 		responsive();
 
-		root.setCenter(feld);
-		root.setBottom(vBoxBot);
-		Scene scene = new Scene(root);
-
-		scene.getStylesheets().add("application/application.css");
-		return scene;
+		root.setCenter(vBoxBot);
+		root.setBottom(hBox);
 	}
 
 	/* SchachMatt Scene */
@@ -615,7 +626,6 @@ public class Main extends Application {
 				Image im1 = new Image("images/" + sp.getMat()[8 - j][i - 1].toString() + ".png");
 
 				imageView = new ImageView(im1);
-				
 
 				view.add(imageView);
 			}
@@ -626,31 +636,10 @@ public class Main extends Application {
 	}
 
 	public void responsive() {
-		System.out.println("make response");
+
 		/*
-		 * Hier setzten wir "Breakpoints" also width und height, ab der das Bild
-		 * skaliert werden soll
+		 * Responsive Chess Field
 		 */
-//		for (int j = 0; j < 64; j++) {
-//
-//			allButtons.get(j).setMaxWidth(Double.MAX_VALUE);
-//			allButtons.get(j).setMaxHeight(Double.MAX_VALUE);
-//			allButtons.get(j).widthProperty().addListener((obs, oldVal, newVal) -> {
-//				width = (Double) newVal;
-//
-//				for (int k = 0; k < view.size(); k++) {
-//
-//					if (width > 100) {
-//						view.get(k).setFitWidth(50);
-//						view.get(k).setFitHeight(81);
-//					} else if (width <= 100) {
-//						view.get(k).setFitWidth(25);
-//						view.get(k).setFitHeight(40);
-//					}
-//				}
-//
-//			});
-//		}
 		feld.setAlignment(Pos.CENTER);
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			width = (Double) newVal;
@@ -667,48 +656,6 @@ public class Main extends Application {
 
 		});
 
-//		/* F¸r responsive Buttons */
-//		ColumnConstraints col1 = new ColumnConstraints();
-//		col1.setPercentWidth(10);
-//		ColumnConstraints col2 = new ColumnConstraints();
-//		col2.setPercentWidth(10);
-//		ColumnConstraints col3 = new ColumnConstraints();
-//		col3.setPercentWidth(10);
-//		ColumnConstraints col4 = new ColumnConstraints();
-//		col4.setPercentWidth(10);
-//		ColumnConstraints col5 = new ColumnConstraints();
-//		col5.setPercentWidth(10);
-//		ColumnConstraints col6 = new ColumnConstraints();
-//		col6.setPercentWidth(10);
-//		ColumnConstraints col7 = new ColumnConstraints();
-//		col7.setPercentWidth(10);
-//		ColumnConstraints col8 = new ColumnConstraints();
-//		col8.setPercentWidth(10);
-//		ColumnConstraints col9 = new ColumnConstraints();
-//		col9.setPercentWidth(10);
-//		feld.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7, col8, col9);
-//
-//		RowConstraints row1 = new RowConstraints();
-//		row1.setPercentHeight(10);
-//		RowConstraints row2 = new RowConstraints();
-//		row2.setPercentHeight(10);
-//		RowConstraints row3 = new RowConstraints();
-//		row3.setPercentHeight(10);
-//		RowConstraints row4 = new RowConstraints();
-//		row4.setPercentHeight(10);
-//		RowConstraints row5 = new RowConstraints();
-//		row5.setPercentHeight(10);
-//		RowConstraints row6 = new RowConstraints();
-//		row6.setPercentHeight(10);
-//		RowConstraints row7 = new RowConstraints();
-//		row7.setPercentHeight(10);
-//		RowConstraints row8 = new RowConstraints();
-//		row8.setPercentHeight(10);
-//		RowConstraints row9 = new RowConstraints();
-//		row9.setPercentHeight(10);
-//
-//		feld.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6, row7, row8, row9);
-
 		// Responsive Hbox
 
 		// TODO irgendow is de rotation button gesetzt. des hab i jetzt nit genau
@@ -716,25 +663,23 @@ public class Main extends Application {
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			width = (Double) newVal;
 			hBox.setPrefWidth(width);
-			hBoxFig.setPrefWidth(width / 3);
-			hBoxFigBot.setPrefWidth(width / 3);
-
-			for (Node n : hBoxFig.getChildren()) {
-				ImageView b = (ImageView) n;
-				b.setFitWidth(hBoxFig.getPrefWidth() / hBoxFig.getChildren().size());
-				b.setFitHeight(b.getFitWidth() * 1.61);
-			}
-
-			for (Node n : hBoxFigBot.getChildren()) {
-				ImageView b = (ImageView) n;
-				b.setFitWidth(hBoxFigBot.getPrefWidth() / hBoxFigBot.getChildren().size());
-				b.setFitHeight(b.getFitWidth() * 1.61);
-			}
-
 			ausgabe.setMinWidth(hBox.getPrefWidth() / 3);
 			rotate.setMinWidth(hBox.getPrefWidth() / 3);
 			rotate.setMinHeight(hBox.getPrefHeight());
 			spieler.setMinWidth(hBox.getPrefWidth() / 3);
+
+			hBoxFig.setPrefWidth(width / 3);
+			hBoxFigBot.setPrefWidth(width / 3);
+
+			for (Node n : hBoxFig.getChildren()) {
+				Label l = (Label) n;
+				l.setPrefWidth(hBoxFig.getPrefWidth() / hBoxFig.getChildren().size());
+			}
+
+			for (Node n : hBoxFigBot.getChildren()) {
+				Label l = (Label) n;
+				l.setPrefWidth(hBoxFigBot.getPrefWidth() / hBoxFigBot.getChildren().size());
+			}
 
 		});
 	}
@@ -755,6 +700,15 @@ public class Main extends Application {
 		}
 
 		return result;
+	}
+
+	private void zeichneGeschlageneFiguren() {
+		ArrayList<Figur> geschlageneWeiss = start.minus(sp, true);
+		ArrayList<Figur> geschlageneSchwarz = start.minus(sp, false);
+		System.out.println("Geschlagen Weiss:");
+		System.out.println(Arrays.toString(geschlageneWeiss.toArray()));
+		System.out.println("Geschlagen Schwarz:");
+		System.out.println(Arrays.toString(geschlageneSchwarz.toArray()));// TODO: Zeichnen
 	}
 
 //	@Override
